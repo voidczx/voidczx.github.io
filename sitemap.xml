@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/</loc>
+    <loc>http://yoursite.com/2020/08/22/%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81/</loc>
     
     <lastmod>2020-08-22</lastmod>
     
@@ -17,6 +17,13 @@
   
   <url>
     <loc>http://yoursite.com/2020/08/21/hello-world/</loc>
+    
+    <lastmod>2020-08-22</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/</loc>
     
     <lastmod>2020-08-22</lastmod>
     
@@ -59,6 +66,62 @@
   </url>
 
   
+  <url>
+    <loc>http://yoursite.com/tags/unity/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/UGUI/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/git/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/github/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/hexo%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
+  
+  <url>
+    <loc>http://yoursite.com/categories/unity%E7%9B%B8%E5%85%B3/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/git%E7%9B%B8%E5%85%B3/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/blog%E7%9B%B8%E5%85%B3/</loc>
+    <lastmod>2020-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
   
 </urlset>
