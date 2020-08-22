@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.0.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -162,6 +162,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">UGUI画布的摄像机模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-22 10:44:23 / 修改时间：16:02:39" itemprop="dateCreated datePublished" datetime="2020-08-22T10:44:23+08:00">2020-08-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。</p>
+<p>Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定相机的。两者各有适合的应用场景，但一般的UI需求里我个人习惯于使用Camera模式，在应用Camera模式时需要作一些调整，以防忘记将调整步骤附在下面：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,10 +252,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-08-21 18:56:24 / 修改时间：21:36:40" itemprop="dateCreated datePublished" datetime="2020-08-21T18:56:24+08:00">2020-08-21</time>
+              <time title="创建时间：2020-08-21 18:56:24" itemprop="dateCreated datePublished" datetime="2020-08-21T18:56:24+08:00">2020-08-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 16:02:09" itemprop="dateModified" datetime="2020-08-22T16:02:09+08:00">2020-08-22</time>
+              </span>
 
           
 
@@ -202,63 +275,14 @@
 
       
           <p>初次接触Git的本地仓库以及远端仓库功能，将一些常用功能记录在这。</p>
-<h3 id="本地仓库命令"><a href="#本地仓库命令" class="headerlink" title="本地仓库命令"></a>本地仓库命令</h3><img src="https://amzimg.com/2020/08/21/ebfa55f5cab9b.jpg" alt="git本地命令" style="zoom:67%;" />
-
-<p>上图的add区与commit区纯属个人理解，并非代表功能的名称</p>
-<h4 id="本地仓库的建立"><a href="#本地仓库的建立" class="headerlink" title="本地仓库的建立"></a>本地仓库的建立</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init        &#x2F;&#x2F;初始化本地仓库</span><br></pre></td></tr></table></figure>
-
-<p>在创建了本地仓库（文件夹）后，右键git bush中输入该命令即可将该文件夹作为本地仓库，即接下来该文件夹中所加入的文件都会被git跟踪到</p>
-<h4 id="本地仓库的修改提交"><a href="#本地仓库的修改提交" class="headerlink" title="本地仓库的修改提交"></a>本地仓库的修改提交</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add [fileName]        &#x2F;&#x2F;将修改添加进add区 </span><br></pre></td></tr></table></figure>
-
-<p>当我们在以及初始化好的本地仓库做出修改后，输入此命令将修改加入add区以备commit</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;注释&quot;        &#x2F;&#x2F;提交更改，并为此次更改添加注释</span><br></pre></td></tr></table></figure>
-
-<p>这个命令会将所有add区内的更改提交，并生成一个本地版本（即包含了所有add区内修改内容的版本）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm [fileName]        &#x2F;&#x2F;将修改移除掉</span><br></pre></td></tr></table></figure>
-
-<p>这个命令会将对fileName文件的修改加入remove区，在输入commit命令后remove区中的修改将会被移除，即再也不会被git跟踪到。该操作多用于删除已跟踪的文件。</p>
-<h4 id="本地仓库的修改撤销与版本回退"><a href="#本地仓库的修改撤销与版本回退" class="headerlink" title="本地仓库的修改撤销与版本回退"></a>本地仓库的修改撤销与版本回退</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- [fileName]        &#x2F;&#x2F;撤销修改</span><br></pre></td></tr></table></figure>
-
-<p>这个命令相当于ctrl+z，当对已跟踪的文件做出些不应该的修改时可以通过这条命令直接将文件恢复到修改前的状态，该命令在下面的链接中有更详细的讲解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD [fileName]        &#x2F;&#x2F;将add区中的修改拿出来</span><br></pre></td></tr></table></figure>
-
-<p>当一个不希望的修改被添加进add区时，可以用这条命令把该修改拿出来。拿出来之后的修改可以根据情况 git checkout – 恢复或进行其他处理。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD        &#x2F;&#x2F;回退到最近一次commit的版本（即当前版本）</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^        &#x2F;&#x2F;回退到上次commit的版本</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^^        &#x2F;&#x2F;回退到上上次commit的版本</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD~12        &#x2F;&#x2F;回退到12个版本之前</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 1204ab2048        &#x2F;&#x2F;回退到编号开头为1024ab2048的版本（如果该版本存在）</span><br></pre></td></tr></table></figure>
-
-<p>上面几种方式都可以将本地仓库的状态恢复为过去版本的状态，例如我错删了一个重要文件但又当作无事发生地提交了，就可以通过这个命令来挽回我的错误（以及饭碗）</p>
-<p>使用这种 git reset –hard *** 样式的回退命令有一定的风险，比如我们在第八个版本，一旦我们用这种命令回到了第五个版本，第六七个版本将消失（起码在我们这条世界线上是消失了，但至少我们还记得它们曾存在过，所以这种命令的一个额外好处是可以让我们体验到成为世界线观测者的感觉），但事实上，我们还有更好的，不会让第六七个版本消失无踪的命令，即：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD~N        &#x2F;&#x2F;创建与N个版本之前相同的版本并作为新版本</span><br></pre></td></tr></table></figure>
-
-<p>关于版本回退还有更多的命令，比如soft与mixed方式，可以参考下面的链接（上面的revert命令也是我从下面的链接里抄来的）：</p>
-<h3 id="远端仓库命令"><a href="#远端仓库命令" class="headerlink" title="远端仓库命令"></a>远端仓库命令</h3><p>当我们拥有了提交好（即创建好版本）的本地仓库后，即可使用远端命令与github中的仓库进行联动。</p>
-<p>首先需要进入自己github账户内的仓库（repositories）界面，进入已创建好的仓库或新创建一个仓库，在绿色的Code下拉菜单中得到我们这个远端仓库的http格式链接（ssh格式也可以，但我目前的了解只在知道它可以这个程度），然后回到本地仓库目录打开git bush，键入如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin [github仓库链接]        &#x2F;&#x2F;将本地仓库与github仓库连起来</span><br></pre></td></tr></table></figure>
-
-<p>其中的origin是我们为远端仓库起的名字，可以更改，但在只想把本地仓库连接给一个远端仓库的情况下意义不大，不如设置为origin以免忘记</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin master        &#x2F;&#x2F;将修改提交进远端仓库</span><br></pre></td></tr></table></figure>
-
-<p>这里的origin是我们之前设置的远端仓库名，后面的master是分支名，当我们用git init命令初始化本地仓库后，每一次键入命令的时候都会在提示串右边看到一个括号，括号里的名字即是我们的分支名。</p>
-<p>这个命令类似于本地中的commit，但并非一次上交一个版本，而是把本地仓库所以的版本一起提交到远端仓库。（这点未经仔细验证，大致如此，但仍存疑）</p>
-<p>在提交到远端的过程中，如果我们当前的版本是经过git commit –amend合并而来的，或使用了git reset –hard ***这样的时间回溯命令（版本回退命令）会导致直接提交到远端仓库的失败，这点将在下面的小贴士中详细说明。</p>
-<h3 id="小贴士"><a href="#小贴士" class="headerlink" title="小贴士"></a>小贴士</h3><h4 id="远端提交问题解决方法"><a href="#远端提交问题解决方法" class="headerlink" title="远端提交问题解决方法"></a>远端提交问题解决方法</h4><p>首先解决上面提出的本地仓库提交到远端仓库的问题，即使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --force-with-lease origin master</span><br></pre></td></tr></table></figure>
-
-<p>可以看出变化只是将-u替换为了–force-with-lease，该命令出处于：</p>
-<p>亲测可以解决git commit –amend与git reset –hard后的远端提交问题</p>
-<h4 id="git界面的复制与粘贴"><a href="#git界面的复制与粘贴" class="headerlink" title="git界面的复制与粘贴"></a>git界面的复制与粘贴</h4><p>在git bush中，复制是ctrl + ins（即键盘delelte旁边的一旦不小心按下就会导致输入很奇怪的按键），粘贴是shift + ins</p>
-<h4 id="git-commit-–amend"><a href="#git-commit-–amend" class="headerlink" title="git commit –amend"></a>git commit –amend</h4><p>当我们想要修改已经commit之后的结果又不想再新创建一个版本导致版本看起来很杂乱的话，不妨尝试这条命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend        &#x2F;&#x2F;覆盖提交当前版本</span><br></pre></td></tr></table></figure>
-
-<p>而在键入这条命令后，我们的git bush会进入一个很奇怪的页面，经网上冲浪得知，这个奇怪的页面叫vim,貌似是git bush自带的一款文字编辑器，在这个页面中，我们可以按i键进入编辑模式（似乎可以更改当前版本提交时的注释，但我没尝试的很明白），再编辑结束后，按esc推出编辑模式，感觉一切妥当后按ZZ（<strong>注意：是连续两个大写的Z</strong>）保存并推出vim界面，到此，一次commit amend操作才算完成。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -300,10 +324,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-08-21 11:39:49 / 修改时间：21:18:21" itemprop="dateCreated datePublished" datetime="2020-08-21T11:39:49+08:00">2020-08-21</time>
+              <time title="创建时间：2020-08-21 11:39:49" itemprop="dateCreated datePublished" datetime="2020-08-21T11:39:49+08:00">2020-08-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 16:02:26" itemprop="dateModified" datetime="2020-08-22T16:02:26+08:00">2020-08-22</time>
+              </span>
 
           
 
@@ -319,19 +349,14 @@
           <p>这篇是建立博客时的初始指导日志，按常理讲是应该删掉的，但我怕里面的一些重要命令（例如new一个新日志）被我忘掉，所以还是做事留一线，日后好相见吧。</p>
 <p>还有，最重要的，Hello World!</p>
 <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/21/hello-world/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -414,7 +439,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

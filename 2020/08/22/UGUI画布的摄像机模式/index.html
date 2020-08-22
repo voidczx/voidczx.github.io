@@ -20,19 +20,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="阿轩在网路中的第一套房产">
-<meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。 Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UGUI画布的摄像机模式">
+<meta property="og:url" content="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="阿轩在网路中的第一套房产">
+<meta property="og:description" content="在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。 Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-21T04:18:35.000Z">
-<meta property="article:modified_time" content="2020-08-21T04:20:42.751Z">
+<meta property="og:image" content="https://amzimg.com/2020/08/22/fe965c0edc62e.png">
+<meta property="og:image" content="https://amzimg.com/2020/08/22/75b94701c0a65.png">
+<meta property="article:published_time" content="2020-08-22T02:44:23.000Z">
+<meta property="article:modified_time" content="2020-08-22T08:02:39.180Z">
 <meta property="article:author" content="Czx">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://amzimg.com/2020/08/22/fe965c0edc62e.png">
 
-<link rel="canonical" href="http://yoursite.com/categories/">
+<link rel="canonical" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -40,13 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类 | 阿轩blog
-</title>
+  <title>UGUI画布的摄像机模式 | 阿轩blog</title>
   
 
 
@@ -158,51 +160,98 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UGUI画布的摄像机模式
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">分类
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2020-08-22 10:44:23 / 修改时间：16:02:39" itemprop="dateCreated datePublished" datetime="2020-08-22T10:44:23+08:00">2020-08-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。</p>
+<p>Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定相机的。两者各有适合的应用场景，但一般的UI需求里我个人习惯于使用Camera模式，在应用Camera模式时需要作一些调整，以防忘记将调整步骤附在下面：</p>
+<a id="more"></a>
+
+
+
+<h4 id="一、建立Convas画布"><a href="#一、建立Convas画布" class="headerlink" title="一、建立Convas画布"></a>一、建立Convas画布</h4><p>在Hierachy界面下新建Convas或UI选项里的任意一项（第一次新建任何UI的时候会自动生成Convas）</p>
+<img src="https://amzimg.com/2020/08/22/fe965c0edc62e.png" alt="新建画布" style="zoom: 67%;" />
+
+
+
+<h4 id="二、新建一个用于显示UI的相机"><a href="#二、新建一个用于显示UI的相机" class="headerlink" title="二、新建一个用于显示UI的相机"></a>二、新建一个用于显示UI的相机</h4><p>Camera模式最大的特性就是将UI与相机绑定在了一起，因此我们需要新建一个UI的专属相机。</p>
+<img src="https://amzimg.com/2020/08/22/75b94701c0a65.png" alt="添加相机" style="zoom:67%;" />
+
+<p>把新创建的相机命名为UICamera并删除新创建相机的Audio Listener</p>
+<h4 id="三、将画布与相机绑定"><a href="#三、将画布与相机绑定" class="headerlink" title="三、将画布与相机绑定"></a>三、将画布与相机绑定</h4><p>将画布模式调整为Screen Mode ——Camera 并将创建好的UICamera拖动进来</p>
+<h4 id="四、相机设置"><a href="#四、相机设置" class="headerlink" title="四、相机设置"></a>四、相机设置</h4><p>首相将UICamera的CLearFlags（默认是Skybox的那里）调整为Depth only仅深度，然后在CullingMask中让UICamera只显示UI层。</p>
+<p>之后再调整主相机的CullingMask让主相机不显示UI层。</p>
+<p>最后把UICamera的Position x值（y值/z值）设置为一个尽可能大的数（例如10000），规避主世界物体对它的影响。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/" rel="prev" title="git命令们">
+      <i class="fa fa-chevron-left"></i> git命令们
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              暂无分类
-            </div>
-            <div class="category-all">
-              
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -253,6 +302,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BB%BA%E7%AB%8BConvas%E7%94%BB%E5%B8%83"><span class="nav-number">1.</span> <span class="nav-text">一、建立Convas画布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%94%A8%E4%BA%8E%E6%98%BE%E7%A4%BAUI%E7%9A%84%E7%9B%B8%E6%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">二、新建一个用于显示UI的相机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B0%86%E7%94%BB%E5%B8%83%E4%B8%8E%E7%9B%B8%E6%9C%BA%E7%BB%91%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">三、将画布与相机绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%9B%B8%E6%9C%BA%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">四、相机设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text"></span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
