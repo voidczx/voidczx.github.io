@@ -23,24 +23,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。 Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定">
+  <meta name="description" content="当使用tensorflow2.0键入Session()命令时会出现报错，解决方法来源： https:&#x2F;&#x2F;www.cnblogs.com&#x2F;123456www&#x2F;p&#x2F;12584427.html">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UGUI画布的摄像机模式">
-<meta property="og:url" content="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:title" content="tensorflow版本不兼容报错解决办法">
+<meta property="og:url" content="http://yoursite.com/2020/09/12/tensorflow%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。 Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定">
+<meta property="og:description" content="当使用tensorflow2.0键入Session()命令时会出现报错，解决方法来源： https:&#x2F;&#x2F;www.cnblogs.com&#x2F;123456www&#x2F;p&#x2F;12584427.html">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://amzimg.com/2020/08/22/fe965c0edc62e.png">
-<meta property="og:image" content="https://amzimg.com/2020/08/22/75b94701c0a65.png">
-<meta property="article:published_time" content="2020-08-22T02:44:23.000Z">
-<meta property="article:modified_time" content="2020-08-22T10:07:10.472Z">
+<meta property="article:published_time" content="2020-09-12T08:26:36.000Z">
+<meta property="article:modified_time" content="2020-09-12T08:29:56.766Z">
 <meta property="article:author" content="Czx">
-<meta property="article:tag" content="unity">
-<meta property="article:tag" content="UGUI">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="tensorflow">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://amzimg.com/2020/08/22/fe965c0edc62e.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
+<link rel="canonical" href="http://yoursite.com/2020/09/12/tensorflow%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -53,7 +50,7 @@
   };
 </script>
 
-  <title>UGUI画布的摄像机模式 | 阿轩blog</title>
+  <title>tensorflow版本不兼容报错解决办法 | 阿轩blog</title>
   
 
 
@@ -173,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/12/tensorflow%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -186,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          UGUI画布的摄像机模式
+          tensorflow版本不兼容报错解决办法
         </h1>
 
         <div class="post-meta">
@@ -197,7 +194,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-22 10:44:23 / 修改时间：18:07:10" itemprop="dateCreated datePublished" datetime="2020-08-22T10:44:23+08:00">2020-08-22</time>
+              <time title="创建时间：2020-09-12 16:26:36 / 修改时间：16:29:56" itemprop="dateCreated datePublished" datetime="2020-09-12T16:26:36+08:00">2020-09-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,7 +202,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unity%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">unity相关</span></a>
+                  <a href="/categories/tensorflow%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">tensorflow相关</span></a>
                 </span>
             </span>
 
@@ -227,26 +224,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。</p>
-<p>Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定相机的。两者各有适合的应用场景，但一般的UI需求里我个人习惯于使用Camera模式，在应用Camera模式时需要作一些调整，以防忘记将调整步骤附在下面：</p>
+        <p>当使用tensorflow2.0键入Session()命令时会出现报错，解决方法来源：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/123456www/p/12584427.html">https://www.cnblogs.com/123456www/p/12584427.html</a></p>
 <a id="more"></a>
 
 
-
-<h4 id="一、建立Convas画布"><a href="#一、建立Convas画布" class="headerlink" title="一、建立Convas画布"></a>一、建立Convas画布</h4><p>在Hierachy界面下新建Convas或UI选项里的任意一项（第一次新建任何UI的时候会自动生成Convas）</p>
-<img src="https://amzimg.com/2020/08/22/fe965c0edc62e.png" alt="新建画布" style="zoom: 67%;" />
-
-
-
-<h4 id="二、新建一个用于显示UI的相机"><a href="#二、新建一个用于显示UI的相机" class="headerlink" title="二、新建一个用于显示UI的相机"></a>二、新建一个用于显示UI的相机</h4><p>Camera模式最大的特性就是将UI与相机绑定在了一起，因此我们需要新建一个UI的专属相机。</p>
-<img src="https://amzimg.com/2020/08/22/75b94701c0a65.png" alt="添加相机" style="zoom:67%;" />
-
-<p>把新创建的相机命名为UICamera并删除新创建相机的Audio Listener</p>
-<h4 id="三、将画布与相机绑定"><a href="#三、将画布与相机绑定" class="headerlink" title="三、将画布与相机绑定"></a>三、将画布与相机绑定</h4><p>将画布模式调整为Screen Mode ——Camera 并将创建好的UICamera拖动进来</p>
-<h4 id="四、相机设置"><a href="#四、相机设置" class="headerlink" title="四、相机设置"></a>四、相机设置</h4><p>首相将UICamera的CLearFlags（默认是Skybox的那里）调整为Depth only仅深度，然后在CullingMask中让UICamera只显示UI层。</p>
-<p>之后再调整主相机的CullingMask让主相机不显示UI层。</p>
-<p>最后把UICamera的Position x值（y值/z值）设置为一个尽可能大的数（例如10000），规避主世界物体对它的影响。</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
     </div>
 
     
@@ -265,8 +247,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/unity/" rel="tag"># unity</a>
-              <a href="/tags/UGUI/" rel="tag"># UGUI</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
           </div>
 
         
@@ -275,13 +257,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/" rel="prev" title="git命令们">
-      <i class="fa fa-chevron-left"></i> git命令们
+    <a href="/2020/09/08/9-8%E7%9A%84%E8%87%B4%E8%B0%A2/" rel="prev" title="9.8的致谢">
+      <i class="fa fa-chevron-left"></i> 9.8的致谢
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/22/%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81/" rel="next" title="博客文章摘要">
-      博客文章摘要 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -345,7 +324,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BB%BA%E7%AB%8BConvas%E7%94%BB%E5%B8%83"><span class="nav-number">1.</span> <span class="nav-text">一、建立Convas画布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%94%A8%E4%BA%8E%E6%98%BE%E7%A4%BAUI%E7%9A%84%E7%9B%B8%E6%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">二、新建一个用于显示UI的相机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B0%86%E7%94%BB%E5%B8%83%E4%B8%8E%E7%9B%B8%E6%9C%BA%E7%BB%91%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">三、将画布与相机绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%9B%B8%E6%9C%BA%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">四、相机设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text"></span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

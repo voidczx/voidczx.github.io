@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://yoursite.com/2020/09/08/9-8%E7%9A%84%E8%87%B4%E8%B0%A2/</loc>
-    <lastmod>2020-09-08</lastmod>
+    <loc>http://yoursite.com/2020/09/12/tensorflow%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</loc>
+    <lastmod>2020-09-12</lastmod>
   </url>
   <url>
     <loc>http://yoursite.com/2020/09/07/opencv%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4/</loc>
-    <lastmod>2020-09-07</lastmod>
+    <lastmod>2020-09-12</lastmod>
+  </url>
+  <url>
+    <loc>http://yoursite.com/2020/09/08/9-8%E7%9A%84%E8%87%B4%E8%B0%A2/</loc>
+    <lastmod>2020-09-08</lastmod>
   </url>
   <url>
     <loc>http://yoursite.com/2020/09/07/python%E4%B8%AD%E7%9A%84range%E5%87%BD%E6%95%B0%E6%98%AF%E5%B7%A6%E9%97%AD%E5%8F%B3%E5%BC%80%E7%9A%84/</loc>
