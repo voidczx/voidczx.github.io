@@ -23,17 +23,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="阿轩在网路中的第一套房产">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阿轩blog">
-<meta property="og:url" content="http://yoursite.com/tags/opencv/index.html">
+  <meta name="description" content="在进行python的opencv与tesseract处理验证码的过程中，发现识别效果不佳，于是进行了tesseract训练方式的查找，现将方式网址记录在下： https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;40178190">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于tesseract的训练">
+<meta property="og:url" content="http://yoursite.com/2020/09/26/%E5%9F%BA%E4%BA%8Etesseract%E7%9A%84%E8%AE%AD%E7%BB%83/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="阿轩在网路中的第一套房产">
+<meta property="og:description" content="在进行python的opencv与tesseract处理验证码的过程中，发现识别效果不佳，于是进行了tesseract训练方式的查找，现将方式网址记录在下： https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;40178190">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T08:15:30.000Z">
+<meta property="article:modified_time" content="2020-09-26T08:18:32.040Z">
 <meta property="article:author" content="Czx">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="opencv">
+<meta property="article:tag" content="tesseract训练">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/opencv/">
+<link rel="canonical" href="http://yoursite.com/2020/09/26/%E5%9F%BA%E4%BA%8Etesseract%E7%9A%84%E8%AE%AD%E7%BB%83/">
 
 
 <script id="page-configurations">
@@ -41,12 +46,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: opencv | 阿轩blog</title>
+  <title>基于tesseract的训练 | 阿轩blog</title>
   
 
 
@@ -159,77 +164,120 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">opencv
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/26/%E5%9F%BA%E4%BA%8Etesseract%E7%9A%84%E8%AE%AD%E7%BB%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于tesseract的训练
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-26 16:15:30 / 修改时间：16:18:32" itemprop="dateCreated datePublished" datetime="2020-09-26T16:15:30+08:00">2020-09-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <p>在进行python的opencv与tesseract处理验证码的过程中，发现识别效果不佳，于是进行了tesseract训练方式的查找，现将方式网址记录在下：</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40178190">https://zhuanlan.zhihu.com/p/40178190</a></p>
+<a id="more"></a>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-26T16:15:30+08:00"
-              content="2020-09-26">
-          09-26
-        </time>
-      </div>
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/26/%E5%9F%BA%E4%BA%8Etesseract%E7%9A%84%E8%AE%AD%E7%BB%83/" itemprop="url">
-            <span itemprop="name">基于tesseract的训练</span>
-          </a>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/opencv/" rel="tag"># opencv</a>
+              <a href="/tags/tesseract%E8%AE%AD%E7%BB%83/" rel="tag"># tesseract训练</a>
+          </div>
 
-    </header>
-  </article>
+        
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-07T19:07:28+08:00"
-              content="2020-09-07">
-          09-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/07/opencv%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E6%97%B6%E9%97%B4/" itemprop="url">
-            <span itemprop="name">opencv图片处理中的处理时间</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/12/tensorflow%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" rel="prev" title="tensorflow版本不兼容报错解决办法">
+      <i class="fa fa-chevron-left"></i> tensorflow版本不兼容报错解决办法
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
   
-  
-
   
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -448,6 +496,21 @@ $(document).ready(function() {
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
 </body>
 </html>
