@@ -23,19 +23,26 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="阿轩在网路中的第一套房产">
-<meta property="og:type" content="website">
-<meta property="og:title" content="资源">
-<meta property="og:url" content="http://yoursite.com/resources/index.html">
+  <meta name="description" content="由于c++没有图形显示的功能，因此我们要利用第三方库：openGL，而GLFW与GLAD则是便于使用openGL的api库。 学习这两者的环境搭建，可以参考learnopengl中文网站的教程： [创建窗口 - LearnOpenGL CN (learnopengl-cn.github.io)](https:&#x2F;&#x2F;learnopengl-cn.github.io&#x2F;01 Getting started">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GLFW与GLAD下环境配置问题">
+<meta property="og:url" content="http://yoursite.com/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="阿轩在网路中的第一套房产">
+<meta property="og:description" content="由于c++没有图形显示的功能，因此我们要利用第三方库：openGL，而GLFW与GLAD则是便于使用openGL的api库。 学习这两者的环境搭建，可以参考learnopengl中文网站的教程： [创建窗口 - LearnOpenGL CN (learnopengl-cn.github.io)](https:&#x2F;&#x2F;learnopengl-cn.github.io&#x2F;01 Getting started">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-21T04:19:06.000Z">
-<meta property="article:modified_time" content="2020-08-21T04:21:59.596Z">
+<meta property="og:image" content="https://i.loli.net/2021/01/13/CsaNLMXAJEyfiGk.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/13/YF7jsxLfN9KCJID.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/13/PVagAGBC82m35e4.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/13/EAa7M9b1OjqHGK2.png">
+<meta property="article:published_time" content="2021-01-13T09:02:04.000Z">
+<meta property="article:modified_time" content="2021-01-13T09:32:29.348Z">
 <meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="openGL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/13/CsaNLMXAJEyfiGk.png">
 
-<link rel="canonical" href="http://yoursite.com/resources/">
+<link rel="canonical" href="http://yoursite.com/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -43,13 +50,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>资源 | 阿轩blog
-</title>
+  <title>GLFW与GLAD下环境配置问题 | 阿轩blog</title>
   
 
 
@@ -161,43 +167,131 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GLFW与GLAD下环境配置问题
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">资源
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2021-01-13 17:02:04 / 修改时间：17:32:29" itemprop="dateCreated datePublished" datetime="2021-01-13T17:02:04+08:00">2021-01-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>由于c++没有图形显示的功能，因此我们要利用第三方库：openGL，而GLFW与GLAD则是便于使用openGL的api库。</p>
+<p>学习这两者的环境搭建，可以参考learnopengl中文网站的教程：</p>
+<p>[创建窗口 - LearnOpenGL CN (learnopengl-cn.github.io)](<a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/01">https://learnopengl-cn.github.io/01</a> Getting started/02 Creating a window/)</p>
+<p>这里简单记录下我个人在搭建环境的过程中遇到的一些问题。</p>
+<h4 id="问题1-加载dll文件无法查找或打开PDB文件"><a href="#问题1-加载dll文件无法查找或打开PDB文件" class="headerlink" title="问题1 加载dll文件无法查找或打开PDB文件"></a>问题1 加载dll文件无法查找或打开PDB文件</h4><p>在利用 Visual Studio 2017作为C++编译器的过程中，我们运行本地windows调试器发现输出窗口弹出了类似以下的信息：</p>
+<p><img src="https://i.loli.net/2021/01/13/CsaNLMXAJEyfiGk.png" alt="image-20210113170838716"></p>
+<p>这是由于有些需要的符号（即pdb文件）不在我们的本地计算机中，而VS提供了从微软服务器直接载入符号文件的便捷功能。我们只需点击上方选项栏中的“调试” -&gt; “选项” 打开如下的界面：</p>
+<p><img src="https://i.loli.net/2021/01/13/YF7jsxLfN9KCJID.png" alt="image-20210113171208849"></p>
+<p>然后在 调试-&gt;常规 下勾选“启动源服务器支持”：</p>
+<p><img src="https://i.loli.net/2021/01/13/PVagAGBC82m35e4.png" alt="image-20210113171250252"></p>
+<p>下面的子选项可以不用勾选</p>
+<p>然后进入符号设置（即 调试-&gt;符号 ）</p>
+<p><img src="https://i.loli.net/2021/01/13/EAa7M9b1OjqHGK2.png" alt="image-20210113171456566"></p>
+<p>勾选上方的“Microsoft符号服务器”，这样编译器就可以自动从微软符号服务器中下载所需的符号文件。</p>
+<p>然后在下面的缓存符号目录中选择一个用于存储符号文件的文件夹，这里我直接选择了项目根目录。</p>
+<p>点击确定后再利用本地windows调试器运行就会进入较为漫长的自动下载过程中，然后我们只需等待就可以了。</p>
+<p>有的时候（可能由于网络原因），仅运行一次不能自动载入所有所需的pdb文件，需要多次运行本地windows调试器才能载入好所有所有所需的符号文件。、</p>
+<h4 id="问题2-GLAD初始化位置"><a href="#问题2-GLAD初始化位置" class="headerlink" title="问题2 GLAD初始化位置"></a>问题2 GLAD初始化位置</h4><p>在learnopengl网站的教程中有提到，GLAD是用于管理openGL的函数指针的，因此在调用openGL的函数之前需要先初始化GLAD，具体的初始化代码为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Initialize GLAD error!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于教程中的描述为“在调用openGL的函数之前”就要初始化GLAD，我一开始把这段初始化代码放在了主函数的最开头，但运行发现会由于gladLoadGLLoader函数返回值直接导致程序退出，即GLAD初始化失败。</p>
+<p>在参阅官方源代码后发现该段GLAD初始化代码应放在建立了GLFW窗口并设立了视口之后。初步怀疑是先需要glfwinit()函数才能再用gladLoadGLLoader()函数得到glfwGetProcAddress的信息。</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/openGL/" rel="tag"># openGL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/27/windows%E4%B8%8BUDP%E7%BC%96%E7%A8%8B%E6%97%B6%E9%94%99%E8%AF%AF%E7%A0%8110054/" rel="prev" title="windows下UDP编程时错误码10054">
+      <i class="fa fa-chevron-left"></i> windows下UDP编程时错误码10054
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -253,6 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%981-%E5%8A%A0%E8%BD%BDdll%E6%96%87%E4%BB%B6%E6%97%A0%E6%B3%95%E6%9F%A5%E6%89%BE%E6%88%96%E6%89%93%E5%BC%80PDB%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">问题1 加载dll文件无法查找或打开PDB文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%982-GLAD%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">问题2 GLAD初始化位置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

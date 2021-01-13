@@ -165,6 +165,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">GLFW与GLAD下环境配置问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-13 17:02:04 / 修改时间：17:32:29" itemprop="dateCreated datePublished" datetime="2021-01-13T17:02:04+08:00">2021-01-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于c++没有图形显示的功能，因此我们要利用第三方库：openGL，而GLFW与GLAD则是便于使用openGL的api库。</p>
+<p>学习这两者的环境搭建，可以参考learnopengl中文网站的教程：</p>
+<p>[创建窗口 - LearnOpenGL CN (learnopengl-cn.github.io)](<a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/01">https://learnopengl-cn.github.io/01</a> Getting started/02 Creating a window/)</p>
+<p>这里简单记录下我个人在搭建环境的过程中遇到的一些问题。</p>
+<h4 id="问题1-加载dll文件无法查找或打开PDB文件"><a href="#问题1-加载dll文件无法查找或打开PDB文件" class="headerlink" title="问题1 加载dll文件无法查找或打开PDB文件"></a>问题1 加载dll文件无法查找或打开PDB文件</h4><p>在利用 Visual Studio 2017作为C++编译器的过程中，我们运行本地windows调试器发现输出窗口弹出了类似以下的信息：</p>
+<p><img src="https://i.loli.net/2021/01/13/CsaNLMXAJEyfiGk.png" alt="image-20210113170838716"></p>
+<p>这是由于有些需要的符号（即pdb文件）不在我们的本地计算机中，而VS提供了从微软服务器直接载入符号文件的便捷功能。我们只需点击上方选项栏中的“调试” -&gt; “选项” 打开如下的界面：</p>
+<p><img src="https://i.loli.net/2021/01/13/YF7jsxLfN9KCJID.png" alt="image-20210113171208849"></p>
+<p>然后在 调试-&gt;常规 下勾选“启动源服务器支持”：</p>
+<p><img src="https://i.loli.net/2021/01/13/PVagAGBC82m35e4.png" alt="image-20210113171250252"></p>
+<p>下面的子选项可以不用勾选</p>
+<p>然后进入符号设置（即 调试-&gt;符号 ）</p>
+<p><img src="https://i.loli.net/2021/01/13/EAa7M9b1OjqHGK2.png" alt="image-20210113171456566"></p>
+<p>勾选上方的“Microsoft符号服务器”，这样编译器就可以自动从微软符号服务器中下载所需的符号文件。</p>
+<p>然后在下面的缓存符号目录中选择一个用于存储符号文件的文件夹，这里我直接选择了项目根目录。</p>
+<p>点击确定后再利用本地windows调试器运行就会进入较为漫长的自动下载过程中，然后我们只需等待就可以了。</p>
+<p>有的时候（可能由于网络原因），仅运行一次不能自动载入所有所需的pdb文件，需要多次运行本地windows调试器才能载入好所有所有所需的符号文件。、</p>
+<h4 id="问题2-GLAD初始化位置"><a href="#问题2-GLAD初始化位置" class="headerlink" title="问题2 GLAD初始化位置"></a>问题2 GLAD初始化位置</h4><p>在learnopengl网站的教程中有提到，GLAD是用于管理openGL的函数指针的，因此在调用openGL的函数之前需要先初始化GLAD，具体的初始化代码为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Initialize GLAD error!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于教程中的描述为“在调用openGL的函数之前”就要初始化GLAD，我一开始把这段初始化代码放在了主函数的最开头，但运行发现会由于gladLoadGLLoader函数返回值直接导致程序退出，即GLAD初始化失败。</p>
+<p>在参阅官方源代码后发现该段GLAD初始化代码应放在建立了GLFW窗口并设立了视口之后。初步怀疑是先需要glfwinit()函数才能再用gladLoadGLLoader()函数得到glfwGetProcAddress的信息。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/27/windows%E4%B8%8BUDP%E7%BC%96%E7%A8%8B%E6%97%B6%E9%94%99%E8%AF%AF%E7%A0%8110054/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -746,10 +837,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-27 01:43:55 / 修改时间：02:15:53" itemprop="dateCreated datePublished" datetime="2020-10-27T01:43:55+08:00">2020-10-27</time>
+              <time title="创建时间：2020-10-27 01:43:55" itemprop="dateCreated datePublished" datetime="2020-10-27T01:43:55+08:00">2020-10-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-09 12:37:12" itemprop="dateModified" datetime="2021-01-09T12:37:12+08:00">2021-01-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -875,89 +972,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/07/Tensorflow%E4%BF%9D%E5%AD%98%E5%B9%B6%E8%AF%BB%E5%8F%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Czx">
-      <meta itemprop="description" content="阿轩在网路中的第一套房产">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="阿轩blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/07/Tensorflow%E4%BF%9D%E5%AD%98%E5%B9%B6%E8%AF%BB%E5%8F%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">Tensorflow保存并读取神经网络的两种方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-07 10:34:44" itemprop="dateCreated datePublished" datetime="2020-10-07T10:34:44+08:00">2020-10-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-26 16:09:02" itemprop="dateModified" datetime="2020-10-26T16:09:02+08:00">2020-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在使用tensorflow的过程中，保存训练过的模型用于未来的使用或者进一步的训练是非常重要的：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/07/Tensorflow%E4%BF%9D%E5%AD%98%E5%B9%B6%E8%AF%BB%E5%8F%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1029,7 +1043,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1042,7 +1056,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1074,7 +1088,7 @@
 <div class="copyright">
   
   &copy; 2020-08 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
