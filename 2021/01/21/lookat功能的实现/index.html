@@ -23,30 +23,37 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="阿轩在网路中的第一套房产">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阿轩blog">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+  <meta name="description" content="以前学习unity时，就觉得lookat函数是一个特牛逼的函数，但一直没有深究其实现原理。在学习opengl的过程中终于见到了lookat的一种实现方法，故记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lookat功能的实现">
+<meta property="og:url" content="http://yoursite.com/2021/01/21/lookat%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="阿轩在网路中的第一套房产">
+<meta property="og:description" content="以前学习unity时，就觉得lookat函数是一个特牛逼的函数，但一直没有深究其实现原理。在学习opengl的过程中终于见到了lookat的一种实现方法，故记录。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/21/kXv3ybi8DmN9LU6.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/21/CujMUyErAWwYQip.png">
+<meta property="article:published_time" content="2021-01-21T12:35:39.000Z">
+<meta property="article:modified_time" content="2021-01-21T13:16:01.865Z">
 <meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="openGL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/21/kXv3ybi8DmN9LU6.png">
 
-<link rel="canonical" href="http://yoursite.com/page/3/">
+<link rel="canonical" href="http://yoursite.com/2021/01/21/lookat%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>阿轩blog</title>
+  <title>lookat功能的实现 | 阿轩blog</title>
   
 
 
@@ -159,13 +166,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/22/%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/21/lookat%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -177,10 +185,9 @@
       <meta itemprop="name" content="阿轩blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/22/%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81/" class="post-title-link" itemprop="url">博客文章摘要</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          lookat功能的实现
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +197,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-22 18:10:07 / 修改时间：18:16:25" itemprop="dateCreated datePublished" datetime="2020-08-22T18:10:07+08:00">2020-08-22</time>
+              <time title="创建时间：2021-01-21 20:35:39 / 修改时间：21:16:01" itemprop="dateCreated datePublished" datetime="2021-01-21T20:35:39+08:00">2021-01-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -198,11 +205,18 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blog%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">blog相关</span></a>
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
                 </span>
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -213,17 +227,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>&lt;感叹号– more –&gt;</p>
-<p><strong>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/22/%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%91%98%E8%A6%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>以前学习unity时，就觉得lookat函数是一个特牛逼的函数，但一直没有深究其实现原理。在学习opengl的过程中终于见到了lookat的一种实现方法，故记录。</p>
+<a id="more"></a>
+
+<p>在openGL当中lookat的实现方式其实是通过将待渲染物体进行位移与旋转达到刚好处在视野正中的效果的，即敌动我不动的方式，与unitiy中一个lookat函数物体的Z轴正方向就指向目标的形式还是不大相同的（unity中大概底层使用的是四元数？）</p>
+<p>待渲染物体的顶点向量是可以通过乘上一个变换矩阵的方式进行位移、旋转、缩放的变换操作。因此lookat的实现也基于构造一个变换矩阵来使待渲染物体进入摄像机观察的视野中。按learnopengl网站上的说法，即将物体顶点变换到摄像机的坐标空间。</p>
+<p>因此，我们要先得到摄像机的坐标空间。</p>
+<p>下图来自learnopengl中文网站：</p>
+<p><img src="https://i.loli.net/2021/01/21/kXv3ybi8DmN9LU6.png" alt="image-20210121205204607"></p>
+<p>由图可知，摄像机的坐标系也与opengl习惯相同，为右手坐标系，但需注意的是，摄像机坐标系的Z轴正方向并非其所面对的正向，而为其面对方向的反方向（具体原因不太明白，但可以通过反例，如果摄像机坐标系Z轴正方向和其面对方向相同的话，其俯仰情况下所得到的结果正好相反，摄像机视角向下，即意味假设摄像机不动的情况下物体应作抬头状倾斜，这正好与摄像机面对方向的负方向行为相同）。</p>
+<p>在得到摄像机坐标系xyz三条向量后，我们还需知道摄像机所处的位置（即摄像机在opengl大右手坐标系的坐标点）。但别忘记，在opengl中是没有摄像机这一具象物体的，摄像机终究是一抽象概念，所以摄像机的信息（位置、旋转角度等）都由物体本身的变动来等效形成。</p>
+<p>记住摄像机的变动其实是物体本身的相反变动后，就可以来看我们需要构成的lookat变换矩阵：</p>
+<p><img src="https://i.loli.net/2021/01/21/CujMUyErAWwYQip.png" alt="image-20210121205843176"></p>
+<p>其中R为摄像机坐标系的X轴向量、U为摄像机坐标系的Y轴向量，D为摄像机坐标系的Z轴向量，P为摄像机的位置坐标点。</p>
+<p>lookat矩阵由两部分组成，根据矩阵乘法由右往左的准则，物体顶点先做的是上图右边矩阵的变换，即位移相反的P。（有一点需时刻铭记，opengl中顶点坐标不止xyz三个维度，还有一个一般情况下值恒为1w维度，用于位移变换，把上图右边的矩阵与一个【4，5，6，1】坐标点相乘就能看出来了）</p>
+<p>要说在前面的是，opengl是以列主序存储向量与矩阵，即第一个维度是列，第二个维度才是行，所有的一维向量初始情况下都是列向量，因此可以在后面被4*4矩阵直接相乘。（又因为c++的二维数组默认行主序，而我们使用的glm数学库向量与矩阵为列主序，导致我们在用c++向glm库中的矩阵存储数据时要采取转置操作）</p>
+<p>假设顶点坐标为（x，y，z， 1），在经过上图右侧矩阵的变换后顶点坐标应变为：</p>
+<p>（x-Px， y-Py， z-Pz， 1）</p>
+<p>记为</p>
+<p>（x‘， y’， z‘， 1）</p>
+<p>即完成了位移相反的P。</p>
+<p>接下来顶点要根据上图左侧的矩阵进行变换，这个矩阵也可以叫做旋转矩阵，作用是将物体旋转到正好处在摄像机正前方的状态。</p>
+<p>刚才的坐标点在经过这样的变换后，所得结果为：</p>
+<p>（x’*Rx+y’*Ry+z’*Rz,    x’*Ux+y’*Uy+z’*Uz,    x’*Dx+y’*Dy+z’Dz）</p>
+<p>完成了把原顶点变换进摄像机坐标内的操作。</p>
+<p>opengl中的lookat操作实质上仍是对物体本身的一种矩阵变换。</p>
+
     </div>
 
     
@@ -231,270 +260,48 @@
     
 
     
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/openGL/" rel="tag"># openGL</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Czx">
-      <meta itemprop="description" content="阿轩在网路中的第一套房产">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="阿轩blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">UGUI画布的摄像机模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-08-22 10:44:23 / 修改时间：18:07:10" itemprop="dateCreated datePublished" datetime="2020-08-22T10:44:23+08:00">2020-08-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unity%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">unity相关</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在UGUI画布的三种模式里，World Space 由于依附于场景的固定物体，因此不适于施放存在于屏幕固定位置的UI，因此如果我们想完成菜单、暂停、选项设置以及人物的各种信息这样的UI窗口，只能使用Screen Space模式。</p>
-<p>Screen Space模式又分为Overlay与Camera两种，Overlay是永远会在屏幕里的（这样在视角需要频繁移动的情况下会影响性能），Camera是依附于指定相机的。两者各有适合的应用场景，但一般的UI需求里我个人习惯于使用Camera模式，在应用Camera模式时需要作一些调整，以防忘记将调整步骤附在下面：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/22/UGUI%E7%94%BB%E5%B8%83%E7%9A%84%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
 
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Czx">
-      <meta itemprop="description" content="阿轩在网路中的第一套房产">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="阿轩blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/" class="post-title-link" itemprop="url">git命令们</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-21 18:56:24" itemprop="dateCreated datePublished" datetime="2020-08-21T18:56:24+08:00">2020-08-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 18:05:18" itemprop="dateModified" datetime="2020-08-22T18:05:18+08:00">2020-08-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">git相关</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>初次接触Git的本地仓库以及远端仓库功能，将一些常用功能记录在这。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/21/OpenGL%E6%91%84%E5%83%8F%E6%9C%BA%E7%B1%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%87%A0%E7%82%B9%E9%97%AE%E9%A2%98/" rel="prev" title="OpenGL摄像机类遇到的几点问题">
+      <i class="fa fa-chevron-left"></i> OpenGL摄像机类遇到的几点问题
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Czx">
-      <meta itemprop="description" content="阿轩在网路中的第一套房产">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="阿轩blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/21/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-21 11:39:49" itemprop="dateCreated datePublished" datetime="2020-08-21T11:39:49+08:00">2020-08-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 18:06:26" itemprop="dateModified" datetime="2020-08-22T18:06:26+08:00">2020-08-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blog%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">blog相关</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇是建立博客时的初始指导日志，按常理讲是应该删掉的，但我怕里面的一些重要命令（例如new一个新日志）被我忘掉，所以还是做事留一线，日后好相见吧。</p>
-<p>还有，最重要的，Hello World!</p>
-<p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/21/hello-world/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -713,6 +520,21 @@ $(document).ready(function() {
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
 </body>
 </html>
