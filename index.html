@@ -165,6 +165,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/21/OpenGL%E6%91%84%E5%83%8F%E6%9C%BA%E7%B1%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%87%A0%E7%82%B9%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/21/OpenGL%E6%91%84%E5%83%8F%E6%9C%BA%E7%B1%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%87%A0%E7%82%B9%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">OpenGL摄像机类遇到的几点问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-21 19:40:11 / 修改时间：20:20:32" itemprop="dateCreated datePublished" datetime="2021-01-21T19:40:11+08:00">2021-01-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在利用openGL编写camera摄像机类时，遇到的一些问题记录如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/21/OpenGL%E6%91%84%E5%83%8F%E6%9C%BA%E7%B1%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%87%A0%E7%82%B9%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -188,10 +265,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-13 17:02:04 / 修改时间：17:32:29" itemprop="dateCreated datePublished" datetime="2021-01-13T17:02:04+08:00">2021-01-13</time>
+              <time title="创建时间：2021-01-13 17:02:04" itemprop="dateCreated datePublished" datetime="2021-01-13T17:02:04+08:00">2021-01-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-21 19:41:53" itemprop="dateModified" datetime="2021-01-21T19:41:53+08:00">2021-01-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -217,25 +300,14 @@
 <p>学习这两者的环境搭建，可以参考learnopengl中文网站的教程：</p>
 <p>[创建窗口 - LearnOpenGL CN (learnopengl-cn.github.io)](<a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/01">https://learnopengl-cn.github.io/01</a> Getting started/02 Creating a window/)</p>
 <p>这里简单记录下我个人在搭建环境的过程中遇到的一些问题。</p>
-<h4 id="问题1-加载dll文件无法查找或打开PDB文件"><a href="#问题1-加载dll文件无法查找或打开PDB文件" class="headerlink" title="问题1 加载dll文件无法查找或打开PDB文件"></a>问题1 加载dll文件无法查找或打开PDB文件</h4><p>在利用 Visual Studio 2017作为C++编译器的过程中，我们运行本地windows调试器发现输出窗口弹出了类似以下的信息：</p>
-<p><img src="https://i.loli.net/2021/01/13/CsaNLMXAJEyfiGk.png" alt="image-20210113170838716"></p>
-<p>这是由于有些需要的符号（即pdb文件）不在我们的本地计算机中，而VS提供了从微软服务器直接载入符号文件的便捷功能。我们只需点击上方选项栏中的“调试” -&gt; “选项” 打开如下的界面：</p>
-<p><img src="https://i.loli.net/2021/01/13/YF7jsxLfN9KCJID.png" alt="image-20210113171208849"></p>
-<p>然后在 调试-&gt;常规 下勾选“启动源服务器支持”：</p>
-<p><img src="https://i.loli.net/2021/01/13/PVagAGBC82m35e4.png" alt="image-20210113171250252"></p>
-<p>下面的子选项可以不用勾选</p>
-<p>然后进入符号设置（即 调试-&gt;符号 ）</p>
-<p><img src="https://i.loli.net/2021/01/13/EAa7M9b1OjqHGK2.png" alt="image-20210113171456566"></p>
-<p>勾选上方的“Microsoft符号服务器”，这样编译器就可以自动从微软符号服务器中下载所需的符号文件。</p>
-<p>然后在下面的缓存符号目录中选择一个用于存储符号文件的文件夹，这里我直接选择了项目根目录。</p>
-<p>点击确定后再利用本地windows调试器运行就会进入较为漫长的自动下载过程中，然后我们只需等待就可以了。</p>
-<p>有的时候（可能由于网络原因），仅运行一次不能自动载入所有所需的pdb文件，需要多次运行本地windows调试器才能载入好所有所有所需的符号文件。、</p>
-<h4 id="问题2-GLAD初始化位置"><a href="#问题2-GLAD初始化位置" class="headerlink" title="问题2 GLAD初始化位置"></a>问题2 GLAD初始化位置</h4><p>在learnopengl网站的教程中有提到，GLAD是用于管理openGL的函数指针的，因此在调用openGL的函数之前需要先初始化GLAD，具体的初始化代码为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Initialize GLAD error!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>由于教程中的描述为“在调用openGL的函数之前”就要初始化GLAD，我一开始把这段初始化代码放在了主函数的最开头，但运行发现会由于gladLoadGLLoader函数返回值直接导致程序退出，即GLAD初始化失败。</p>
-<p>在参阅官方源代码后发现该段GLAD初始化代码应放在建立了GLFW窗口并设立了视口之后。初步怀疑是先需要glfwinit()函数才能再用gladLoadGLLoader()函数得到glfwGetProcAddress的信息。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/13/GLFW%E4%B8%8EGLAD%E4%B8%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -893,85 +965,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/26/Git%E8%BF%9C%E7%AB%AF%E4%B8%8A%E4%BC%A0%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8A%9E%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Czx">
-      <meta itemprop="description" content="阿轩在网路中的第一套房产">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="阿轩blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/26/Git%E8%BF%9C%E7%AB%AF%E4%B8%8A%E4%BC%A0%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8A%9E%E6%B3%95/" class="post-title-link" itemprop="url">Git远端上传已有项目的办法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-26 00:09:48 / 修改时间：00:28:44" itemprop="dateCreated datePublished" datetime="2020-10-26T00:09:48+08:00">2020-10-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">git相关</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>之前的Git相关操作中我们可以从零开始把空文件夹变成本地仓库并将在本地仓库所作的更改上传到远端：</p>
-<p><a target="_blank" rel="noopener" href="https://thisczx.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/">https://thisczx.com/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/</a></p>
-<p>但很多时候我们想要上传到远端的不是一个从零开始的新玩意，而是一个已经近乎完善的本地项目。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/26/Git%E8%BF%9C%E7%AB%AF%E4%B8%8A%E4%BC%A0%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8A%9E%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1043,7 +1036,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
