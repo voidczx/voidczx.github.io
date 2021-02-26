@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="今儿个在以猜字谜为风俗的日子被字谜题目搞了个够呛。查看题解发现主要思路点在与将小写字母转化为二进制再对二进制进行子集掩码操作。故在此记录一下今天新学到的两种二进制集合求子集方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二进制集合求取子集">
+<meta property="og:url" content="http://yoursite.com/2021/02/26/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%9B%86%E5%90%88%E6%B1%82%E5%8F%96%E5%AD%90%E9%9B%86/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="今儿个在以猜字谜为风俗的日子被字谜题目搞了个够呛。查看题解发现主要思路点在与将小写字母转化为二进制再对二进制进行子集掩码操作。故在此记录一下今天新学到的两种二进制集合求子集方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/GjNebFwtu9drYnm.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/iTcFZJsnbYWRgwd.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/dNPi8ZfItjukm3R.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/hZKL3FbORosCjTm.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/i1dWQlaD25oB6Je.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/HaucIKbv2LWNGep.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/1MEvFWKopjwlxZ5.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/sm3weu4GQyInzUR.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/26/6AaWC8gr5Uy7IYc.png">
+<meta property="article:published_time" content="2021-02-26T13:06:47.000Z">
+<meta property="article:modified_time" content="2021-02-26T14:17:27.070Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/26/GjNebFwtu9drYnm.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/02/26/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%9B%86%E5%90%88%E6%B1%82%E5%8F%96%E5%AD%90%E9%9B%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>二进制集合求取子集 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/26/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%9B%86%E5%90%88%E6%B1%82%E5%8F%96%E5%AD%90%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二进制集合求取子集
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-26 21:06:47 / 修改时间：22:17:27" itemprop="dateCreated datePublished" datetime="2021-02-26T21:06:47+08:00">2021-02-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今儿个在以猜字谜为风俗的日子被字谜题目搞了个够呛。查看题解发现主要思路点在与将小写字母转化为二进制再对二进制进行子集掩码操作。故在此记录一下今天新学到的两种二进制集合求子集方式。</p>
+<a id="more"></a>
+
+<h4 id="1、-DFS法"><a href="#1、-DFS法" class="headerlink" title="1、 DFS法"></a>1、 DFS法</h4><p>子集获取从根本上讲仍然是深度优先查找。</p>
+<p>该方法中主要的参数如下所示：</p>
+<p>limit:    该轮次子集中成员的个数</p>
+<p>start:    当前的下标（由于我们通常是从左到右地遍历，所以当前下标处于最左边，故用start命名）</p>
+<p>current:    当前子集的状态</p>
+<p>count：    当前子集内成员的个数</p>
+<p>光看这几个参数一定会很摸不到头脑的，不过没关系，我们先上图：</p>
+<p><img src="https://i.loli.net/2021/02/26/GjNebFwtu9drYnm.png" alt="image-20210226212433962"></p>
+<p>假设我们要取子集的父集合长度为7（就是上图的这七个圆圈娃）</p>
+<p>胡乱无章地排列肯定不是个办法，一定要找出某种参照这个子集才能排的下去</p>
+<p>那么，在子集里有什么显著而突出的特征呢？</p>
+<p>成员个数！</p>
+<p>就是说在这七个娃的例子里我们总共要执行七个轮次，第一个轮次找出所有只含一个娃（即成员个数为一）的子集，第二个轮次找出所有含有两个娃的轮次，这样七轮下来七个娃娃所有的可能搭配，也就是子集就被确定下来了。</p>
+<p>这样上面的参数就变得容易理解了。</p>
+<p>limit用来标识这个轮次我们要把几个娃娃凑合到一起，count就是说明目前我们已经凑合了几个娃娃。可以从中看出，每个轮次count的值必须被重设为初始值，我们每把一个娃娃拉入伙，count就加一，当count加到和limit相同时，就说明我们这次的牵线是符合当前轮次要求的，即现在current里存在的子集在仅有成员个数限制的情况下是合法的，我们可以拿他去做下一步操作了，表现在代码上即为如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(count == limit)&#123;</span><br><span class="line">            <span class="comment">//对current执行操作</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么这个current，既然表示的是当前的子集状态，也就是说我们每配出一种子集，他就要把自己清空吗？</p>
+<p>大意是这个样子，但清空可不成，因为一个轮次大部分时候可不止有一个子集，比如第一个轮次，我们把七个娃娃单独拎出来，每一个都是一个子集，就有七个不同的子集。</p>
+<p>那current应该被怎么 处置呢？</p>
+<p>先假设这么一种情况：</p>
+<p>在第三个轮次里我们已经按顺序找出了第一个子集：</p>
+<p><img src="https://i.loli.net/2021/02/26/iTcFZJsnbYWRgwd.png" alt="image-20210226213915982"></p>
+<p>即棕色圈圈里黑娃红娃灰娃这三个小子，根据我们的直观感受，下面的子集寻找应该要维持黑娃和红娃的坚定关系，然后把黄娃以及之后的娃娃们一一拉进来凑局：</p>
+<p><img src="https://i.loli.net/2021/02/26/dNPi8ZfItjukm3R.png" alt="image-20210226214201604"></p>
+<p><img src="https://i.loli.net/2021/02/26/hZKL3FbORosCjTm.png" alt="image-20210226214219649"></p>
+<p>等连最后的粉娃也被拉进黑红小队之后，黑娃便应该考虑踢开红娃，拉灰娃组成新的二人小队重现之前的辉煌了：</p>
+<p><img src="https://i.loli.net/2021/02/26/i1dWQlaD25oB6Je.png" alt="image-20210226214544679"></p>
+<p><img src="https://i.loli.net/2021/02/26/HaucIKbv2LWNGep.png" alt="image-20210226214559691"></p>
+<p><img src="https://i.loli.net/2021/02/26/1MEvFWKopjwlxZ5.png" alt="image-20210226214614979"></p>
+<p>当如此这般的黑娃把所有娃娃都勾搭遍了之后，红娃便开始接替黑娃的位置，这个时候黑娃的存在已经不再必要了：</p>
+<p><img src="https://i.loli.net/2021/02/26/sm3weu4GQyInzUR.png" alt="image-20210226214756582"></p>
+<p><img src="https://i.loli.net/2021/02/26/6AaWC8gr5Uy7IYc.png" alt="image-20210226215244020"></p>
+<p>这便是我们每一轮次寻找子集的方式。</p>
+<p>但上面的图画例子和实际操作还是有一点差别的；</p>
+<p>真实情况里我们每一次只能把一个娃娃加进来。比如上面红娃灰娃黄娃的三娃联盟，最开始只有红娃一个人，但由于我们发现limit为3（是否还记得这是第三个轮次呢）但count只有1（当前子集只有红娃一个），不满足要求，所以红娃要继续加人，于是选择了灰娃，但尽管这样count也只有2，仍旧不满足要求，于是揽人入伙的大任交到了灰娃手上，灰娃继续找下一个找到了黄娃，count=3，这个子集才算是构建完成。</p>
+<p>至此为止的current为{红娃，灰娃，黄娃}</p>
+<p>那么下一个子集呢？由于目前的小队人数已经满了，所以我们要把时间线往前拨，调整到黄娃还没加入的时候，这个时候小队里只有红娃和灰娃，揽人的大任还在灰娃手里</p>
+<p>即current为{红娃， 灰娃}</p>
+<p>但灰娃还记得黄娃是前任这个事情，所以现在不能去找黄娃，于是顺次向后找到了绿娃，新的三人小队组成了！</p>
+<p>current变成了{红娃，灰娃，绿娃}。</p>
+<p>到现在，我们终于可以扣题了，这样的增删方式，就是深度优先查找。</p>
+<p>那么为了让current做到状态上的回退，要么弄一个栈，要么递归就变成不可或缺的一步了。</p>
+<p>栈的方式比较直观，所以我们这里来看一下递归。</p>
+<p>首先要弄清每一次递归我们要干什么：</p>
+<p>1、检查count的数量是否和limit相符</p>
+<p>1.1、相符，一个子集构建完成，回退到上一状态，返回上一层递归</p>
+<p>1.2、不相符，子集尚未构建完成，按照既有的顺序继续添加元素，但先要进入2</p>
+<p>2、检查前方是否没有新成员可加入（即当前索引start是否超出集合长度，别忘了我们没一个新成员都是由start来确定下标的）</p>
+<p>2.1、没有新成员了，回退上一状态，返回上一层递归。</p>
+<p>2.2、还有新成员，开始添加元素，进入下一层递归。</p>
+<p>以上便是递归的文字说明结构，下面便是递归代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> 加入成员(T 集合, <span class="keyword">int</span> current, <span class="keyword">int</span> count, <span class="keyword">int</span> start, <span class="keyword">int</span> limit)&#123;</span><br><span class="line">        <span class="keyword">if</span>(count == limit)&#123;</span><br><span class="line">            <span class="comment">// 子集生成好啦</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(start &gt;= <span class="number">7</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i &lt;= <span class="number">6</span>; i++)&#123;</span><br><span class="line">            <span class="comment">//加入成员（集合， 已经添加过start的current, count+1, i+1, limit）</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中需要注意start始终要指向下一个成员（即马上要成为子集成员但还没添加进子集的家伙）</p>
+<p>再加上一开始所说为二进制集合寻找子集的功能性代码，整体如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CalculateBinarySubset</span><span class="params">(<span class="built_in">string</span>&amp; str, <span class="keyword">int</span> current, <span class="keyword">int</span> count, <span class="keyword">int</span> start, <span class="keyword">int</span> limit)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(count == limit)&#123;</span><br><span class="line">            result[index] += wordSet.count(current);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(start &gt;= <span class="number">7</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i &lt;= <span class="number">6</span>; i++)&#123;</span><br><span class="line">            CalculateBinarySubset(str, current|(<span class="number">1</span> &lt;&lt;(str[i] - <span class="string">&#x27;a&#x27;</span>)), count + <span class="number">1</span>, i+<span class="number">1</span>, limit);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式下的字谜题目时间与内存消耗均只达到60％出头。</p>
+<h4 id="2、-相减相与法"><a href="#2、-相减相与法" class="headerlink" title="2、 相减相与法"></a>2、 相减相与法</h4><p>这是在题解中看到的一个办法，据我自己验算与实际测试均有效，但不是很清楚原理，故记录在下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sub = temp;</span><br><span class="line">            <span class="keyword">int</span> firstChar = <span class="number">1</span> &lt;&lt; (puzzles[index][<span class="number">0</span>] - <span class="string">&#x27;a&#x27;</span>); <span class="comment">// 功能性代码</span></span><br><span class="line">            <span class="keyword">do</span>&#123;</span><br><span class="line">                sub = (sub - <span class="number">1</span>) &amp; temp;</span><br><span class="line">                <span class="keyword">if</span>(sub &amp; firstChar) <span class="comment">// 已经取好的子集</span></span><br><span class="line">                    result[index] += wordSet.count(sub); <span class="comment">// 功能性代码</span></span><br><span class="line">            &#125;<span class="keyword">while</span>(sub != temp)</span><br></pre></td></tr></table></figure>
+
+<p>其中temp是需要取子集的二进制集合，由于字谜题目还有集合第一个成员必须存在于谜底的要求，故除核心思路外还有一些功能性代码。</p>
+<p>但从该题目的表现来说，这个方法的时间只有30％</p>
+<p>两种方法最好的也只不过60％出头，但从这个题目来说肯定还有着更高效的算法，但还并不知道是否从取子集这里着手优化，但也对这个题目心力交瘁不想深究了。</p>
+<p>就，就此别过吧</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/25/%E6%A0%B9%E6%8D%AE0-1%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%BE%97%E5%88%B0%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E6%95%B0/" rel="prev" title="根据0~1间随机数得到正态分布数">
+      <i class="fa fa-chevron-left"></i> 根据0~1间随机数得到正态分布数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81-DFS%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1、 DFS法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81-%E7%9B%B8%E5%87%8F%E7%9B%B8%E4%B8%8E%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2、 相减相与法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
