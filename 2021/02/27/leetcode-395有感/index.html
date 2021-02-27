@@ -23,17 +23,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="阿轩在网路中的第一套房产">
-<meta property="og:type" content="website">
-<meta property="og:title" content="阿轩blog">
-<meta property="og:url" content="http://yoursite.com/tags/git/index.html">
+  <meta name="description" content="又是一道被我秉承了自己的老传统，先吭吃瘪肚一篇超时代码再去题解里学东西的题目，就继续按照传统把学到的东西记录在这。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode#395有感">
+<meta property="og:url" content="http://yoursite.com/2021/02/27/leetcode-395%E6%9C%89%E6%84%9F/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="阿轩在网路中的第一套房产">
+<meta property="og:description" content="又是一道被我秉承了自己的老传统，先吭吃瘪肚一篇超时代码再去题解里学东西的题目，就继续按照传统把学到的东西记录在这。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/27/CxdBSlQkPcIwRFj.png">
+<meta property="article:published_time" content="2021-02-27T13:27:22.000Z">
+<meta property="article:modified_time" content="2021-02-27T14:05:09.736Z">
 <meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/27/CxdBSlQkPcIwRFj.png">
 
-<link rel="canonical" href="http://yoursite.com/tags/git/">
+<link rel="canonical" href="http://yoursite.com/2021/02/27/leetcode-395%E6%9C%89%E6%84%9F/">
 
 
 <script id="page-configurations">
@@ -41,12 +46,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: git | 阿轩blog</title>
+  <title>leetcode#395有感 | 阿轩blog</title>
   
 
 
@@ -159,77 +164,137 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">git
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/27/leetcode-395%E6%9C%89%E6%84%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode#395有感
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-27 21:27:22 / 修改时间：22:05:09" itemprop="dateCreated datePublished" datetime="2021-02-27T21:27:22+08:00">2021-02-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
+        <p>又是一道被我秉承了自己的老传统，先吭吃瘪肚一篇超时代码再去题解里学东西的题目，就继续按照传统把学到的东西记录在这。</p>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<p>题目如下：</p>
+<p><img src="https://i.loli.net/2021/02/27/CxdBSlQkPcIwRFj.png" alt="image-20210227213400623"></p>
+<p>按我最朴素的想法，先把子串都取出来再一一对照子串是否符合题意果然超时了（没错我这个第一想法就是深受了昨日字谜题的毒害）</p>
+<p>题解之一是一个加了限定条件的滑动窗口法，这个方法的核心思想在于最终得到的合法子串中最多只有可能含有二十六个种类的字母，而当其所含有的字母种类与已经合法的字母种类相等时，就代表着我们得到了一个合法字串了。因此我们需要对子串中含有一种类别到二十六种类别的情况分别进行操作以得到全部符合规则的子串。由于这种方式实际上也接近先取得所有子串再进行判断了，所以时间仍然很不理想，只达到了60％</p>
+<p>题解之二就很有说法了。</p>
+<p>从题目可以知道，合法的子串一定是一个连续的字符串（废话），而且总出现次数少于k的字符一定不会存在于合法子串中。也就是说，这些出现次数少于k的字符实际上起到了分割合法字符串的作用。</p>
+<p>根据以上的结论再来看 <strong>abcaabbd</strong> 其中 k = 2 这个例子，整串总共有三个a三个b，但由于第三位的c，左面第一位的a和第二位的b失去了作用，不能再为k=2这个条件出力。因此我们发现，在被分割开的每一段区间里，对条件k的筛选是独立的。</p>
+<p>至此，终于可以摆出题解二的核心思路了：</p>
+<p>即根据分割字符（出现次数小于k的字符）对整个字符串进行逐个分割</p>
+<p>要注意，这个出现次数只在最开始是整个字符串范围的出现次数，在进行了第一次分割后就要从分割后的部分再次单独计算出现次数（上面条件k的筛选是独立的就是这个意思）</p>
+<p>因此我们可以得到流程：</p>
+<p>1、找到第一个分割字符，并把第一个分割字符前的称为前部，第一个分割字符后的称为后部</p>
+<p>2、把前部作为一个新的整体（此时前部每一个字符的出现次数进行了更新），以一个整体的身份进行继续分割</p>
+<p>3、后部由于还有可能存在分割字符，所以把直到字符串末尾的所有后部（此时的后部也是一个整体，前部与后部之间已经没有了关联）进行继续分割</p>
+<p>4、一旦发现一个部分已经不存在分割点（即新前部的长度等于整个部分的长度），即说明这个部分是一个合法子串，把它的长度记录即可</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">longestSubstring01</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (k &lt;= <span class="number">1</span>) <span class="keyword">return</span> s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (s.empty() || s.<span class="built_in">size</span>() &lt; k) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">hash</span><span class="params">(<span class="number">128</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">char</span> c : s) ++hash[c];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; s.<span class="built_in">size</span>() &amp;&amp; hash[s[i]] &gt;= k) ++i;</span><br><span class="line">        <span class="keyword">if</span> (i == s.<span class="built_in">size</span>()) <span class="keyword">return</span> s.<span class="built_in">size</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> l = longestSubstring(s.substr(<span class="number">0</span>, i), k);</span><br><span class="line">        <span class="keyword">while</span> (i &lt; s.<span class="built_in">size</span>() &amp;&amp; hash[s[i]] &lt; k) ++i;</span><br><span class="line">        <span class="keyword">int</span> r = longestSubstring(s.substr(i), k);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(l, r);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-10-26T00:09:48+08:00"
-              content="2020-10-26">
-          10-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/10/26/Git%E8%BF%9C%E7%AB%AF%E4%B8%8A%E4%BC%A0%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8A%9E%E6%B3%95/" itemprop="url">
-            <span itemprop="name">Git远端上传已有项目的办法</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-08-21T18:56:24+08:00"
-              content="2020-08-21">
-          08-21
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/08/21/git%E5%91%BD%E4%BB%A4%E4%BB%AC/" itemprop="url">
-            <span itemprop="name">git命令们</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/26/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%9B%86%E5%90%88%E6%B1%82%E5%8F%96%E5%AD%90%E9%9B%86/" rel="prev" title="二进制集合求取子集">
+      <i class="fa fa-chevron-left"></i> 二进制集合求取子集
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -448,6 +513,21 @@ $(document).ready(function() {
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
 </body>
 </html>
