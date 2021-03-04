@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="又是一道感想题（指狗屁没做出来全靠题解醍醐灌顶的题目） 在这里你可以找到：  c++ sort排序vector容器的自订规则用法。 二维最长上升（下降）子序列转一维的办法 一维最长上升（下降）子序列的动态规划与二分法解法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="俄罗斯套娃信封有感">
+<meta property="og:url" content="http://yoursite.com/2021/03/04/%E4%BF%84%E7%BD%97%E6%96%AF%E5%A5%97%E5%A8%83%E4%BF%A1%E5%B0%81%E6%9C%89%E6%84%9F/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="又是一道感想题（指狗屁没做出来全靠题解醍醐灌顶的题目） 在这里你可以找到：  c++ sort排序vector容器的自订规则用法。 二维最长上升（下降）子序列转一维的办法 一维最长上升（下降）子序列的动态规划与二分法解法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/HDwRoTuMzflPVx1.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/hZjKGScxgUOF2s3.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/ZvxOFLKPkBQcDEI.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/wUEeOtuThzL5fNI.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/cVCP7vKdEwTtmOg.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/KcXIwQ6lNf8nLo4.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/ziMcoUBSn6WYXVA.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/mihAqjuF93sBfSy.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/Gp48Vdh9OiaPXvs.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/u6YZVxQAwIjkUN2.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/4HKRLT6GIujmXPQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/04/lfATGS82cYWCOMi.png">
+<meta property="article:published_time" content="2021-03-04T09:20:38.000Z">
+<meta property="article:modified_time" content="2021-03-04T11:10:45.671Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/03/04/HDwRoTuMzflPVx1.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/04/%E4%BF%84%E7%BD%97%E6%96%AF%E5%A5%97%E5%A8%83%E4%BF%A1%E5%B0%81%E6%9C%89%E6%84%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>俄罗斯套娃信封有感 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/04/%E4%BF%84%E7%BD%97%E6%96%AF%E5%A5%97%E5%A8%83%E4%BF%A1%E5%B0%81%E6%9C%89%E6%84%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          俄罗斯套娃信封有感
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-04 17:20:38 / 修改时间：19:10:45" itemprop="dateCreated datePublished" datetime="2021-03-04T17:20:38+08:00">2021-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>又是一道感想题（指狗屁没做出来全靠题解醍醐灌顶的题目）</p>
+<p>在这里你可以找到：</p>
+<ul>
+<li>c++ sort排序vector容器的自订规则用法。</li>
+<li>二维最长上升（下降）子序列转一维的办法</li>
+<li>一维最长上升（下降）子序列的动态规划与二分法解法</li>
+</ul>
+<a id="more"></a>
+
+<p>首先来看题干：</p>
+<p><img src="https://i.loli.net/2021/03/04/HDwRoTuMzflPVx1.png" alt="image-20210304172846429"></p>
+<p>最开始的我尝试将集合分别按宽高排序为两个已排序集合（图省事还tm用的冒泡法），再从已排序集合着手对信封长宽一一比较。</p>
+<p>很不幸被繁杂的索引下标弄崩了，到最后也没跑通50％的测试用例 。</p>
+<p>于是从题解发现，要想解决这道题目首先要搞清楚一个前置知识点：</p>
+<p>最长上升（或下降）子序列的解法。</p>
+<p>那么什么是最长上升子序列呢？</p>
+<p>与单调序列不同，并不需要相邻的元素保持相同的大小关系，只要一个子序列整体上呈上升状态（末尾元素大于开头元素，即下标 i ~ j 的序列部分，y[j] &gt; y[i]即可）</p>
+<p>在这样的子序列里，满足上升关系的元素数目即为上升子序列的长度。</p>
+<p>例如：</p>
+<p><img src="https://i.loli.net/2021/03/04/hZjKGScxgUOF2s3.png" alt="image-20210304173553857"></p>
+<p>在这个序列中， 2 ， 3， 5， 9呈上升状态，2， 4， 5， 9也呈上升状态，因此最长子序列长度为4</p>
+<p><img src="https://i.loli.net/2021/03/04/ZvxOFLKPkBQcDEI.png" alt="image-20210304173710800"></p>
+<p>在这个序列中，只有 2， 5 与 3， 5呈上升状态，因此最长上升子序列长度为2</p>
+<p>据以上可以发现，只有一个集合不是空集合，那么它的最长上升子序列长度至少为1。</p>
+<p>那么该怎么求出这个长度呢？</p>
+<h4 id="1、-动态分配法"><a href="#1、-动态分配法" class="headerlink" title="1、 动态分配法"></a>1、 动态分配法</h4><p>虽然目的是“子”序列，但由于我们想要的序列形式上并不是必须严格连续的，因此用i，j来把集合分段意义不大（例如上图第二个例子，7<del>5， 2</del>5， 7~1的最长上升子序列长度都为2， 对集合分段只会减少每段中的最长长度，因此在求整体最长长度的情况下无需进行分段）。</p>
+<p>所有我们要建立的dp表只需要一个维度即可，dp内值的意义即为原集合在当前索引之前有多少呈上升状态的元素（也可以理解为只保留前部的单次分段）</p>
+<p>例如dp[5] = 3 表示在 x[5]（x为原集合）之前有3个元素呈上升状态（x[5]之前（不包括x[5]）部分的最长上升子序列长度为3）。</p>
+<p>由于上面的推断（非空集合的最长上升子序列至少为1），我们可以把dp表整体初始化为1 。</p>
+<p>接下来定义两个索引指针：</p>
+<p><img src="https://i.loli.net/2021/03/04/wUEeOtuThzL5fNI.png" alt="image-20210304174821042"></p>
+<p>k初始指向x[1]，i即负责在每个k的状态里遍历所有k之前（不包括k）的元素，假如x[i] &lt; x[k]，即说明i指向的位置和k指向的位置呈上升状态。</p>
+<p>由于i之前可能也还有跟它呈上升状态的元素（别忘记i是会移动的，图上只是它的初始状态）。</p>
+<p>因此k之前呈上升状态的元素就可能是i之前呈上升状态的元素加上i自己</p>
+<p>即：</p>
+<p>dp[k] maybe = dp[i] + 1</p>
+<p>但注意只是可能，最终的dp[k]还需要和dp[k]当前的值作比较，并留下大的那个（毕竟是取最长嘛）</p>
+<p>（似乎也可以直接把所有k之前并小于x[k]的元素数量赋给k）</p>
+<p>因此我们得到了状态转移：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(x[i] &lt; x[k])&#123;</span><br><span class="line">    dp[k] = <span class="built_in">max</span>(dp[i]+<span class="number">1</span>, dp[k]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终整体的最大上升子序列长度即为dp表中的最大值。</p>
+<h4 id="2、-二分法"><a href="#2、-二分法" class="headerlink" title="2、 二分法"></a>2、 二分法</h4><p>核心在于把所有呈上升状态的元素抽出来建表，之所以叫二分法其实是因为在建表的过程中可能会有查找的操作（后面会提），如果用二分查找来进行查找就会使时间复杂度变为（nlogn），即为二分法（有点勉强是不是，所以我更喜欢叫它建表法）</p>
+<p>其思路在于先建立一个表（链表或是可变数组），并把原集合第一位x[0]放入表头，然后从原集合第二位x[1]开始用i遍历，假如x[i] 大于当前表末尾的元素值即把x[i]加在表尾， 假如x[i]小于等于当前末尾的元素值，即找到当前表中从头起第一个大于等于x[i]的值，并用x[i]替换该值（这步初见有些费解，可以用上图第二个例子推导一下来理解，也就是这里用到了查找）</p>
+<p>具体实现代码直接放在之后的二维部分里。</p>
+<p>了解了一维情况下的动态分配法与二分法，那么如何把一维的解法应用在二维上呢？</p>
+<p>这里官方题解说的极好，我先把它的原话贴上来：</p>
+<p><img src="https://i.loli.net/2021/03/04/cVCP7vKdEwTtmOg.png" alt="image-20210304182812559"></p>
+<p><img src="https://i.loli.net/2021/03/04/KcXIwQ6lNf8nLo4.png" alt="image-20210304182830326"></p>
+<p>下面来用我的话说明一下：</p>
+<p>在二维的情况下，我们的愿望是让i[0] &lt; j[0] 且 i[1] &lt; j[1] (i，j即为两个信封数据)</p>
+<p>但实际上，可能会出现四种情况：</p>
+<p>1、 i[0] &lt; j[0], i[1] &lt; j[1]     这是我们想要的</p>
+<p>2、 i[0] &lt; j[0], i[1] &gt; j[1]     即i是一个不太宽但极高的信封</p>
+<p>3、 i[0] &gt; j[0], i[1] &lt; j[1]     即i是一个不太高但极宽的信封</p>
+<p>4、 i[0] &gt; j[0], i[1] &gt; j[1]     i信封就是比j信封大</p>
+<p>不难看出，第四种情况是最讨人厌的，但它也是最好避免的，只要通过对信封们提前排序。</p>
+<p>提到排序，就又来了个新问题，二维数据的排序正好对应上面的四种情况有着四种排序规则，那么我们应该选择哪种规则呢？</p>
+<p>先让我们把这个问题放在心里。</p>
+<p>假设我们信封集合里的信封宽度各不相同，这么说可能有些抽象，让我们根据信封的宽高来建立一个矩阵坐标系：</p>
+<p><img src="https://i.loli.net/2021/03/04/ziMcoUBSn6WYXVA.png" alt="image-20210304184223152"></p>
+<p>纵轴为高度，横轴为宽度，上图的蓝色圆点即为五个宽度各不相同的信封。</p>
+<p>如果把这五个圆点用线连起来</p>
+<p><img src="https://i.loli.net/2021/03/04/mihAqjuF93sBfSy.png" alt="image-20210304184342839"></p>
+<p>我们就能轻松地看出一条呈上升趋势的线</p>
+<p>等等，上升趋势</p>
+<p>是不是熟悉起来了</p>
+<p>接下来，我们把横轴的宽度换成索引，高度换成元素值，然后就会突然发觉到，二维的数据变成一维了！</p>
+<p>接下来的套娃信封数量就可以代入上面的一维最长上升子序列问题了。</p>
+<p>但！</p>
+<p>问题还剩下两个：</p>
+<p>1、 我们刚把宽度换成了索引，但实际上信封集合中的宽度并不是有序排列的，和索引有很大不同。</p>
+<p>2、 如果有宽度相同的信封，上面的一切还成立吗？</p>
+<p>第一个问题估计大家心中都有答案了，没错，先按宽度信封集合来一次排序就行了。</p>
+<p>接下来我们来看看第二个问题：</p>
+<p><img src="https://i.loli.net/2021/03/04/Gp48Vdh9OiaPXvs.png" alt="image-20210304184955354"></p>
+<p>再多了几个宽度相同的信封后，我们的信封矩阵变成了上图这样。</p>
+<p>最直观的变化就是，我们没法再用一条线把他们连起来了。</p>
+<p>因此之前得出的结论也没法再应用上了。</p>
+<p>但先别沮丧，还记得我们已经决定先按宽度进行第一次排序了吗？</p>
+<p>这就代表，在高度层面上，我们只剩下两种排序方式了：</p>
+<p>相同宽度下的高度升序与相同宽度下的高度降序</p>
+<p>这点在矩阵里不好体现，让我们继续把宽度作为索引，高度作为元素值，以一维的形式展现：</p>
+<p>假如我们按照高度升序，那么上图的矩阵可变为：</p>
+<p>1， 2， 3， 2， 5， 4， 1， 3， 4， 3， 6</p>
+<p>即：</p>
+<p><img src="https://i.loli.net/2021/03/04/u6YZVxQAwIjkUN2.png" alt="image-20210304185841554"></p>
+<p>问题来了，假如我们就这个数列进行一维的子序列上升长度求法，同为1宽度的1、2、3高度信封都会进入上升趋势里，但我们知道这三个信封是无法套娃的（因为宽度相等），也就是说，拥有一样宽度的信封，无论高度排布如何，都是没法满足题意进行套娃的。</p>
+<p>现在再来看上面的矩阵图，每一列呈上升趋势的直线便显得如此扎眼。</p>
+<p>那为何不让每一列的直线都成下降趋势呢？</p>
+<p><img src="https://i.loli.net/2021/03/04/4HKRLT6GIujmXPQ.png" alt="image-20210304190116010"></p>
+<p>这种情况下，我们的小球仍是有总体上升趋势的（就像宽度各不相同的那幅图那样）：</p>
+<p><img src="https://i.loli.net/2021/03/04/lfATGS82cYWCOMi.png" alt="image-20210304190225873"></p>
+<p>并且在展开的一维数列中：</p>
+<p>3， 2， 1， 5， 2， 4， 4， 3， 1， 6， 3</p>
+<p>我们会发现我们之前的最长子序列上升长度算法不会受到相同宽度的影响了！</p>
+<p>终于可以得出我们的结论：</p>
+<p><strong>二维情况下的最长上升子序列方法为：</strong></p>
+<p><strong>第一个维度升序排列，第二个维度降序排列！</strong></p>
+<p>因此最后的解法步骤即为：</p>
+<p>1、对信封进行宽度升序、高度降序排列。</p>
+<p>2、将排列好的宽度数据单独拿出来并应用一维最长上升子序列长度算法。</p>
+<p>这里的排序涉及到了c++ sort函数的一种特殊用法（自定排序规则），我还没有理解这种用法的内在原理，因此近期暂且先跟着题解的形式照葫芦画瓢。</p>
+<p>最后是整体代码：</p>
+<p>动态规划：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxEnvelopes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; envelopes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = envelopes.<span class="built_in">size</span>();</span><br><span class="line">        sort(envelopes.<span class="built_in">begin</span>(), envelopes.<span class="built_in">end</span>(), [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; a, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; b)&#123;</span><br><span class="line">            <span class="keyword">return</span> a[<span class="number">0</span>] &lt; b[<span class="number">0</span>] || (a[<span class="number">0</span>] == b[<span class="number">0</span>] &amp;&amp; a[<span class="number">1</span>] &gt; b[<span class="number">1</span>]);</span><br><span class="line">        &#125;);    <span class="comment">// 按宽度升序、高度降序对信封集合排序</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span><span class="params">(length, <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(envelopes[i][<span class="number">1</span>] &gt; envelopes[j][<span class="number">1</span>])&#123;</span><br><span class="line">                    dp[i] = <span class="built_in">max</span>(dp[j]+<span class="number">1</span>, dp[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;    <span class="comment">// 构建dp表</span></span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            result = (dp[i] &gt; result)? dp[i] : result;</span><br><span class="line">        &#125;    <span class="comment">// dp表中的最大值即为最终结果</span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>二分法（实际上我没有二分，查找部分使用的是普通查找）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">List</span>&#123;</span></span><br><span class="line">        <span class="keyword">int</span> value;</span><br><span class="line">        List* next;</span><br><span class="line">        List(<span class="keyword">int</span> v)&#123;</span><br><span class="line">            value = v;</span><br><span class="line">            next = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;    <span class="comment">// 链表结构体</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxEnvelopes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; envelopes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = envelopes.<span class="built_in">size</span>();</span><br><span class="line">        sort(envelopes.<span class="built_in">begin</span>(), envelopes.<span class="built_in">end</span>(), [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; a, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; b)&#123;</span><br><span class="line">            <span class="keyword">return</span> a[<span class="number">0</span>] &lt; b[<span class="number">0</span>] || (a[<span class="number">0</span>] == b[<span class="number">0</span>] &amp;&amp; a[<span class="number">1</span>] &gt; b[<span class="number">1</span>]);</span><br><span class="line">        &#125;);    <span class="comment">//    对信封集合排序</span></span><br><span class="line">        </span><br><span class="line">        <span class="function">List <span class="title">head</span><span class="params">(envelopes[<span class="number">0</span>][<span class="number">1</span>])</span></span>;</span><br><span class="line">        List* p = &amp;head;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(envelopes[i][<span class="number">1</span>] &gt; p-&gt;value)&#123;</span><br><span class="line">                List *temp = <span class="keyword">new</span> List(envelopes[i][<span class="number">1</span>]);</span><br><span class="line">                p-&gt;next = temp;</span><br><span class="line">                p = p-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(List* c = &amp;head; c != <span class="literal">NULL</span>; c = c-&gt;next)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(c-&gt;value &gt;= envelopes[i][<span class="number">1</span>])&#123;</span><br><span class="line">                        c-&gt;value = envelopes[i][<span class="number">1</span>];</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;    <span class="comment">//    构建上升趋势列表</span></span><br><span class="line">        p = &amp;head;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            result++;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        &#125;     <span class="comment">// 列表长度即为结果       </span></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/27/leetcode-395%E6%9C%89%E6%84%9F/" rel="prev" title="leetcode#395有感">
+      <i class="fa fa-chevron-left"></i> leetcode#395有感
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81-%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">1、 动态分配法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81-%E4%BA%8C%E5%88%86%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2、 二分法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
