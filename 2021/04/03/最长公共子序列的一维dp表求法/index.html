@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你可以找到：  最长公共子序列的动态规划思路 该问题的空间优化（二维dp表转一维dp表）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最长公共子序列的一维dp表求法">
+<meta property="og:url" content="http://yoursite.com/2021/04/03/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E7%9A%84%E4%B8%80%E7%BB%B4dp%E8%A1%A8%E6%B1%82%E6%B3%95/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你可以找到：  最长公共子序列的动态规划思路 该问题的空间优化（二维dp表转一维dp表）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/bK7B9ShNy6CjJqG.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/olmg5zXu4ejwBO2.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/jTvakhiDwu8q2Cy.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/VsgpCG6E2AKwFXf.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/tuASCNeaY2XlsPn.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/QFwuJMDHfCngWIP.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/SqvVg7zIGLbtTeF.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/1IvSreaEKbjl3H8.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/w1JUWm82jdBuKSX.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/8NtKiQXqBumc9WU.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/VM9caOjFkEZw1fo.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/4FnNuMRjeJqY2Lp.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/FKA6G3XHnCwVTix.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/03/fIHclGYxb7eiNvO.png">
+<meta property="article:published_time" content="2021-04-03T04:26:12.000Z">
+<meta property="article:modified_time" content="2021-04-03T06:52:50.766Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/03/bK7B9ShNy6CjJqG.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/04/03/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E7%9A%84%E4%B8%80%E7%BB%B4dp%E8%A1%A8%E6%B1%82%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>最长公共子序列的一维dp表求法 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/03/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E7%9A%84%E4%B8%80%E7%BB%B4dp%E8%A1%A8%E6%B1%82%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最长公共子序列的一维dp表求法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-03 12:26:12 / 修改时间：14:52:50" itemprop="dateCreated datePublished" datetime="2021-04-03T12:26:12+08:00">2021-04-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你可以找到：</p>
+<ul>
+<li>最长公共子序列的动态规划思路</li>
+<li>该问题的空间优化（二维dp表转一维dp表）</li>
+</ul>
+<a id="more"></a>
+
+<p>首先列上题目：</p>
+<p><img src="https://i.loli.net/2021/04/03/bK7B9ShNy6CjJqG.png" alt="image-20210403122909733"></p>
+<p>本题是一个经典的动态规划问题，首先我们来解释它的动态规划思想与具体转移方程。</p>
+<p>首先看到两式相比较，凭自觉我们便知道需要一个二维dp表，i行j列即表示第一个字符串的前i个字符与第二个字符串的前j个字符形成的最长公共子序列长度。</p>
+<p>题中给出的例子较为简单，我们换一组复杂的例子：</p>
+<p>Str1 = “bdcacbc”    Str2 = “abc”</p>
+<p><img src="https://i.loli.net/2021/04/03/olmg5zXu4ejwBO2.png" alt="image-20210403123343651"></p>
+<p>当我们将Str1中的每个字符与Str2中的每个字符进行比较时只会获得两种结果：</p>
+<p>1、 相等， 意味着这个字符是二者公共子串中的一员，但到底属不属于最长的那个公共子串还有待商榷。</p>
+<p>2、 不相等，这个字符对公共子串长度无影响</p>
+<p>那么以上两种状态分别对应怎样的结果呢？</p>
+<p>如果Str1[j] == Str2[i] （第i行j列），即状态一，那么我们知道Str1至第j位为止，与Str2的前i位最少有一个公共子字符，因此Str1的前j位与Str2的前i位的最长公共子串即为到第j位与第i位之前的最长公共子串加一，即（dp[i-1] [j-1]） + 1.</p>
+<p>如果Str1[j] != Str2[i]，即说明Str1这个字符串加上第j位和Str2这个字符串加上第i位对两串到第j与第i位置的最长公共子串长度结果都没有影响。这句有点长且绕，翻译一下即 Str1[j]与Str2[i]的加入是多余的。因此，dp[i] [j]的值应为Str1的第j位与Str2的第i位加入之前的那个最长公共子串长度值。</p>
+<p>即： dp[i] [j] = max(dp[i-1] [j], dp[i] [j-1])</p>
+<p>由于存在没有上一行的第一行以及没有上一列的第一列，我们需要在心中加入抽象的虚拟行和虚拟列，比如第一行的虚拟列的意义即为Str1的前j位与一个空字符串的最长公共子串。不必说自然为零。</p>
+<p>因此我们可以模拟dp[-1] [j] = dp[i] [-1] = 0（0 &lt;= i &lt; Str2.size(); 0 &lt;= j &lt; Str1.size();）</p>
+<p>下面让我们用以上得出的结论（动态转移方程）来填例子中的表格：</p>
+<p><img src="https://i.loli.net/2021/04/03/jTvakhiDwu8q2Cy.png" alt="image-20210403141422627"></p>
+<p>我们采用按行填充的方式，先填充第一行的每一列再填充下一行的每一列。</p>
+<p>由于 a != b != d != c 因此第一行的前三列均应代入 dp[i] [j] = max(dp[i-1] [j], dp[i] [j-1])，由于i-1 = -1为我们抽象出的虚拟行，因此，第一行的前三列的dp值均为0.</p>
+<p>根据“bdc”与“a”的最长公共子串长度这一意义也可很容易理解为什么三个值都为0</p>
+<p>当dp[0] [3]时， a = a， 发生了字符相等的状况，因此需代入dp[i] [j] = dp[i-1] [j-1] + 1 的方程式，易知dp[-1] [2] = 0，因此这个位置为1：</p>
+<p><img src="https://i.loli.net/2021/04/03/VsgpCG6E2AKwFXf.png" alt="image-20210403141853385"></p>
+<p>接下来的c b c均不等于 a，但由于第一行中已有一个值为1的单元，根据字符不相等的状态转移方程可以知道同一行中，右边的值不小于左边的值，可轻松将dp[0] [4]; dp[0] [5]; dp[0] [6]的值填为1（一个一个单元的填也是可以的）</p>
+<p><img src="https://i.loli.net/2021/04/03/tuASCNeaY2XlsPn.png" alt="image-20210403142116188"></p>
+<p>接下来的二三行以此类推。</p>
+<p>第二行填充后的表格为：</p>
+<p><img src="https://i.loli.net/2021/04/03/QFwuJMDHfCngWIP.png" alt="image-20210403142218530"></p>
+<p>第三行填充后：</p>
+<p><img src="https://i.loli.net/2021/04/03/SqvVg7zIGLbtTeF.png" alt="image-20210403142259458"></p>
+<p>我们也可以在填充完毕的表中随机取一个单元通过Str1的前j位与Str2的前i位的最长字串长度的dp值定义对我们的动态转移方程进行深入理解与验证。</p>
+<p>接下来让我们观察填充完毕的dp表，我们会发现一个有趣的规律，位于表下方的值一定不小于表上方的值，位于表右边的值一定不小于表左边的值。</p>
+<p>因此，一个大胆的想法便可以在我们脑子里浮现了；</p>
+<p>把二维dp表变成一维吧！</p>
+<p>二维变成一维，以最朴素的思想考虑也能够得知一定会丢失一些信息，但让我们先不去执着于会丢失哪些信息，想一想我们在二维dp表的搭建过程中都用到了哪些信息：</p>
+<p>1、字符相等状态时，用到当前位的左上位数据。</p>
+<p>2、字符不等状态时，用到当前位的上位与左位数据。</p>
+<p>有一点需要明确的是，当二维表转换为一维时，数据的左右关系仍然是空间关系，而数据的上下关系实质上，已经转换为了时间关系：</p>
+<p>我们仍然按行填充，第一行填充后，将原本第二行的数据以覆盖的形式仍然填充到第一行上，此时的每一列在被覆盖填充前其实就是上一行的对应列。</p>
+<p>本着这样的思想，我们可以发现当前位的左位（左位在这一整行的填充里都不会被覆盖）与当前位的上位（我们正要得出的值才会覆盖这个上位）都是可以拿到的，而当前位的左上位却已经在我们计算当前位左位值的时候被覆盖掉了。</p>
+<p>因此，我们需要一个缓存用以缓存当前值的左上位（即左位的上一时刻值）</p>
+<p>下面仍使用那组例子，来建立一个一维的dp表：</p>
+<p><img src="https://i.loli.net/2021/04/03/1IvSreaEKbjl3H8.png" alt="image-20210403144340916"></p>
+<p>我们假设开始时整个表的值均为0（由于这次我们的dp表是一维的，所以只有第一行是有意义的）</p>
+<p><img src="https://i.loli.net/2021/04/03/w1JUWm82jdBuKSX.png" alt="image-20210403144427289"></p>
+<p>处理第一列前，我们先将这个单元的值存储，没错，这个就将是下一位（当前值右位）的左上位值。</p>
+<p>至于每一行第一列的左上位值，我们手动将其设为0.</p>
+<p>进行和二维时相同的动态转移方程运算：</p>
+<p><img src="https://i.loli.net/2021/04/03/8NtKiQXqBumc9WU.png" alt="image-20210403144613413"></p>
+<p>所得的结果自然与二维时的第一行结果相同。</p>
+<p>下面我们来到第二行（心理上，实际上仍要填充第一行）</p>
+<p><img src="https://i.loli.net/2021/04/03/VM9caOjFkEZw1fo.png" alt="image-20210403144704660"></p>
+<p>首先将该位的左上位设为0（因为它是第一列），然后拿到该单元的原值0作为下一位的左上位存储，接下来执行动态转移方程 0 + 1 = 1 ，将1覆盖原来的0：</p>
+<p><img src="https://i.loli.net/2021/04/03/4FnNuMRjeJqY2Lp.png" alt="image-20210403144828947"></p>
+<p>以此类推我们在心理上填充完第二行的结果为：</p>
+<p><img src="https://i.loli.net/2021/04/03/FKA6G3XHnCwVTix.png" alt="image-20210403144913485"></p>
+<p>接下来在心理上进入第三行，最后一遍覆盖填充一维dp表：</p>
+<p><img src="https://i.loli.net/2021/04/03/fIHclGYxb7eiNvO.png" alt="image-20210403145009434"></p>
+<p>我们可以发现其实每一次心理上的换行结果都与此前二维dp表对应行的值相等，也就是说我们不过是通过对单一值的记忆（即每一单元的左上位）完成了dp表的压缩。</p>
+<p>一维dp表的实现代码如下：</p>
+<p>为了进一步节省空间，我选择将两个字符串中较短的那个作为Str1（即dp表长度为两个字符串中较短的那个），因此需在进行长度判断后调用辅助函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestCommonSubsequence</span><span class="params">(<span class="built_in">string</span> text1, <span class="built_in">string</span> text2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length01 = text1.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">int</span> length02 = text2.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(length01 &lt;= <span class="number">0</span> || length01 &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(length01 &lt; length02)&#123;</span><br><span class="line">            result = Handle(text1, text2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            result = Handle(text2, text1);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Handle</span><span class="params">(<span class="built_in">string</span>&amp; textRow, <span class="built_in">string</span>&amp; textCol)</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dpArray</span><span class="params">(textRow.<span class="built_in">size</span>(), <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> r = <span class="number">0</span>; r &lt; textCol.<span class="built_in">size</span>(); r++)&#123;</span><br><span class="line">            <span class="keyword">int</span> leftUp = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; textRow.<span class="built_in">size</span>(); c++)&#123;</span><br><span class="line">                <span class="keyword">int</span> temp = dpArray[c];</span><br><span class="line">                <span class="keyword">if</span>(textRow[c] == textCol[r])&#123;</span><br><span class="line">                    dpArray[c] = leftUp + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span>(c &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                        dpArray[c] = (dpArray[c<span class="number">-1</span>] &gt; dpArray[c])? dpArray[c<span class="number">-1</span>] : dpArray[c];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// else dpArray[c] = dpArray[c];</span></span><br><span class="line">                &#125;</span><br><span class="line">                leftUp = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dpArray[textRow.<span class="built_in">size</span>() - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/21/%E6%AF%95%E4%B8%9A%E6%97%85%E8%A1%8C%E9%97%AE%E9%A2%98/" rel="prev" title="毕业旅行问题">
+      <i class="fa fa-chevron-left"></i> 毕业旅行问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
