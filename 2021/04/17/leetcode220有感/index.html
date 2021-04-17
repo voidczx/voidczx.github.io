@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="时隔大半月，又遇到了一道有感题。 在这里你能找到：  利用set数据结构实现滑动窗口思想 利用桶排序实现分块查找的思想 复习列表元素倒置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode220有感">
+<meta property="og:url" content="http://yoursite.com/2021/04/17/leetcode220%E6%9C%89%E6%84%9F/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="时隔大半月，又遇到了一道有感题。 在这里你能找到：  利用set数据结构实现滑动窗口思想 利用桶排序实现分块查找的思想 复习列表元素倒置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/xGZbLPcqDBOofmH.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/KeP9MjcH15YJOmq.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/nVzGQ9IeL78Sa5T.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/nI8AZW6Fv7ilx9S.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/xnBCDovYQj8Sapz.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/YLXBIHzZJ6wjOMW.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/WBgq3F5i8yuXC4f.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/17/Yqr8IjhnuMweESy.png">
+<meta property="article:published_time" content="2021-04-17T07:52:50.000Z">
+<meta property="article:modified_time" content="2021-04-17T09:20:18.306Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/17/xGZbLPcqDBOofmH.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/04/17/leetcode220%E6%9C%89%E6%84%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>leetcode220有感 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/17/leetcode220%E6%9C%89%E6%84%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          leetcode220有感
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-17 15:52:50 / 修改时间：17:20:18" itemprop="dateCreated datePublished" datetime="2021-04-17T15:52:50+08:00">2021-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>时隔大半月，又遇到了一道有感题。</p>
+<p>在这里你能找到：</p>
+<ul>
+<li>利用set数据结构实现滑动窗口思想</li>
+<li>利用桶排序实现分块查找的思想</li>
+<li>复习列表元素倒置</li>
+</ul>
+<a id="more"></a>
+
+<p>首先附上这道“有感”的题目：</p>
+<p><img src="https://i.loli.net/2021/04/17/xGZbLPcqDBOofmH.png" alt="image-20210417155711952"></p>
+<p>本质上仍是在集合中寻找满足条件的元素对。但由于存在位置范围上的限制，我们理所当然地会想到滑动窗口，然后构造出log(N*k)的算法，再然后，完美超时。淦</p>
+<p>那该如何是好，由于集合中满足条件的元素是要经过比较得出的，那么我们如何将k范围内的元素两两比较的想法进行优化呢？</p>
+<p>首先，我们需回忆起k内元素进行两两比较的目的：找出一个与当前元素相差绝对值&lt;= t的元素。</p>
+<p>本着这样的思路，我们很容易想到打造一个大小为k+1（即符合位置范围）的<strong>有序</strong>表，然后将每个新元素与表内数值最接近它的元素进行比较，假若最接近的那位符合数值的相差要求，即可认为判断成功。</p>
+<p>good idea，但到目前为止，这个思路还有一些问题。</p>
+<p>首先，为了打造这个有序表，我们在原集合中的遍历一旦超过k位，之后的新元素就会对有序表进行插入删除操作，又因是一个有序表，插入操作免不了会打乱元素在原集合中的位置，而删除元素所依据的又是元素在原集合中位置，这可如何是好？</p>
+<p>另一个问题，我们如何在一个有序表中找到一个与新元素数值上相差最小的元素？</p>
+<p>在诸位思考第一个问题时，估计就有些想到了利用一个不以下标为检索依据，而以值作为检索依据的结构，比如，set。保持这个思路，再来看第二个问题，谈到有序表中的查找，二分一定是第一时间应该跳出来的答案，那么让我们保持以上结论，来回忆以下c++中的set底层，好像正是一个查找效率接近二分的红黑树？</p>
+<p>于是问题就此解决，在集合中寻找符合条件元素的滑动窗口问题可以使用set结构来进行优化。</p>
+<p>需要注意的是，为了寻找有序表中与当前元素数值上相距最近的元素以判断有序表中是否存在符合条件的元素，我们采用间接的方式，相比于直接在有序表中查询哪个元素与当前元素的差值绝对值最小，我们采用将当前元素作为数轴中间值，左右各扩展出长度为 t 的侧边，通过在有序表中查询第一个大于左边界的元素（这样的思路可以利用set结构自带的方法lower_bound轻松解决）来间接了解有序表中是否存在符合条件的元素。为了防止有序表中第一个大于范围下界的元素已经超过范围上界，我们在确保有序表中存在比数值大于范围下界的元素的同时还需要将该元素值与范围上界进行一次对比。</p>
+<p>set方法的代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">containsNearbyAlmostDuplicate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(k &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> length = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= length)&#123;</span><br><span class="line">            k = length<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">set</span>&lt;<span class="keyword">long</span>&gt; dynamicSet;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">long</span> currentNumber = nums[i];</span><br><span class="line">            <span class="keyword">long</span> leftBound = currentNumber - <span class="keyword">static_cast</span>&lt;<span class="keyword">long</span>&gt;(t);</span><br><span class="line">            <span class="keyword">long</span> rightBound = currentNumber + <span class="keyword">static_cast</span>&lt;<span class="keyword">long</span>&gt;(t);</span><br><span class="line">            <span class="built_in">set</span>&lt;<span class="keyword">long</span>&gt;::iterator iter = dynamicSet.lower_bound(leftBound);</span><br><span class="line">            <span class="keyword">if</span>(iter != dynamicSet.<span class="built_in">end</span>() &amp;&amp; (*iter) &lt;= rightBound)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            dynamicSet.insert(currentNumber);</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= k)&#123;</span><br><span class="line">                dynamicSet.erase(<span class="keyword">static_cast</span>&lt;<span class="keyword">long</span>&gt;(nums[i-k]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>假如到了这里你已经理解了为什么滑动窗口问题可以使用set结构优化，那么请继续往下，看看由set优化思想发展而来的桶排序法：</p>
+<p>桶排序的来源我并没有考究，很大概率也可能并非是由set结构优化发展而来的，但在这道题目中，在set结构优化之后提及桶排序却好比吃饭之后要擦嘴一般水到渠成的事情，所以不提白不提。</p>
+<p>在我们决定使用set优化，或者更早一些，决定使用滑动窗口时，我们脑中就已经有了构造一个大小为k+1的空间结构的想法。这个空间结构的本质意义是用来存储当前时刻符合位置约束的集合内元素，也即在这个空间结构中起关键作用的是位置约束值（本题为 k ）。那么，我们是否可以转换思路，利用数值约束值（本题为 t ），来构造一个空间结构呢？</p>
+<p>如上，便是桶排序的核心思想：利用数值上的范围约束构造一个符合当前时刻数值约束的空间结构，接下来以这个空间结构作为第一步来进行符合条件的判定。</p>
+<p>由于符合数值范围约束的一组元素可以共存于同一个空间结构内，且该空间结构与元素在原集合中的位置无关（但在本题中，为了防止重复判断，一旦位置范围超出界限我们就要把相应存在于数值约束结构中的元素删除），所以可以看作每遍历一个元素就把这个元素加入到与该元素数值相符合的桶中，因此，该方法被称为桶排序法。</p>
+<p>有了以上的理论基础，我们接下来要面对的主要便是这两个问题：</p>
+<p>1、每个桶所代表的数值范围该如何确立？</p>
+<p>2、在已知当前元素数值的情况下如何与相应的桶进行对应？</p>
+<p>首先我们来看第一个问题，首先可以确定的是，每个桶所代表的数值范围与题目所要求的数值约束值一定是相关联的（因为我们就是通过数值约束范围所确立的“桶”的这个空间结构的呀），以本题为例，对任意一个值为x的元素来说，它所对应的元素值范围（即另一元素和它能构成符合条件元素对的数值范围）为[x-t, x+t]，但假若我们采用这个范围作为桶的边界范围，就会发现一个桶内的两个元素并不一定满足相差绝对值&lt;= t 的题目要求，（例如 t = 2, 假若以2为中心建桶，从0到4都将落入该桶，但易知0与4并非是符合条件的元素对，即是仅从数值约束上考虑也是这样）这点是致命的，因为这会使我们的桶排序退化，失去快速判断条件是否符合的前提。因此，我们还需再对自己将要构建的桶提出一个要求，即对于落入一个桶中的元素，其两两间是应该符合题目给出的数值约束的。从这点出发，让我们回忆直方图的构建，类比于直方图，我们将整数集合分为正负两部分，每一部分以 t 为标准进行重新合并：例如在正轴上，0 ~ t为第一个桶的范围（因为即是桶内最大元素与最小元素相比较，t-0也依然符合数值约束），t+1 ~ 2t为第二个桶的范围， 2t+1 ~ 3t为第三个桶的范围，以此类推。而在负半轴上，-1 ~ -t-1 为第一个桶的范围， -t-2 ~ -2t-1 为第二个桶的范围，以此类推。这样我们就能保证在每个桶中的任意两元素都是符合数值约束的了。</p>
+<p>接下来我们将第一个问题的结论应用到第二个问题上，我们已知某一元素的值，我们需要得到该值所落在哪一个桶（根据第一个问题论述，这个桶标号实质上就是正负半轴分别进行坐标合并的结果）。因此，这将是一个从x映射到y的过程，其中x = 0 ~ t时  y = 0, x = t+1 ~ 2t时 y = 1, x = -1 ~ -t-1时 y = -1以此类推。综上我们可以得到，对于任意一个元素值x：</p>
+<p>假如 x &gt;= 0: y = floor(x / (t+1));</p>
+<p>假如 x &lt; 0: y = floor((x+1) / (t+1) - 1);</p>
+<p>由于有了桶的存在，每一个被存储（即被加入桶）的元素便有了“双重身份”，即它自己的值与桶的标号，因此在桶排序方法中我们采用map结构。</p>
+<p>根据以上论述，只要我们保证在原集合中距离超过k的元素都被即时从桶里拿出（类似于滑动窗口，大家努力想象下），那么只要一个桶中存在两个或以上的元素，我们即可认定这两个或多个元素符合题目要求，由于我们只要拿到两个符合要求的元素便可以结束函数（return true），因此我们将发现，一个桶中永远不可能出现两个或两个以上的元素！换句话说，对每一个桶来说，它只有两种状态，要么存在一个元素，要么为空。</p>
+<p>因此一旦确定了桶标号，我们就无需在桶内继续进行遍历了。这也是桶排序法可以使用map而不必是multimap的原因。</p>
+<p>桶排序方法的实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">containsNearbyAlmostDuplicate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(k &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> length = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= length)&#123;</span><br><span class="line">            k = length<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> heapLen = t + <span class="number">1L</span>;</span><br><span class="line">        <span class="keyword">long</span> heapNum = k * <span class="number">1L</span>;</span><br><span class="line">        <span class="built_in">map</span>&lt;<span class="keyword">long</span>, <span class="keyword">long</span>&gt; heap;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">long</span> heapIndex = (nums[i] &gt;= <span class="number">0</span>)? nums[i] / heapLen : ((nums[i] + <span class="number">1</span>) / heapLen - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span>(heap.<span class="built_in">find</span>(heapIndex) != heap.<span class="built_in">end</span>())&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">map</span>&lt;<span class="keyword">long</span>, <span class="keyword">long</span>&gt;::iterator leftHeap = heap.<span class="built_in">find</span>(heapIndex<span class="number">-1L</span>);</span><br><span class="line">            <span class="keyword">if</span>(leftHeap != heap.<span class="built_in">end</span>() &amp;&amp; <span class="built_in">abs</span>(leftHeap-&gt;second - nums[i]) &lt;= t)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">map</span>&lt;<span class="keyword">long</span>, <span class="keyword">long</span>&gt;::iterator rightHeap = heap.<span class="built_in">find</span>(heapIndex+<span class="number">1L</span>);</span><br><span class="line">            <span class="keyword">if</span>(rightHeap != heap.<span class="built_in">end</span>() &amp;&amp; <span class="built_in">abs</span>(rightHeap-&gt;second - nums[i]) &lt;= t)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            heap.insert(<span class="built_in">pair</span>&lt;<span class="keyword">long</span>, <span class="keyword">long</span>&gt;(heapIndex, nums[i]));</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= k)&#123;</span><br><span class="line">                <span class="keyword">long</span> deleteHeapIndex = (nums[i-k] &gt;= <span class="number">0</span>)? nums[i-k] / heapLen : (nums[i-k] + <span class="number">1</span>) / heapLen - <span class="number">1</span>;</span><br><span class="line">                heap.erase(heap.<span class="built_in">find</span>(deleteHeapIndex));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来的时间留给一些复习内容，链表中元素的倒置。</p>
+<p>利用三指针法可以完成任意节点数目的链表倒置，例如“链表中两节点倒置”“整个链表倒置”“链表中n</p>
+<p>个节点一组倒置”这样的题目都可以利用该方法轻松完成：</p>
+<p><img src="https://i.loli.net/2021/04/17/KeP9MjcH15YJOmq.png" alt="image-20210417170207655"></p>
+<p>假设我们拥有上图所示的初始链表。该链表默认是无专用头节点的链表，也就是说每一个节点都是有数据的。</p>
+<p>所以第一步，我们要先虚拟一个抽象头节点并把pre指针赋给它：</p>
+<p><img src="https://i.loli.net/2021/04/17/nVzGQ9IeL78Sa5T.png" alt="image-20210417170413674"></p>
+<p>接下来设置一cur指针赋给第一个数据节点并将我们虚拟的头节点连接至链表：</p>
+<p><img src="https://i.loli.net/2021/04/17/nI8AZW6Fv7ilx9S.png" alt="image-20210417170528120"></p>
+<p>最后设立一个temp指针指向cur-&gt;next</p>
+<p><img src="https://i.loli.net/2021/04/17/xnBCDovYQj8Sapz.png" alt="image-20210417170642983"></p>
+<p>因此三指针法要求链表最少有三个节点，少于三个节点的链表想必大家随随便便也就可以解决，无需使用三指针法。</p>
+<p>三指针法的核心在于把每一个需要倒置的节点作为temp节点并用头节点连接。也就是说每轮的cur将成为temp节点的下一个节点。</p>
+<p>① 因此第一步我们将cur-&gt;next = temp-&gt;next，可以将cur-&gt;next所指的节点理解为当轮转置后第一个保持原序的节点，这一步也起着将新的头数据节点（并非我们虚拟的那个存粹头节点）前面的连接置空的作用：</p>
+<p><img src="https://i.loli.net/2021/04/17/YLXBIHzZJ6wjOMW.png" alt="image-20210417171244643"></p>
+<p>② 执行 temp-&gt;next = pre-&gt;next,因为我们将pre所指的节点设为了虚拟头节点，也就是说在任一时刻，pre-&gt;next所表示的节点都应该是倒置结果的数据头节点。因此这一步并不难理解：</p>
+<p><img src="https://i.loli.net/2021/04/17/WBgq3F5i8yuXC4f.png" alt="image-20210417171520772"></p>
+<p>③ 执行temp = cur-&gt;next，上面也有提及，cur-&gt;所指向的节点永远是还未被转置，即保持原序的第一个节点，而temp表示下一次将要被挪为数据头节点的节点：</p>
+<p><img src="https://i.loli.net/2021/04/17/Yqr8IjhnuMweESy.png" alt="image-20210417171748790"></p>
+<p>接下来按题目所需重复①②③步骤即可，记住一点可帮助记忆整个方法：<strong>在一个连续链表的转置过程中，pre和cur指针始终不移动。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/03/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E7%9A%84%E4%B8%80%E7%BB%B4dp%E8%A1%A8%E6%B1%82%E6%B3%95/" rel="prev" title="最长公共子序列的一维dp表求法">
+      <i class="fa fa-chevron-left"></i> 最长公共子序列的一维dp表求法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
