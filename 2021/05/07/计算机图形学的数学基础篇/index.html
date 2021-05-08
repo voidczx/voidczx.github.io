@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你能找到：  直线的参数式与隐式表示法以及二维空间里直线的参数式-隐式求交 光线与平面、球面的求交 三角形的表示方法以及建立在光线平面求交与重心判定的光线与三角形求交 符号面积以及利用符号面积计算空间多边形的法向量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学的数学基础篇">
+<meta property="og:url" content="http://yoursite.com/2021/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9A%84%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你能找到：  直线的参数式与隐式表示法以及二维空间里直线的参数式-隐式求交 光线与平面、球面的求交 三角形的表示方法以及建立在光线平面求交与重心判定的光线与三角形求交 符号面积以及利用符号面积计算空间多边形的法向量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/07/FrewV5BscZ8zHkg.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/vrFt3kHqozjeMn1.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/rETkRYyOVuNDhoa.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/TrdfVcP6MuBYnFx.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/Ia1nKqrG6ACyJV4.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/kBDjoEtm7VlFvuX.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/PCt8kjrmTIWbGEf.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/rcnbL1E3UMzSdol.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/kBDjoEtm7VlFvuX.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/4MNpFJqohEOsC3Z.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/Ia1nKqrG6ACyJV4.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/PTtk7mgQlpe8VJA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/tQsHMyN8eCIY4SB.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/rcnbL1E3UMzSdol.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/08/zAWsLo9qZESJjIv.png">
+<meta property="article:published_time" content="2021-05-07T13:33:46.000Z">
+<meta property="article:modified_time" content="2021-05-08T12:03:15.436Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="计算机图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/07/FrewV5BscZ8zHkg.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9A%84%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机图形学的数学基础篇 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9A%84%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机图形学的数学基础篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-07 21:33:46" itemprop="dateCreated datePublished" datetime="2021-05-07T21:33:46+08:00">2021-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-08 20:03:15" itemprop="dateModified" datetime="2021-05-08T20:03:15+08:00">2021-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">计算机图形学相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你能找到：</p>
+<ul>
+<li>直线的参数式与隐式表示法以及二维空间里直线的参数式-隐式求交</li>
+<li>光线与平面、球面的求交</li>
+<li>三角形的表示方法以及建立在光线平面求交与重心判定的光线与三角形求交</li>
+<li>符号面积以及利用符号面积计算空间多边形的法向量</li>
+</ul>
+<a id="more"></a>
+
+
+
+<h3 id="计算机图形学中的直线"><a href="#计算机图形学中的直线" class="headerlink" title="计算机图形学中的直线"></a>计算机图形学中的直线</h3><p>首先要明确的是，这里要叙述的直线都是在二维空间的情况下。</p>
+<p>假设平面中有一直线 l ，其中P，Q是该直线中的两点。</p>
+<p><img src="https://i.loli.net/2021/05/07/FrewV5BscZ8zHkg.png" alt="image-20210507215012002"></p>
+<h4 id="直线的参数式表示"><a href="#直线的参数式表示" class="headerlink" title="直线的参数式表示"></a>直线的参数式表示</h4><p>设参数为t，直线上任一点X可表示为：<br>$$<br>X = (1-t)<em>P + t</em>Q<br>$$<br>该式也正是线性插值的公式。</p>
+<p>这种表示方法在三维空间里也同样有效，其证明也十分简单，将式子变形为：<br>$$<br>X = P + t * (Q - P)<br>$$<br>即P点沿着PQ的方向行进了t单位。</p>
+<p>该表示式中，当 t &lt; 0 说明X在P点前；当 t &gt; 1说明X在Q点后，当 0 &lt;= t &lt;= 1说明X点在以PQ为两端点的线段上。</p>
+<h4 id="直线的隐式表示"><a href="#直线的隐式表示" class="headerlink" title="直线的隐式表示"></a>直线的隐式表示</h4><p>公式为：</p>
+<p><img src="https://i.loli.net/2021/05/08/vrFt3kHqozjeMn1.png" alt="image-20210508190455685"></p>
+<p>其中 dot 为向量点乘，cross为向量叉乘，上标vector的1表示（0， 0， 1）单位二维向量，设P-Q所得向量为v(x， y， 0)根据二维向量叉乘公式：</p>
+<p><img src="https://i.loli.net/2021/05/08/rETkRYyOVuNDhoa.png" alt="image-20210508191108637"></p>
+<p>易得叉乘结果为（-y， x），即为二维平面上直线的垂线向量n（方向为QP方向的逆时针90°）</p>
+<p>知道了这点后整个式子便好理解了：</p>
+<p>直线上任一点X与已知为直线上一点的P相减结果必然为与直线重合的向量（这里不太严谨，毕竟向量没有固定位置，就感性理解一下吧），那么 这个向量必然与该直线共享垂线n，所以n与该向量点乘结果自然为零：</p>
+<p><img src="https://i.loli.net/2021/05/08/TrdfVcP6MuBYnFx.png" alt="image-20210508192013026"></p>
+<h4 id="二维空间（平面上）的直线求交"><a href="#二维空间（平面上）的直线求交" class="headerlink" title="二维空间（平面上）的直线求交"></a>二维空间（平面上）的直线求交</h4><p>计算平面上两直线的交点，则两直线可都为参数式表示或都为隐式式表示，但这样都不是最方便的计算方法——一个为参数式一个为隐式式才是最为便利的求法：</p>
+<p>设直线a为：</p>
+<p><img src="https://i.loli.net/2021/05/08/Ia1nKqrG6ACyJV4.png" alt="image-20210508192619648">①</p>
+<p>其中A为直线a上任意一点，P,Q为直线a上已知两点</p>
+<p>设直线b为：</p>
+<p><img src="https://i.loli.net/2021/05/08/kBDjoEtm7VlFvuX.png" alt="image-20210508192836990">②</p>
+<p>其中B为直线b上任意一点，U为直线b上已知一点，n为直线b的垂线向量</p>
+<p>假设a与b有交点C，那么C在直线a上一定有一个具体的参数值 t，且C在直线b的隐式方程上也成立。也就是说将①式等号右边作为②中的B代入，所求得的t代入回①式即可求得交点：</p>
+<p><img src="https://i.loli.net/2021/05/08/PCt8kjrmTIWbGEf.png" alt="image-20210508193235203"></p>
+<p>可解得</p>
+<p><img src="https://i.loli.net/2021/05/08/rcnbL1E3UMzSdol.png" alt="image-20210508194920231"></p>
+<h3 id="光线的求交计算"><a href="#光线的求交计算" class="headerlink" title="光线的求交计算"></a>光线的求交计算</h3><p>由于光线投射绘制器中，需要由视点投射到屏幕像素的射线与哪些图元相交（穿过了哪些图元），因此光线的求交计算极为重要。</p>
+<h4 id="光线与平面求交"><a href="#光线与平面求交" class="headerlink" title="光线与平面求交"></a>光线与平面求交</h4><p>在之前直线的部分我们介绍了直线的隐式表示法，这种表示法也是可以拓展到三维空间的，不过它表示的不再是直线，而是一个平面，还是用之前的式子做例子：</p>
+<p><img src="https://i.loli.net/2021/05/08/kBDjoEtm7VlFvuX.png" alt="image-20210508192836990"></p>
+<p>已知U为平面b上一点，n为平面法向量，我们可以直观地理解平面上任意一点B与U相减所得的向量与平面的法向量点积为0。</p>
+<p>因此在三维空间下，与直线隐式表示法模样相同的式子即可表示一个平面。事实上，我们设平面上固定点U为（x0， y0， z0）， 平面上一点B为（x， y， z），法线n为（a， b， c）</p>
+<p>代入化简上式即可得到：</p>
+<p><img src="https://i.loli.net/2021/05/08/4MNpFJqohEOsC3Z.png" alt="image-20210508195442389"></p>
+<p>乃我们最熟悉的平面一般方程是也</p>
+<p>接下来再来定义光线，由于直线的参数式表示法在三维空间中也可以表示直线，我们便将上面的直线参数式稍作改变使其变为由光源和光的方向所组成的射线：</p>
+<p><img src="https://i.loli.net/2021/05/08/Ia1nKqrG6ACyJV4.png" alt="image-20210508192619648"></p>
+<p>我们假设P点为光源所在点，（Q-P）为光线方向，式子即变为：</p>
+<p><img src="https://i.loli.net/2021/05/08/PTtk7mgQlpe8VJA.png" alt="image-20210508195835963"></p>
+<p>设光线方向向量为d：</p>
+<p><img src="https://i.loli.net/2021/05/08/tQsHMyN8eCIY4SB.png" alt="image-20210508195931390"></p>
+<p>因此光线与平面求交仍然是将光线的式子（参数式）代入到平面（隐式式）然后求得参数t的过程。所以其计算过程在模样上其实与平面上的直线求交一模一样，解得的t也为：</p>
+<p><img src="https://i.loli.net/2021/05/08/rcnbL1E3UMzSdol.png" alt="image-20210508194920231"></p>
+<p>不过为了凸显光线的特性，我们在光线与平面求交上一般写为：</p>
+<p><img src="https://i.loli.net/2021/05/08/zAWsLo9qZESJjIv.png" alt="image-20210508200159002"></p>
+<p>注意虽然长相完全一样，但每个变量的意义其实已经不尽相同了。</p>
+<h4 id="光线与球面求交"><a href="#光线与球面求交" class="headerlink" title="光线与球面求交"></a>光线与球面求交</h4><p>【to be continue】</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"># 计算机图形学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/17/leetcode220%E6%9C%89%E6%84%9F/" rel="prev" title="leetcode220有感">
+      <i class="fa fa-chevron-left"></i> leetcode220有感
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/08/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" rel="next" title="位运算的小技巧">
+      位运算的小技巧 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B8%AD%E7%9A%84%E7%9B%B4%E7%BA%BF"><span class="nav-number">1.</span> <span class="nav-text">计算机图形学中的直线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E7%BA%BF%E7%9A%84%E5%8F%82%E6%95%B0%E5%BC%8F%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">直线的参数式表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E7%BA%BF%E7%9A%84%E9%9A%90%E5%BC%8F%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.2.</span> <span class="nav-text">直线的隐式表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E7%A9%BA%E9%97%B4%EF%BC%88%E5%B9%B3%E9%9D%A2%E4%B8%8A%EF%BC%89%E7%9A%84%E7%9B%B4%E7%BA%BF%E6%B1%82%E4%BA%A4"><span class="nav-number">1.3.</span> <span class="nav-text">二维空间（平面上）的直线求交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%BA%BF%E7%9A%84%E6%B1%82%E4%BA%A4%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">光线的求交计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%BA%BF%E4%B8%8E%E5%B9%B3%E9%9D%A2%E6%B1%82%E4%BA%A4"><span class="nav-number">2.1.</span> <span class="nav-text">光线与平面求交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%BA%BF%E4%B8%8E%E7%90%83%E9%9D%A2%E6%B1%82%E4%BA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">光线与球面求交</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
