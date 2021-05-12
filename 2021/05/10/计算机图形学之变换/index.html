@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你能找到：  二维空间与三维空间中的线性变换 二维空间与三维空间中的仿射变换 四元数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学之变换">
+<meta property="og:url" content="http://yoursite.com/2021/05/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E5%8F%98%E6%8D%A2/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你能找到：  二维空间与三维空间中的线性变换 二维空间与三维空间中的仿射变换 四元数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/w9vNTJGa6y4rWtx.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/3BQNc7ACTSysDg1.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/qDjJKyUp3XhVLge.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/3v7xMSCbiTVZAau.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/3SDhpj4HraueyL2.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/NFSjfqc1sK7zdvm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/Rd8ESLrb4B1OKwC.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/qt84vCGl1TPWfXr.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/qEnutYeKQCybx3a.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/3UrC2FskEaBhlMH.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/OIYCwWpGgShar5z.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/RhImnGTU5DSXHrs.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/8t52km3xiQoNUHn.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/hvg8yX9pqLFNHOx.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/kKth5iRP3fjWNQ1.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/BxzybGiJDU1Mj2u.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/znWyY2Eu73KifMx.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/ofteVwKJ69Epngh.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/4f7oIXKWenzTGMC.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/nbMSDyeOoC3JLXU.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/K9BTz5qSgxIR83A.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/uoVbTPF4LxBilg9.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/10/qEnutYeKQCybx3a.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/3ZFloHRYyuk576n.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/HRJh14MVUgPTpSX.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/jZbUkBhw2qvcHzA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/Ozw3WpJ91uYsGhl.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/paLnymOluvc1t5C.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/4OVvCkEgD5p1Qc8.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/gE3QpNlYu6ezMqG.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/paLnymOluvc1t5C.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/dgt4B9zJpoEDYsa.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/HMI5t7F4XxqfVkG.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/yGjUm41bI7E8CtH.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/HpolFqOkUxD3iYC.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/4h9mPZAOWNt5vnL.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/qQIlPbhikfSUD8t.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/oCkQXNwp4t1ShvI.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/coLRpHyIC9QEmPs.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/qQIlPbhikfSUD8t.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/lVfrJvZ79eYC5KD.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/XgQzeukJEVW3BC6.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/lVfrJvZ79eYC5KD.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/wI1eHUrlJa8Otom.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/oDHwC5M8FmXYVzi.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/q1Y3AnUQb5kPtEm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/7rB4yRJUH2XCa3t.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/39ivQTrAxp4HaMD.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/hdUbavTk1pKlx2R.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/EsLuMFJvK6pgqRX.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/mnuRif9WFAYsGaH.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/IAeJR4Glv1uPaw7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/4PIjLrX15iHfRyk.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/IAeJR4Glv1uPaw7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/QUzCXEOBbhouVms.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/RoFmWl8tpXzahr2.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/uhGtJXWdprejFAP.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/R4qrYWBFJs3LgSM.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/UMvV5OjJZnqP4rl.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/DqGz9nJCk7XoK3x.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/KUjJXP3yhZib7DV.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/ePV53oxFGpnR7LS.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/jwICySGU9dLZtxg.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/12/Ovx6seaotdWiTJr.png">
+<meta property="article:published_time" content="2021-05-10T00:10:40.000Z">
+<meta property="article:modified_time" content="2021-05-12T11:44:15.800Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="计算机图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/10/w9vNTJGa6y4rWtx.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E5%8F%98%E6%8D%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机图形学之变换 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E5%8F%98%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机图形学之变换
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-10 08:10:40" itemprop="dateCreated datePublished" datetime="2021-05-10T08:10:40+08:00">2021-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-12 19:44:15" itemprop="dateModified" datetime="2021-05-12T19:44:15+08:00">2021-05-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">计算机图形学相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你能找到：</p>
+<ul>
+<li>二维空间与三维空间中的线性变换</li>
+<li>二维空间与三维空间中的仿射变换</li>
+<li>四元数</li>
+</ul>
+<a id="more"></a>
+
+<p>计算机图形学中的变换，便是通过矩阵与向量相乘的形式将此向量变成当前坐标系中的另一向量。利用这样的方式我们便可以控制一个构建好顶点向量集的模型，对其进行缩放旋转平移等等变换，使其以我们想要的样子呈现在最终屏幕上。</p>
+<h3 id="一切变换都可以变成变换矩阵"><a href="#一切变换都可以变成变换矩阵" class="headerlink" title="一切变换都可以变成变换矩阵"></a>一切变换都可以变成变换矩阵</h3><p>根据上述关于变换的概念，在变换中我们其实真正关心的只有两个东西：</p>
+<p>顶点向量的变换前状态与变换后状态。</p>
+<p>我们已经知道了矩阵乘一个向量可以实现变换，但问题是，该用什么样的矩阵来乘才能达成我们想要的结果：将变换前向量变为变换后向量</p>
+<p>我们先以一个二维空间中的例子来说明：</p>
+<p><img src="https://i.loli.net/2021/05/10/w9vNTJGa6y4rWtx.png" alt="image-20210510084827764"></p>
+<p>假设我们有两个初始点A，B，并由这两点构成了一个图形（线段），接下来我们想要将A B变化为下面的plus版：</p>
+<p><img src="https://i.loli.net/2021/05/10/3BQNc7ACTSysDg1.png" alt="image-20210510085223025"></p>
+<p>这就需要一个变换矩阵来对A B进行相乘（你也许会想到A B是点而不是向量，确实是这样，不过我们可以隐式地把它们看作从坐标系原点出发到达它们自身的向量）使其变换到我们想要的状态，那么这个变换矩阵该长什么模样呢？</p>
+<p>是不是一时间有些摸不到头脑。那么我们先假设A B的plus版并非由A B变换而来，而是由当前坐标系两个坐标轴的单位向量（即基向量）u，v变换而来：</p>
+<p><img src="https://i.loli.net/2021/05/10/qDjJKyUp3XhVLge.png" alt="image-20210510083735381"></p>
+<p>同样的，两个基向量在数值上等于两个坐标轴上与原点距离为1的点。<strong>要谨记我们在进行变换的不是顶点本身，而是当前坐标系原点到顶点的那条向量</strong>，只不过这两者在数值计算上相同且直观上人们更愿意相信是顶点发生了变换，所以上面的A B才写作顶点形式。</p>
+<p>这个变换当然也是要变换矩阵的呀，接下来假设这个变换矩阵为：</p>
+<p><img src="https://i.loli.net/2021/05/10/3v7xMSCbiTVZAau.png" alt="image-20210510083845602"></p>
+<p>虽然现在是四个未知数，但别急，让我们用这个矩阵乘上u和v：</p>
+<p><img src="https://i.loli.net/2021/05/10/3SDhpj4HraueyL2.png" alt="image-20210510085831677"></p>
+<p>由于x3 y3 x4 y4均为已知量，于是我们可以发现，欸嘿！变换矩阵之前的未知数c d p r都可以有唯一的结果了。</p>
+<p>现在我们假设这个已被解出的变换矩阵为M：</p>
+<p><img src="https://i.loli.net/2021/05/10/NFSjfqc1sK7zdvm.png" alt="image-20210510090038648"></p>
+<p>但，这是由u，v变成我们想要结果的变换矩阵呀，那我们的A B该怎么办呢</p>
+<p>也很简单，由于A B不过是个代号，我们从现在开始叫他们u 和 v ，问题就解决了！</p>
+<p>上一句当然是我乱讲的。事实上，要把A B和我们这个好像已经取得的阶段性成果产生联系，还是需要u v的辅助。</p>
+<p>我们假设 A B本身（当然是指原点到 A B的向量）也是由u v通过变换矩阵N得来的：</p>
+<p><img src="https://i.loli.net/2021/05/10/Rd8ESLrb4B1OKwC.png" alt="image-20210510090540831"></p>
+<p>和获得M矩阵的步骤相同，我们又得到了N矩阵：</p>
+<p><img src="https://i.loli.net/2021/05/10/qt84vCGl1TPWfXr.png" alt="image-20210510090648713"></p>
+<p>我们把A B到A’ B’看作变换的起点与终点，把u，v看作起点与终点间的一个中间站。</p>
+<p>现在我们拥有了中间站到终点的路径M与中间站到起点的路径N，那么我们还有什么理由获得不了起点到终点的路径？！</p>
+<p><img src="https://i.loli.net/2021/05/10/qEnutYeKQCybx3a.png" alt="image-20210510091052705"></p>
+<p>B的计算同理可得。</p>
+<p>因此我们可以推得，在二维空间里所有和原点不共线的两点（即它们与坐标系原点所构成的向量不会退化到一维空间去）变换到另一组不共线的两点，都能通过这种方法找到这个变换的变换矩阵</p>
+<p>拓展到三维空间，即在三维空间里所有和原点不共面的三点（即它们与坐标系原点所构成的向量不会退化到二维空间去）变换到另一组不共面的三点，都能通过类似的方法找到这个变换的变换矩阵</p>
+<p>这种由当前维度空间最少不退化顶点组之间的变化，便可以被称作线性变换</p>
+<h3 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h3><p>线性变换的定义如上所述，在二维空间由两个不共线的点、三维空间由三个不共面的点所构成图形的变换。下面将介绍几种常用的变换</p>
+<h4 id="缩放变换"><a href="#缩放变换" class="headerlink" title="缩放变换"></a>缩放变换</h4><p>二维情况：</p>
+<p><img src="https://i.loli.net/2021/05/10/3UrC2FskEaBhlMH.png" alt="image-20210510094946631"></p>
+<p>三维情况：</p>
+<p><img src="https://i.loli.net/2021/05/10/OIYCwWpGgShar5z.png" alt="image-20210510094918261"></p>
+<p>其变换矩阵的模样比较像单位矩阵，但有所不同的是，其对角线的元素值不再都为1，而是为各方向上的缩放比例。</p>
+<p>将其乘上向量即可说明其缩放功用，我们以三维情况为例：</p>
+<p><img src="https://i.loli.net/2021/05/10/RhImnGTU5DSXHrs.png" alt="image-20210510095241610"></p>
+<p>假设向量三分量分别为x y z</p>
+<p>相乘后所得的向量如下图：</p>
+<p><img src="https://i.loli.net/2021/05/10/8t52km3xiQoNUHn.png" alt="image-20210510095343008"></p>
+<p>即为对三分量分别乘上相应比例系数的结果</p>
+<h4 id="旋转变换"><a href="#旋转变换" class="headerlink" title="旋转变换"></a>旋转变换</h4><p>旋转变换的二维空间情况下较为简单，因为二维空间为一个平面，可供旋转的轴只有在二维空间中实际不存在的z轴，故二维空间下旋转的变换矩阵可表示为：</p>
+<p><img src="https://i.loli.net/2021/05/10/hvg8yX9pqLFNHOx.png" alt="image-20210510101413641"></p>
+<p>与向量相乘后所得结果向量为：</p>
+<p><img src="https://i.loli.net/2021/05/10/kKth5iRP3fjWNQ1.png" alt="image-20210510101438500"></p>
+<p>即为坐标系原点至该顶点的向量绕原点逆时针旋转theta角度后的向量</p>
+<p>在直角坐标系中这样的式子似乎有些难以理解，下面让我们转换到极坐标（r，theta）中</p>
+<p>设该点初状态为：</p>
+<p><img src="https://i.loli.net/2021/05/10/BxzybGiJDU1Mj2u.png" alt="image-20210510100957175"></p>
+<p>即变换前：</p>
+<p><img src="https://i.loli.net/2021/05/10/znWyY2Eu73KifMx.png" alt="image-20210510101225465"></p>
+<p>接下来让它绕原点逆时针（即正向）旋转theta角度：</p>
+<p><img src="https://i.loli.net/2021/05/10/ofteVwKJ69Epngh.png" alt="image-20210510101119813"></p>
+<p>转换回直角坐标系，得变换后的x y值为：</p>
+<p><img src="https://i.loli.net/2021/05/10/4f7oIXKWenzTGMC.png" alt="image-20210510101704433"></p>
+<p>将初状态的x y代入即可得到结果。</p>
+<p>三维空间下由于旋转的轴线从一个变成三个，故而旋转矩阵也从一种变成了三种，分别对应</p>
+<p>绕x轴（yz平面上），绕y轴（xz平面上），绕z轴（xy平面上）：</p>
+<p><img src="https://i.loli.net/2021/05/10/nbMSDyeOoC3JLXU.png" alt="image-20210510112612934"></p>
+<p><img src="https://i.loli.net/2021/05/10/K9BTz5qSgxIR83A.png" alt="image-20210510112823621"></p>
+<p><img src="https://i.loli.net/2021/05/10/uoVbTPF4LxBilg9.png" alt="image-20210510112924198"></p>
+<p>需要注意的是，尽量不要将三轴向旋转连在一起用，可能会产生意料外的结果，这点在四元数部分会详谈。</p>
+<h3 id="仿射变换（平移）"><a href="#仿射变换（平移）" class="headerlink" title="仿射变换（平移）"></a>仿射变换（平移）</h3><p>看到这个括号里的“平移”，你可能会有所疑惑，</p>
+<p><img src="https://i.loli.net/2021/05/10/qEnutYeKQCybx3a.png" alt="image-20210510091052705"></p>
+<p>在这个公式下，我们不是已经可以求得空间里任意两组点的线性变换矩阵，而任意两组点间的关系自然包括了平移呀。</p>
+<p>表面上没错，但请仔细回想一下，如上的式子实质上是利用基向量来把任意两个空间内由原点指向的向量变换为另外两个由原点指向的向量。</p>
+<p><img src="https://i.loli.net/2021/05/12/3ZFloHRYyuk576n.png" alt="image-20210512080205597"></p>
+<p><strong>虽然在现象上点确实平移了，但带来点平移这个现象上的实质只是从原点出发那条向量的旋转与缩放。</strong></p>
+<p>也就是说，在线性变换里，我们无法实现真正意义上的平移。</p>
+<p>原因在于，藉由变换矩阵完成的变换，其实都是在改变从原点出发到的向量，而这个原点是不会变的。所有在二维平面里，无论表面上图形的顶点经历了怎样的变换，其实都是从原点出发的向量，对于它所在的这个二维平面来说是不会被平移的。</p>
+<p>那么，既然是二维空间里做不来的事情，我们就让三维空间来做，我们将二维xy平面在第三个垂直轴上（称为w轴）延伸，然后将我们之前的二维画布（进行变换的那个二维空间）放置在 w=1 的位置：</p>
+<p><img src="https://i.loli.net/2021/05/12/HRJh14MVUgPTpSX.png" alt="image-20210512082106886"></p>
+<p>如上图所示，蓝色平面为 z=1 的平面，也就是我们的二维画布，红平面为 w=0 的平面，所有蓝平面的点实质上都是红平面上原点到蓝平面的向量。</p>
+<p>因此所有二维空间的点在表示上应该被表示为：</p>
+<p><img src="https://i.loli.net/2021/05/12/jZbUkBhw2qvcHzA.png" alt="image-20210512082555213"></p>
+<p>而这种在高维空间中进行低维变换并保证一切变换都发生在 w=1 平面上的变换，即为仿射变换。</p>
+<p>由于变换实际上已经被拓展为二维空间，上面的</p>
+<p><img src="https://i.loli.net/2021/05/12/Ozw3WpJ91uYsGhl.png" alt="image-20210512083308078"></p>
+<p>也可以拓展为：二维平面上所有不共线的三点（即原点到它们的三个向量不共面），都可以经由一个仿射变换变为该二维平面上另外的不共线三点。而这个仿射变换矩阵即可由上式得到。</p>
+<p>同理，在三维空间中的点，也应被表示为：</p>
+<p><img src="https://i.loli.net/2021/05/12/paLnymOluvc1t5C.png" alt="image-20210512082950481"></p>
+<p>即意味着我们在四维空间 w=1 的层面上开创了一个三维画布，并在 w=1 的三维画布里进行一切变换。</p>
+<p>有了以上对仿射变换的概念后，我们即可进入仿射变换最热门的一个应用：</p>
+<h4 id="平移变换"><a href="#平移变换" class="headerlink" title="平移变换"></a>平移变换</h4><p>首先给出二维空间下和三维空间下的平移变换矩阵：</p>
+<p>二维空间：</p>
+<p><img src="https://i.loli.net/2021/05/12/4OVvCkEgD5p1Qc8.png" alt="image-20210512083932084"></p>
+<p>三维空间：</p>
+<p><img src="https://i.loli.net/2021/05/12/gE3QpNlYu6ezMqG.png" alt="image-20210512083952726"></p>
+<p>其中，d指在相应方向上的位移。</p>
+<p>以三维空间为例，我们将其乘上一个已经拓展进四维的 w=1 中的三维向量（数值上等同于点的坐标）：</p>
+<p><img src="https://i.loli.net/2021/05/12/paLnymOluvc1t5C.png" alt="image-20210512082950481"></p>
+<p>得到：</p>
+<p><img src="https://i.loli.net/2021/05/12/dgt4B9zJpoEDYsa.png" alt="image-20210512084243248"></p>
+<p>相比于我们额外获得的变换自由度，多一个维度的空间成本是可以接受的。</p>
+<h3 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h3><p>稍微熟悉四元数的同学会知道，一旦谈起这家伙，一定绕不开和它一起用于表示3d旋转的那个同事——欧拉角，虽然这个同事办事不是那么的靠谱。</p>
+<h4 id="欧拉角和它的万向结死锁"><a href="#欧拉角和它的万向结死锁" class="headerlink" title="欧拉角和它的万向结死锁"></a>欧拉角和它的万向结死锁</h4><p>之前我们已经分别得出了三维空间中绕x y z旋转theta角的变换矩阵Mx My Mz，那么如果我们对这三个变换矩阵进行组合，例如 Mx * My * Mz * v（顶点向量），是否就可以达成实现任意旋转的线性变换了呢？</p>
+<p><img src="https://i.loli.net/2021/05/12/HMI5t7F4XxqfVkG.png" alt="image-20210512101508176"></p>
+<p>上式可以从两个角度来看</p>
+<p>1、从右往左看，即外旋。外旋即以变换矩阵乘顶点向量的方式理解即可，向量v先绕坐标系的z轴旋转thetaz得到新向量v‘，再由v’绕坐标系的y轴旋转thetay得到新向量v‘’，最后由v‘’绕坐标系的x轴旋转thetax完成旋转。<strong>外旋的特点是从右往左，每次旋转都围绕世界轴进行。</strong></p>
+<p>2、从左往右看，即内旋。内旋需借助坐标轴的旋转变换，即转动矩阵来辅助理解：</p>
+<p>假设在三维空间中我们有两个共原点但不同方向的标准坐标系：</p>
+<p><img src="https://i.loli.net/2021/05/12/yGjUm41bI7E8CtH.png" alt="image-20210512111331828"></p>
+<p>旧坐标系（黑色）变换到新坐标系（红色）的过程，即为三个黑色标准向量投影到每个红色向量上并进行矢量相加的过程。因此从j坐标轴变换到i坐标轴的过程即为：</p>
+<p><img src="https://i.loli.net/2021/05/12/HpolFqOkUxD3iYC.png" alt="image-20210512111648754">（图源网络)</p>
+<p>等效于下图旋转矩阵乘上变换前坐标轴单位向量 xj yj zj</p>
+<p><img src="https://i.loli.net/2021/05/12/4h9mPZAOWNt5vnL.png" alt="image-20210512111735862">（图源网络)</p>
+<p>因此，我们的内旋即可看作将标准坐标系不断变换为新的坐标系的形式：</p>
+<p>首先将标准坐标系M绕自身的x轴（此时也是标准的x轴）旋转thetax得到新坐标系M‘，再由M’绕自身y轴（此时大概率不是标准y轴）旋转thetay得到新坐标系M‘’，再有M‘’绕自身z轴旋转thetaz得到最终作用于向量v的坐标系M‘’‘，整个变换矩阵与向量v相乘的过程即可看作将向量v所在的坐标系（标准坐标系）变换为M’‘’的过程。</p>
+<p><strong>内旋的特点为从左到右，每次旋转围绕自身坐标系。</strong></p>
+<p>现在再来看整个欧拉旋转：</p>
+<p><img src="https://i.loli.net/2021/05/12/qQIlPbhikfSUD8t.png" alt="image-20210512112510937"></p>
+<p>将旋转矩阵相乘合并得下式：</p>
+<p><img src="https://i.loli.net/2021/05/12/oCkQXNwp4t1ShvI.png" alt="image-20210512113836730"></p>
+<p>试想如下一种情形：thetay = 90°</p>
+<p>使得上式变为：</p>
+<p><img src="https://i.loli.net/2021/05/12/coLRpHyIC9QEmPs.png" alt="image-20210512114329101"></p>
+<p>此时只要 thetax + thetaz 的值不变，向量的旋转变换就不变，也就是说，多组 thetax 与 thetaz 将对应同一个结果。即使我们改变三个轴的旋转顺序，即三个旋转矩阵的相乘顺序，也总是会出现一旦一个轴旋转90°，另两个轴向的旋转组合形成多对一的情况。</p>
+<p>这就是欧拉角万向节死锁的数值表现形式。</p>
+<p>为了更直观地解释欧拉角这个同事的不靠谱，我们接下来再看一种情况：</p>
+<p>还是这个欧拉旋转：</p>
+<p><img src="https://i.loli.net/2021/05/12/qQIlPbhikfSUD8t.png" alt="image-20210512112510937"></p>
+<p>根据之前的内旋方法与外旋方法（无论内旋与外旋，旋转结果都是一样的，区分的是我们人类对该旋转式的理解方式而不是最终实现的旋转结果），我们首先以内旋方式进行左数第一个矩阵，即将标准坐标轴绕x轴旋转thetax。假如thetax等于90°，我们所得到的新坐标轴M‘的y轴将指向先前标准坐标轴的z轴正方向。接下来我们内旋地进行左数第二个矩阵，即将新坐标系M’绕它自己的y轴（此时已变成了标准坐标系的z轴）旋转theta角得到一个更新的坐标系M‘’，并且外旋地进行左数第三个矩阵，即将M‘’绕标准坐标系的z轴旋转thetaz，我们将惊人地发现这一步旋转与上一步旋转实际进行的是同一个平面的旋转！</p>
+<p>欧拉角的万向节死锁将会以如上的方式使我们莫名其妙地丢掉一个轴向的旋转自由度，因此我们如果想要达到真正的任意旋转，必须要借助旋转部门的新职员——四元数的力量。</p>
+<h4 id="什么是四元数"><a href="#什么是四元数" class="headerlink" title="什么是四元数"></a>什么是四元数</h4><p>四元数在概念上类似于复数：</p>
+<p>我们都知道复数是形为 a + bj ， j的平方 = -1 这样的数。</p>
+<p>倘若把虚部拓展为三个，对应三维空间的x y z轴，形成形如：</p>
+<p><img src="https://i.loli.net/2021/05/12/lVfrJvZ79eYC5KD.png" alt="image-20210512165802502"></p>
+<p>的形式，其中：</p>
+<p><img src="https://i.loli.net/2021/05/12/XgQzeukJEVW3BC6.png" alt="image-20210512165923569"></p>
+<p>为简略表示，四元数</p>
+<p><img src="https://i.loli.net/2021/05/12/lVfrJvZ79eYC5KD.png" alt="image-20210512165802502"></p>
+<p>也可写作：</p>
+<p><img src="https://i.loli.net/2021/05/12/wI1eHUrlJa8Otom.png" alt="image-20210512170033755"></p>
+<p>或</p>
+<p><img src="https://i.loli.net/2021/05/12/oDHwC5M8FmXYVzi.png" alt="image-20210512170049816"></p>
+<p>几何意义上四元数表示四维空间中超球对三维空间中的映射，但涉及到四维空间的几何概念太过抽象，我个人目前也没能领悟透彻，就先将四元数理解为 a + bj 的拓展形式，复平面的虚轴在四元数中拓展为一个空间。</p>
+<p>因此单纯的三维向量即可表示为实部为0的四元数（也叫纯四元数）：</p>
+<p><img src="https://i.loli.net/2021/05/12/q1Y3AnUQb5kPtEm.png" alt="image-20210512171910449"></p>
+<p>正如之前所说，作为欧拉角的同事，计算机图形学引入四元数最大的目的就是为了表示任意的旋转：</p>
+<p>形如 a + bj 的复数可以在二维直角坐标系中表示的事情我们都知道了，类似于极坐标系，</p>
+<p>cos（theta）+ jsin（theta）可以在复数平面表示任意一个从原点出发的单位向量，控制theta的值即可表示向量在复平面的旋转。那么在拓展到三个虚部的四元数情况下，是否还可以用于表示旋转呢？</p>
+<h4 id="四元数与旋转"><a href="#四元数与旋转" class="headerlink" title="四元数与旋转"></a>四元数与旋转</h4><p>在叙述四元数和旋转的关系前，首先让我们看看四元数相关的一些基本运算。由于四元数本身是复数，所以基本所有运算都可以由复数性质求得：</p>
+<p>四元数的乘法即为复数式的相乘，设两个四元数：</p>
+<p><img src="https://i.loli.net/2021/05/12/7rB4yRJUH2XCa3t.png" alt="image-20210512171329881"></p>
+<p>则相乘结果为：</p>
+<p><img src="https://i.loli.net/2021/05/12/39ivQTrAxp4HaMD.png" alt="image-20210512172233621"></p>
+<p>由于三维向量可表示为纯四元数</p>
+<p>故有：</p>
+<p><img src="https://i.loli.net/2021/05/12/hdUbavTk1pKlx2R.png" alt="image-20210512172910566"></p>
+<p><img src="https://i.loli.net/2021/05/12/EsLuMFJvK6pgqRX.png" alt="image-20210512172815246"></p>
+<p>欲使四元数q可以表示一个旋转，我们假设它可以由复数平面表示旋转的方式推广而来，故改变四元数q的形式，有：</p>
+<p><img src="https://i.loli.net/2021/05/12/mnuRif9WFAYsGaH.png" alt="image-20210512173537844"></p>
+<p>假如四元数q的确表示旋转，我们应得到一个旋转后的三维向量，即一个旋转后的纯四元数，其复数式的模值也应与p的复数式模值相等。</p>
+<p>我们得到旋转四元数的一般式：</p>
+<p><img src="https://i.loli.net/2021/05/12/IAeJR4Glv1uPaw7.png" alt="image-20210512181403175"></p>
+<p>其中theta代表旋转角， 向量u代表所围绕的旋转轴（已经归一化的）</p>
+<p>因此表示旋转的四元数均应是其复数式模值为1的单位四元数</p>
+<p>旋转过程为：</p>
+<p><img src="https://i.loli.net/2021/05/12/4PIjLrX15iHfRyk.png" alt="image-20210512190615204"></p>
+<p>由于q为单位四元数，故q的逆即为q的共轭。</p>
+<p>我这里只是粗略一谈，四元数表示乘法的概念远比上述复杂，详情请参见：</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27471300">四元数——基本概念 - 知乎 (zhihu.com)</a></p>
+<h4 id="四元数转换为旋转矩阵与四元数球面插值"><a href="#四元数转换为旋转矩阵与四元数球面插值" class="headerlink" title="四元数转换为旋转矩阵与四元数球面插值"></a>四元数转换为旋转矩阵与四元数球面插值</h4><p>既然四元数真的可以表示三维空间的旋转且不存在万向节死锁，我们就要将其充分地利用起来，其在计算机图形学中应用最广泛的，当属旋转四元数转化为旋转矩阵与旋转四元数的 SLERP 球面插值</p>
+<p>旋转四元数到旋转矩阵的转换，即利用旋转四元数中的两个关键信息：旋转角与旋转轴。</p>
+<p>旋转四元数可表示为：</p>
+<p><img src="https://i.loli.net/2021/05/12/IAeJR4Glv1uPaw7.png" alt="image-20210512181403175"></p>
+<p>即</p>
+<p><img src="https://i.loli.net/2021/05/12/QUzCXEOBbhouVms.png" alt="image-20210512184752302"></p>
+<p>其中</p>
+<p><img src="https://i.loli.net/2021/05/12/RoFmWl8tpXzahr2.png" alt="image-20210512185331814"></p>
+<p>由于旋转轴为三维空间中一向量，所以一定可以表示为从原点出发的一向量的形式：</p>
+<p><img src="https://i.loli.net/2021/05/12/uhGtJXWdprejFAP.png" alt="image-20210512183918966"></p>
+<p>利用球坐标系的办法：</p>
+<p>将从原点出发的旋转轴向量u投影至xz平面得到xz平面上的投影向量u‘，u’与x轴所成夹角设为m</p>
+<p>将u与u‘所成夹角设为n</p>
+<p>u向量即可表示为：</p>
+<p><img src="https://i.loli.net/2021/05/12/R4qrYWBFJs3LgSM.png" alt="image-20210512184624742"></p>
+<p>故绕u向量旋转theta角度，可以等效为坐标系先通过内旋使得z轴与u向量重合，利用欧拉角的绕z轴旋转矩阵快速得到绕此时u向量（即z轴）的旋转矩阵，再将其做z轴变为u向量的反变换恢复z轴，所得即为绕u向量旋转theta角度的旋转矩阵：</p>
+<p><img src="https://i.loli.net/2021/05/12/UMvV5OjJZnqP4rl.png" alt="image-20210512185447703"></p>
+<p>其中Ora表示旋转相应轴的欧拉旋转矩阵，后面的欧拉矩阵转置即将u向量变换回标准z轴，由于欧拉矩阵均为单位矩阵，故矩阵的逆等于矩阵的转置。</p>
+<p>经该方法可得旋转矩阵：</p>
+<p><img src="https://i.loli.net/2021/05/12/DqGz9nJCk7XoK3x.png" alt="image-20210512185922885"></p>
+<p>上述这种由旋转四元数获得旋转矩阵的推导方式也是从上面四元数基础概念的链接中学来的。</p>
+<p>理解旋转四元数的球面插值只需要理解如下几件事情：</p>
+<p>无论几维空间，由一个变量变换到另一个变量都可以由一个二维平面内的圆弧表示。</p>
+<p>且无论几维空间下，两个非共线向量均有唯一的夹角，夹角值也均可由向量点积除以向量模积的方式求得。</p>
+<p>四元数可以被表示为四维空间中的一个向量，旋转四元数可表示为四维空间中的一个单位向量（由复平面向量推广而得）</p>
+<p><img src="https://i.loli.net/2021/05/12/KUjJXP3yhZib7DV.png" alt="image-20210512192703059"></p>
+<p>如上图将q1到q2的过程进行插值，根据以上几条理论，四元数的球面插值可完全转化为向量的球面插值，其中t的范围满足【0，1】：</p>
+<p><img src="https://i.loli.net/2021/05/12/ePV53oxFGpnR7LS.png" alt="image-20210512193329168"></p>
+<p>上式可由qt正交分解得出。</p>
+<p><img src="https://i.loli.net/2021/05/12/jwICySGU9dLZtxg.png" alt="image-20210512193716415"></p>
+<p>q1’可由上式求得，其中分子式求出方向，分母式将长度变为单位1</p>
+<p>故qt式变为：</p>
+<p><img src="https://i.loli.net/2021/05/12/Ovx6seaotdWiTJr.png" alt="image-20210512194208954"></p>
+<p>其中theta为初末旋转四元数四维向量形式的点乘结果。</p>
+<p>有了这些四元数知识，我们就已经可以在自己的程序中构建四元数类来利用四元数进行三维的旋转变换了。</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"># 计算机图形学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/08/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" rel="prev" title="位运算的小技巧">
+      <i class="fa fa-chevron-left"></i> 位运算的小技巧
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%88%87%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF%E4%BB%A5%E5%8F%98%E6%88%90%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5"><span class="nav-number">1.</span> <span class="nav-text">一切变换都可以变成变换矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">线性变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E5%8F%98%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">缩放变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC%E5%8F%98%E6%8D%A2"><span class="nav-number">2.2.</span> <span class="nav-text">旋转变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2%EF%BC%88%E5%B9%B3%E7%A7%BB%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">仿射变换（平移）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB%E5%8F%98%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">平移变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">四元数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E8%A7%92%E5%92%8C%E5%AE%83%E7%9A%84%E4%B8%87%E5%90%91%E7%BB%93%E6%AD%BB%E9%94%81"><span class="nav-number">4.1.</span> <span class="nav-text">欧拉角和它的万向结死锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%9B%E5%85%83%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">什么是四元数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0%E4%B8%8E%E6%97%8B%E8%BD%AC"><span class="nav-number">4.3.</span> <span class="nav-text">四元数与旋转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5%E4%B8%8E%E5%9B%9B%E5%85%83%E6%95%B0%E7%90%83%E9%9D%A2%E6%8F%92%E5%80%BC"><span class="nav-number">4.4.</span> <span class="nav-text">四元数转换为旋转矩阵与四元数球面插值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
