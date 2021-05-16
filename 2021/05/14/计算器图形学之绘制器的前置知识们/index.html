@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRFD函数为基础的光照模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算器图形学之绘制器的前置知识们">
+<meta property="og:url" content="http://yoursite.com/2021/05/14/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8%E7%9A%84%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E4%BB%AC/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRFD函数为基础的光照模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/14/WqevHwFcrU8JN9M.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/14/osWk6PhCFy2Qmez.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/14/jHwD2IuBflxt4a7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/qFyRXf9kA4nTxh3.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/14/CVMhDeirJB69qoz.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/eqwjf6A9DTl5VFX.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/8YU2LTxk6quHhPQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/QpXMx1rB9gqid6A.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/g3tcw5qGjTWi1Fp.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/GNqiUoIlDy5TgBA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/fr8sIMNQPptARSH.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/E5MD3eg1vuobqki.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/msJwKA6B2jC19SY.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/GNqiUoIlDy5TgBA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/LEBM3AI5iqVtrz7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/xyYFQqtL6uI8ozn.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/c9OdTgxZ6arMsXV.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/9kfgp58yHKBRUnT.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/iKv4d2PDxH9hfIm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/u5dyhUsGAjwD3Np.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/xyYFQqtL6uI8ozn.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/KcfHJTERgGLjuqO.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/NViXqM8lE3bkCRp.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/yCa6HNzt5JIAWv2.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/vD61E8aVfqL7tFp.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/kSV57jKPOoFhrRa.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/9DFrmht4wfVoj7i.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/UnRXuSANGKCoOjy.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/IGesn5RKhrDBtJv.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/FBfnjh5yCUwGtX7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/ytHrEAYqfM2TBpm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/DOiYpLWnlRZXT3u.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/1nDPmTGYtWC2Vv5.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/AqmogvVYPFMKX23.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/9G6DBEkwCWL4SiA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/P9mxqlp7b8FdIwo.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/16/gTRt1JOcPmzBWbp.png">
+<meta property="article:published_time" content="2021-05-14T10:21:14.000Z">
+<meta property="article:modified_time" content="2021-05-16T05:14:56.948Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="计算机图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/14/WqevHwFcrU8JN9M.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/14/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8%E7%9A%84%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E4%BB%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算器图形学之绘制器的前置知识们 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/14/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8%E7%9A%84%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E4%BB%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算器图形学之绘制器的前置知识们
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-14 18:21:14" itemprop="dateCreated datePublished" datetime="2021-05-14T18:21:14+08:00">2021-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-16 13:14:56" itemprop="dateModified" datetime="2021-05-16T13:14:56+08:00">2021-05-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">计算机图形学相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你能找到：</p>
+<ul>
+<li>摄像机的投影变换</li>
+<li>混合、局部覆盖率与投射</li>
+<li>以BRFD函数为基础的光照模型</li>
+</ul>
+<a id="more"></a>
+
+
+
+<h3 id="投影变换"><a href="#投影变换" class="headerlink" title="投影变换"></a>投影变换</h3><h4 id="从自身坐标系到视坐标系"><a href="#从自身坐标系到视坐标系" class="headerlink" title="从自身坐标系到视坐标系"></a>从自身坐标系到视坐标系</h4><p>在一幅场景的绘制中，所有的物体（模型）的形状都是以顶点向量集的形式存储的，这些顶点向量，实际上代表着模型各顶点在自身坐标系（即以物体几何中心或我们自定的一个方便后续操作的点为原点所构建的坐标系）中的位置。根据上一篇文章所介绍的变换方法，我们可以将这些蜷缩在自身坐标系的闭门不出的小家伙们通过线性变换进行旋转缩放，变换为我们希望的姿态，再通过仿射变换平移到世界坐标系（假想有一片巨大无垠的空间，把这个空间看作世界，在世界中心作为原点并加上坐标轴就是世界坐标系）。此时物体加入到世界的过程便完成了，但用户是无法钻进计算机里来观察这个由我们绘制出的世界的，因此我们需要一个媒介来呈现这个世界，也就是计算机图形学，以及引擎中常提到的“摄像机”</p>
+<p><img src="https://i.loli.net/2021/05/14/WqevHwFcrU8JN9M.png" alt="image-20210514193131122"></p>
+<p>借用learnopengl网站中的图片，用户每次只能观察到我们绘制完成世界的一部分，这个一部分就是以摄像机自身坐标系反向z轴后的平截头体：</p>
+<p><img src="https://i.loli.net/2021/05/14/osWk6PhCFy2Qmez.png" alt="image-20210514193450323"></p>
+<p>因此又将引入一个新的坐标系——以摄像机作为原点，朝向为摄像机-z方向的视坐标系：</p>
+<p><img src="https://i.loli.net/2021/05/14/jHwD2IuBflxt4a7.png" alt="image-20210514193839380"></p>
+<p>最终呈现给用户的即为视坐标系中平截头体的部分（就是那个红色四棱锥）</p>
+<p>于是，通过自身坐标系，世界坐标系，视坐标系，我们终于得到了用户最后看到版本的雏形。是不是已经有些头晕了，但先别急着晕，我们还没完。</p>
+<p>我们都清楚最后实际显示画面的是显示器——一个二维平面，因此把这个四棱锥作为最后结果自然是不太妥当的。现在请把视坐标系的原点想象成我们的眼睛，在我们睁开眼睛看世界的过程中其实也可看作顺着视线的方向发射了一个视野四棱锥（当然我们视野的锥体会更加圆润一些），在收集到前方世界的信息后将图像呈现在视网膜上，也是一个 截头体-&gt;平面 的转换。因此在这里我们要做的事情就类似于眼睛——将四棱锥里的所需部分变成一个二维图像。而这个过程，就是大名鼎鼎的投影变换。</p>
+<p>了解了投影变换的整体目标，我们接下来看看投影变换的具体实现。</p>
+<p>由四棱锥变成平面的过程固然简单直观，但也未免不太优雅，径向投影的方式在处理上总是会较平行投影更为复杂，且不容易处理深度遮挡的问题。因此，我们将四棱锥的基础上再做一步展开，使其变换为三个轴向坐标范围均为[-1,1]的标准正方体：</p>
+<p><img src="https://i.loli.net/2021/05/16/qFyRXf9kA4nTxh3.png" alt="image-20210516105849258">（图源网络)</p>
+<p>因此接下来，我们的终极目标就是将视坐标系中的场景变换为这个正方体！</p>
+<h4 id="投影变换来了！"><a href="#投影变换来了！" class="headerlink" title="投影变换来了！"></a>投影变换来了！</h4><p>还是按照之前眼睛的比喻，假如我们站在呼伦贝尔大草原中央向前方远眺，开阔的平野使我们几乎可以看到前方三公里的所有景物，但三公里处的牛羊在我们眼中大概就会变成一个个只有模糊轮廓的影点，而这对于计算机来说自然是耗费性能且意义不大的行为，同时，离眼睛过近的物体在视觉呈现上会变得极大也会影响我们的绘制，因此，上面视坐标中的四棱锥还需要多加一点东西：</p>
+<p><img src="https://i.loli.net/2021/05/14/CVMhDeirJB69qoz.png" alt="image-20210514195405536"></p>
+<p>远平面（蓝色）与近平面（绿色）。</p>
+<p>经过了这两个平面在z轴范围上的限制，我们才能确定真正应该变为最后二维图像的场景范围,即经远平面与近平面切割四棱锥所形成的新四棱台。之后我们便可以模拟视野物体映射到视网膜上的过程（其实并不相似，但我想不到其他的比喻了TAT），将四棱台内的顶点投影变换到一个平面上，一般为方便起见，这个投影平面会选择近平面或远平面，我们这里选择近平面。</p>
+<p>由于四棱台的对称性，我们可以将其三维坐标系分成xz，yz两个二维坐标系来处理，首先来看xz平面的情况：</p>
+<p><img src="https://i.loli.net/2021/05/16/eqwjf6A9DTl5VFX.png" alt="image-20210516101737111"></p>
+<p>xz平面上的四棱台刨面如上图所示，注意由于摄像机朝向为视坐标系的z轴负方向，因此视野所处的位置z坐标均应为负。</p>
+<p>上图中，F为远平面到视点xy平面的距离，故远平面上任意点的z坐标为-F；N为近平面到视点xy平面的距离，故近平面上任意点的z坐标为-N。</p>
+<p>P点为视野有效范围（四棱台范围）内的任一点，P‘为P点径向投影至近平面的点，设P（x， y，z）；P’（x‘，y’，z‘）</p>
+<p>故有：</p>
+<p><img src="https://i.loli.net/2021/05/16/8YU2LTxk6quHhPQ.png" alt="image-20210516102709011"></p>
+<p>可解得近平面投影点上的x坐标值：</p>
+<p><img src="https://i.loli.net/2021/05/16/QpXMx1rB9gqid6A.png" alt="image-20210516102834016"></p>
+<p>yz平面同理可得：</p>
+<p><img src="https://i.loli.net/2021/05/16/g3tcw5qGjTWi1Fp.png" alt="image-20210516102918462"></p>
+<p>因此经变换后的P‘点为：</p>
+<p><img src="https://i.loli.net/2021/05/16/GNqiUoIlDy5TgBA.png" alt="image-20210516103932422"></p>
+<p>由于这一步变换旨将四棱台中点变换到近平面上，而近平面上的点z坐标都为-N，因此我们所有变换后的P‘点，其z坐标都为-N。</p>
+<p>根据“给所有人都发钱了就相当于没发钱”的原理，这个z坐标在此时其实是没有意义的了（别盯着w坐标的那个1看！w很有用的，后面会说到），因此我们选择让z坐标这个位置做些有意义的事情——比如存储P点原来的z坐标值：</p>
+<p><img src="https://i.loli.net/2021/05/16/fr8sIMNQPptARSH.png" alt="image-20210516104459210"></p>
+<p>这个思路大体上算不错，但这样一来我们怎么知道P’点是在近平面上而不是由其z坐标确定的原来的xy平面上呢？</p>
+<p>所以我们对这个z坐标值的期望其实有两个：</p>
+<p>1、表明原P点的z坐标值信息</p>
+<p>2、实现最终目标正方体的z坐标值约束（-1到1）</p>
+<p>由以上两条可以得出，z’值一定是一个和z相关的函数。</p>
+<p>在进一步深入z‘值的探讨之前，我们先来介绍一下透视除法。</p>
+<p>在上一篇的变换相关中，我们在三维顶点向量中引入了第四个坐标w以在四维空间通过放射变换实现真正意义上的平移。在那时，w值应是恒为1的（因为我们的场景处于w=1的三维空间中），但在投影变换中，我们放宽了条件，变换后的顶点坐标其w值可为任何值。不过相应的，我们也要承担放宽政策后的管理责任：在进行下一步的处理前将坐标除以w值来让顶点变换回w=1的空间里。</p>
+<p>即投影变换后的顶点坐标：</p>
+<p><img src="https://i.loli.net/2021/05/16/E5MD3eg1vuobqki.png" alt="image-20210516113429988"></p>
+<p>真正被进行进一步处理的顶点坐标：</p>
+<p><img src="https://i.loli.net/2021/05/16/msJwKA6B2jC19SY.png" alt="image-20210516113621592"></p>
+<p>接下来我们再看回被投影至近平面的P’：</p>
+<p><img src="https://i.loli.net/2021/05/16/GNqiUoIlDy5TgBA.png" alt="image-20210516103932422"></p>
+<p>其x y值均是常数N乘变换前值再除以变换前z值的形式。一个大胆的想法浮现出来了：</p>
+<p>我们或许可以利用w的位置完成z‘值的第一个任务：保存其变换前z值，如下图：</p>
+<p><img src="https://i.loli.net/2021/05/16/LEBM3AI5iqVtrz7.png" alt="image-20210516115715995"></p>
+<p>由于透视除法的存在，上面两个P’实际上等价。但这样一来，保存变换前z值的任务被w‘分摊了，因此对于z’，我们可以专心于它的第二个任务——使得近平面与远平面之间点的z值映射到[-1，1]：</p>
+<p><img src="https://i.loli.net/2021/05/16/xyYFQqtL6uI8ozn.png" alt="image-20210516115738400"></p>
+<p>我们令近平面上的z‘值为-1，远平面上z’值为1，即：</p>
+<p><img src="https://i.loli.net/2021/05/16/c9OdTgxZ6arMsXV.png" alt="image-20210516120757050"></p>
+<p>注意不要忘记透视除法的影响，我们所变换得的正方体应在w=1的情况下</p>
+<p>解得：</p>
+<p><img src="https://i.loli.net/2021/05/16/9kfgp58yHKBRUnT.png" alt="image-20210516121122490"></p>
+<p>所以截止目前，我们的变换矩阵M应满足：</p>
+<p><img src="https://i.loli.net/2021/05/16/iKv4d2PDxH9hfIm.png" alt="image-20210516121312111"></p>
+<p>可求得M为：</p>
+<p><img src="https://i.loli.net/2021/05/16/u5dyhUsGAjwD3Np.png" alt="image-20210516121554555"></p>
+<p>回顾我们目前所得到的P‘点：</p>
+<p><img src="https://i.loli.net/2021/05/16/xyYFQqtL6uI8ozn.png" alt="image-20210516115738400"></p>
+<p>在透视除法后：</p>
+<p><img src="https://i.loli.net/2021/05/16/KcfHJTERgGLjuqO.png" alt="image-20210516122827716"></p>
+<p>在我们的场景空间里（w=1）即为所有可视点都先径向投影至近平面再延z轴进行拉伸至[-1，1]范围后的结果</p>
+<p>其实这样的结果就已经差不多可令我们满意了，它既满足了由体到面的变换（x，y值直接就可看作近平面上的坐标值），又保留了场景的真实遮挡关系（由径向投影后按原z值比例伸展而得）</p>
+<p>但为了完成我们构成正方体的伟大构想（这样在之后转换为屏幕坐标就会轻松很多），我们还要继续把x y值映射为[-1，1]</p>
+<p><img src="https://i.loli.net/2021/05/16/NViXqM8lE3bkCRp.png" alt="image-20210516124303588"></p>
+<p>图中right为近平面在xz平面上右端点的x值，left为近平面在xz平面上左端点的x值，fov为视野角度（水平）。</p>
+<p>right，left可由fov与N求得：</p>
+<p><img src="https://i.loli.net/2021/05/16/yCa6HNzt5JIAWv2.png" alt="image-20210516124730590"></p>
+<p>由于此时所有点的 x y值都已在近平面范围内，我们实际上要做的便是将近平面的x y范围映射到[-1，1]</p>
+<p>故根据线性映射，有：</p>
+<p><img src="https://i.loli.net/2021/05/16/vD61E8aVfqL7tFp.png" alt="image-20210516124634599"></p>
+<p><img src="https://i.loli.net/2021/05/16/kSV57jKPOoFhrRa.png" alt="image-20210516124813424"></p>
+<p>解得x’‘为：</p>
+<p><img src="https://i.loli.net/2021/05/16/9DFrmht4wfVoj7i.png" alt="image-20210516125223435"></p>
+<p>在yz平面上：</p>
+<p><img src="https://i.loli.net/2021/05/16/UnRXuSANGKCoOjy.png" alt="image-20210516125437234"></p>
+<p>top为近平面在yz平面上的上端点的y值，bottom为近平面在yz平面上的下断点的y值</p>
+<p>top与bottom的求法既可利用视野角的垂直部分fov’，从tan(fov’/2)*N来求得，也可以利用宽高比来求得</p>
+<p>假设宽高比aspect：</p>
+<p><img src="https://i.loli.net/2021/05/16/IGesn5RKhrDBtJv.png" alt="image-20210516125725077"></p>
+<p><img src="https://i.loli.net/2021/05/16/FBfnjh5yCUwGtX7.png" alt="image-20210516125859630"></p>
+<p>根据线性映射，yz平面上自然也有：</p>
+<p><img src="https://i.loli.net/2021/05/16/ytHrEAYqfM2TBpm.png" alt="image-20210516125955113"></p>
+<p><img src="https://i.loli.net/2021/05/16/DOiYpLWnlRZXT3u.png" alt="image-20210516130015889"></p>
+<p>可解得y‘’：</p>
+<p><img src="https://i.loli.net/2021/05/16/1nDPmTGYtWC2Vv5.png" alt="image-20210516130143721"></p>
+<p>至此，我们可得视坐标系中顶点P经投影变换及透视除法后的最终结果P‘’：</p>
+<p><img src="https://i.loli.net/2021/05/16/AqmogvVYPFMKX23.png" alt="image-20210516130509784"></p>
+<p>透视除法前的P‘’（这才是我们由变换矩阵所得来的坐标值）</p>
+<p><img src="https://i.loli.net/2021/05/16/9G6DBEkwCWL4SiA.png" alt="image-20210516130801618"></p>
+<p>故有</p>
+<p><img src="https://i.loli.net/2021/05/16/P9mxqlp7b8FdIwo.png" alt="image-20210516130840602"></p>
+<p>求得最终的投影变换矩阵：</p>
+<p><img src="https://i.loli.net/2021/05/16/gTRt1JOcPmzBWbp.png" alt="image-20210516131110953"></p>
+<p>除此种实现方式外，投影矩阵还有从四棱台到x y范围[-1，1]但z范围[0，1]的一种实现版本，但这两者只在系数a，b的求解上有所差异，总之万变不离其宗，只要记住投影变换的目的是从四棱台（平截头体）径向投影至平面，在延展为正方体（或长方体），就能够解决各种不同的实现版本了。</p>
+<h3 id="混合"><a href="#混合" class="headerlink" title="混合"></a>混合</h3><p>【to be continue】</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"># 计算机图形学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E5%8F%98%E6%8D%A2/" rel="prev" title="计算机图形学之变换">
+      <i class="fa fa-chevron-left"></i> 计算机图形学之变换
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">投影变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E8%87%AA%E8%BA%AB%E5%9D%90%E6%A0%87%E7%B3%BB%E5%88%B0%E8%A7%86%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.1.</span> <span class="nav-text">从自身坐标系到视坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2%E6%9D%A5%E4%BA%86%EF%BC%81"><span class="nav-number">1.2.</span> <span class="nav-text">投影变换来了！</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">混合</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
