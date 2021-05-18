@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你能找到：  const成员函数重载 const修饰函数参数时的重载情况 利用mutable修饰关键字实现概念成员const函数 当const版本与non-const版本函数重合过大时的处理办法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++中的const重载">
+<meta property="og:url" content="http://yoursite.com/2021/05/18/c-%E4%B8%AD%E7%9A%84const%E9%87%8D%E8%BD%BD/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你能找到：  const成员函数重载 const修饰函数参数时的重载情况 利用mutable修饰关键字实现概念成员const函数 当const版本与non-const版本函数重合过大时的处理办法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-18T14:37:37.000Z">
+<meta property="article:modified_time" content="2021-05-18T15:55:51.575Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/18/c-%E4%B8%AD%E7%9A%84const%E9%87%8D%E8%BD%BD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>c++中的const重载 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/18/c-%E4%B8%AD%E7%9A%84const%E9%87%8D%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++中的const重载
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-05-18 22:37:37 / 修改时间：23:55:51" itemprop="dateCreated datePublished" datetime="2021-05-18T22:37:37+08:00">2021-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你能找到：</p>
+<ul>
+<li>const成员函数重载</li>
+<li>const修饰函数参数时的重载情况</li>
+<li>利用mutable修饰关键字实现概念成员const函数</li>
+<li>当const版本与non-const版本函数重合过大时的处理办法</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="const成员函数重载"><a href="#const成员函数重载" class="headerlink" title="const成员函数重载"></a>const成员函数重载</h3><p>我们都知道，对于类中的成员函数，一旦在定义式参数括号的后面加上一个const：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">返回值 函数名(参数<span class="number">1</span>, 参数<span class="number">2</span>, ...) <span class="keyword">const</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该成员函数即为const成员函数，编译器即会自动阻止该函数内任何试图更改成员变量的行为。</p>
+<p>但事实上，这个const的有无也会影响函数签名，使得const成员函数与non-const成员函数在编译器看来是两个函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line">    ...;</span><br><span class="line">    Func(<span class="keyword">int</span> a)&#123;...&#125;    <span class="comment">// 一个non-const成员函数</span></span><br><span class="line">    Func(<span class="keyword">int</span> a) <span class="keyword">const</span>&#123;...&#125;    <span class="comment">// 一个const成员函数，但与上面的函数名相同</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此如上的情况中，上面不带有const的Func函数与下面带有const的Func函数其实是两个函数，由于名字都为Func，他们也被看作Func函数的两个重载。</p>
+<p>但是他们的参数列表都相同呀，如果我们写下如下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">A <span class="title">a</span><span class="params">(...)</span></span>;    <span class="comment">// 定义一个A类的对象a</span></span><br><span class="line">a.Func(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>对象a会调用哪个Func函数呢？</p>
+<p>答案是不带const的那个Func版本。等等，这是不是意味着，带有const的那个版本永远不会被调用到了，那算个毛的重载啊！</p>
+<p>先别急，来看下一种情况：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> A <span class="title">a</span><span class="params">(...)</span></span>;    <span class="comment">// 定义一个A类的const对象a</span></span><br><span class="line">a.Func(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个a所调用的即为带有const版本的Func了。</p>
+<p>是不是参透了一些，const成员函数只会由const对象调用，相对应的，non-const成员函数也只会由non-const对象调用。也就是说，以下情况是会报错的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>&#123;</span></span><br><span class="line">    ...;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">int</span> a)</span> <span class="keyword">const</span></span>&#123;...&#125;; <span class="comment">// B类里面只有一个const成员函数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">B <span class="title">b</span><span class="params">(...)</span></span>;    <span class="comment">// 定义一个B类non-const成员</span></span><br><span class="line">    b.Func(<span class="number">0</span>);    <span class="comment">// 报错！non-const的b中不含有const函数Func</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="const在函数参数中的重载情况"><a href="#const在函数参数中的重载情况" class="headerlink" title="const在函数参数中的重载情况"></a>const在函数参数中的重载情况</h3><p>当const用于修饰函数参数时，无非分为以下两种情况：</p>
+<p>1、该参数的值不可改变</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> a)</span></span>&#123;...&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">int</span>* <span class="keyword">const</span> a)</span></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、该参数所指向的物体不可改变（const * 指针类型参数）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>* a)</span></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中情况1下两个函数有无const是不构成重载的,例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> a)</span></span>&#123;...&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两个Func是不会构成重载函数的，原因也很好理解，当我们向Func函数传入参数时：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Func(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>实际上可看作发生了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这二者自然是一样的事情，即使向Func传入一个int类型的变量也是一样的。</p>
+<p>然而在第二种情况中有无const修饰是会构成重载的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>* a)</span></span>&#123;...&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">int</span> *a)</span></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们仍然向Func传入一个参数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line">Func(<span class="built_in">array</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这种情况下显然是会调用无const参数版本的Func函数，因为在const参数版本Func函数中，实际发生了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *a = <span class="built_in">array</span>;</span><br></pre></td></tr></table></figure>
+
+<p>a中的内容应是恒定的，即应为一常量，但array是可以在函数外更改其中内容的，这显然冲突。</p>
+<p>对于</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line">Func(<span class="built_in">array</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同理也是只会调用const参数版本的Func函数的，故构成了函数重载。</p>
+<h3 id="如果我们想要在const成员函数里修改成员变量"><a href="#如果我们想要在const成员函数里修改成员变量" class="headerlink" title="如果我们想要在const成员函数里修改成员变量"></a>如果我们想要在const成员函数里修改成员变量</h3><p>这个标题看起来似乎有一点叛逆，但实际上这种应用是存在的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> color;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ChangeNameButNotChangeCat</span><span class="params">(<span class="built_in">string</span> newName)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;name = newName;    <span class="comment">// 报错！试图修改成员变量</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ChangeColorButNotChangeCat</span><span class="params">(<span class="keyword">int</span> newColor)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;color = newColor;    <span class="comment">// 报错！试图修改成员变量</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们定义了一个猫猫类，猫猫中有成员变量名字与毛色，但事实上，作为主人的我们是可以随意更换猫猫的名字与毛色而不必直接更换猫猫的。所以如果我们想用const成员函数表示“这个成员函数并没有更换我们的猫猫”，便会发现如上所示的报错——在更换名字和毛色的过程中编译器认为我们的猫猫不再是之前的猫猫了！</p>
+<p>这在编译器的角度来说是完全正确的，甚至还涉及了一些特修斯之船的哲学探讨；但以我们的猫猫主人视角来看，只有愚蠢二字足以形容这一次报错。其实我们与编译器矛盾的核心还是在于彼此对const修饰符的解释不同，那么如何让编译器认同我们对const的解释呢？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mutable</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">int</span> color;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ChangeNameButNotChangeCat</span><span class="params">(<span class="built_in">string</span> newName)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;name = newName;    <span class="comment">// 没问题！name被mutable修饰了，const不会再保护他</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ChangeColorButNotChangeCat</span><span class="params">(<span class="keyword">int</span> newColor)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;color = newColor;    <span class="comment">// 没问题！color被mutable修饰了，const不会再保护他</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要加上一个小小的mutable！</p>
+<h3 id="const成员函数与non-const成员函数重复过多"><a href="#const成员函数与non-const成员函数重复过多" class="headerlink" title="const成员函数与non-const成员函数重复过多"></a>const成员函数与non-const成员函数重复过多</h3><p>在很多情况下，我们的const对象与non-const对象中的一些行为其实是相同的，但const对象只能调用const成员函数，non-const函数只能调用non-const成员函数，这就使得我们的代码会有很多冗余。此时，为何不尝试将non-const函数的实现变成调用const版本的函数呢？只需将当前对象做一个小小转型就可减少大量可能的冗余！</p>
+<p>下面这个例子将const成员函数重载与解决const成员函数与non-const成员函数重复过多的问题整合在一起：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyString</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    MyString(<span class="keyword">const</span> <span class="keyword">char</span> str[])&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(str[count] != <span class="string">&#x27;\0&#x27;</span>)&#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        _str = <span class="keyword">new</span> <span class="keyword">char</span>[count+<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)&#123;</span><br><span class="line">            _str[i] = str[i];</span><br><span class="line">        &#125;</span><br><span class="line">        _str[count] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    &#125;   <span class="comment">// 复制传入的字符串常量到成员变量_str</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> index) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> _str[index];</span><br><span class="line">    &#125;   <span class="comment">// 在const版本中返回const结果</span></span><br><span class="line">    <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> index)&#123;</span><br><span class="line">        <span class="keyword">return</span> _str[index];</span><br><span class="line">    &#125;   <span class="comment">// 在non-const版本中返回non-const结果，运行对non-const对象中的_str进行修改</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> MyString&amp;&gt;(*<span class="keyword">this</span>).Print();</span><br><span class="line">    &#125;   <span class="comment">// const与non-const版本中的Print函数要做的事情是相同的，因此在non-const版本函数中调用const版本函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; _str &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span>* _str;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> _size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">MyString <span class="title">str01</span><span class="params">(<span class="string">&quot;lalala&quot;</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> MyString <span class="title">str02</span><span class="params">(<span class="string">&quot;lalala&quot;</span>)</span></span>;</span><br><span class="line">    str01[<span class="number">2</span>] = <span class="string">&#x27;8&#x27;</span>;</span><br><span class="line">    str01.Print();    <span class="comment">// la8ala</span></span><br><span class="line">    str02.Print();    <span class="comment">// lalala</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/14/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8%E7%9A%84%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E4%BB%AC/" rel="prev" title="计算器图形学之绘制器的前置知识们">
+      <i class="fa fa-chevron-left"></i> 计算器图形学之绘制器的前置知识们
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD"><span class="nav-number">1.</span> <span class="nav-text">const成员函数重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E5%9C%A8%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%B8%AD%E7%9A%84%E9%87%8D%E8%BD%BD%E6%83%85%E5%86%B5"><span class="nav-number">2.</span> <span class="nav-text">const在函数参数中的重载情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%88%91%E4%BB%AC%E6%83%B3%E8%A6%81%E5%9C%A8const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E9%87%8C%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">如果我们想要在const成员函数里修改成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%8Enon-const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E9%87%8D%E5%A4%8D%E8%BF%87%E5%A4%9A"><span class="nav-number">4.</span> <span class="nav-text">const成员函数与non-const成员函数重复过多</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
