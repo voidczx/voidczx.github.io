@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRFD函数为基础的光照模型">
+  <meta name="description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRDF（Bidirection Reflectance Distribution Function）函数为基础的光照模型">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算器图形学之绘制器的前置知识们">
 <meta property="og:url" content="http://yoursite.com/2021/05/14/%E8%AE%A1%E7%AE%97%E5%99%A8%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8%E7%9A%84%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E4%BB%AC/index.html">
 <meta property="og:site_name" content="阿轩blog">
-<meta property="og:description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRFD函数为基础的光照模型">
+<meta property="og:description" content="在这里你能找到：  摄像机的投影变换 混合、局部覆盖率与投射 以BRDF（Bidirection Reflectance Distribution Function）函数为基础的光照模型">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/05/14/WqevHwFcrU8JN9M.png">
 <meta property="og:image" content="https://i.loli.net/2021/05/14/osWk6PhCFy2Qmez.png">
@@ -68,9 +68,35 @@
 <meta property="og:image" content="https://i.loli.net/2021/05/16/P9mxqlp7b8FdIwo.png">
 <meta property="og:image" content="https://i.loli.net/2021/05/16/gTRt1JOcPmzBWbp.png">
 <meta property="og:image" content="https://i.loli.net/2021/05/17/jH4BclbuwURr17x.png">
-<meta property="og:image" content="https://i.loli.net/2021/05/17/3RYWf6QPMS1iy2k.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/g4NWwZ5TERnjkJt.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/nktGyjFzhm24wfD.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/3mT7peDxOI1n5HW.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/18EyNCKnmopaZBR.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/ks7K412FfoJiVAP.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/4zgDElTZiSIKqXj.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/KEVHIrCWnyqoac2.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/CqMfOPxQ8ED4ju5.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/4zgDElTZiSIKqXj.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/KuANVj6gaiRSmXQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/oql197KjTX8Y6VF.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/1MT8uRvkbixqaLA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/uqlFTwhedQJb8HO.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/2ITXSCy3PBMQZq9.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/kgE5BVnP7aL4UdA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/xMNc7o2aTmWyvn1.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/QU8cnvZrF9OXLCh.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/suZ72846nMbDAXc.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/1vMaqNGFR6PeflY.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/zmaqfLlubT4WMPd.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/eP2TkAZSvCjfV98.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/H5STKqavtxP1VG4.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/Y8SOdkDVFwZKtEU.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/uqlFTwhedQJb8HO.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/NWM6ritaHesFudf.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/outdODCR3H41QG2.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/19/outdODCR3H41QG2.png">
 <meta property="article:published_time" content="2021-05-14T10:21:14.000Z">
-<meta property="article:modified_time" content="2021-05-17T10:17:31.785Z">
+<meta property="article:modified_time" content="2021-05-19T08:53:59.788Z">
 <meta property="article:author" content="Czx">
 <meta property="article:tag" content="计算机图形学">
 <meta name="twitter:card" content="summary">
@@ -239,7 +265,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-17 18:17:31" itemprop="dateModified" datetime="2021-05-17T18:17:31+08:00">2021-05-17</time>
+                <time title="修改时间：2021-05-19 16:53:59" itemprop="dateModified" datetime="2021-05-19T16:53:59+08:00">2021-05-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +299,7 @@
 <ul>
 <li>摄像机的投影变换</li>
 <li>混合、局部覆盖率与投射</li>
-<li>以BRFD函数为基础的光照模型</li>
+<li>以BRDF（Bidirection Reflectance Distribution Function）函数为基础的光照模型</li>
 </ul>
 <a id="more"></a>
 
@@ -384,11 +410,84 @@
 <p><img src="https://i.loli.net/2021/05/17/jH4BclbuwURr17x.png" alt="image-20210517173853419"></p>
 <p>其中color为该像素点最终的颜色向量，cc为透明物体经计算得出的颜色向量，ct为颜色模板中该像素点的颜色向量。且约束a+b=1</p>
 <p>对于一般的透明物体，假设物体透明度为s，则有：</p>
-<p><img src="https://i.loli.net/2021/05/17/3RYWf6QPMS1iy2k.png" alt="image-20210517180532378"></p>
+<p><img src="https://i.loli.net/2021/05/19/g4NWwZ5TERnjkJt.png" alt="image-20210519095109530"></p>
 <p>这时，在对上式的理解上，我们有另一种方式：</p>
-<p>将s视作透明物体后面物体的局部覆盖率，这个局部覆盖率是由透明物体带来的（毕竟一个不透明物体的颜色对于自身的覆盖率应为1），新加入的透明物体让其后面覆盖率本来为1的物体不能独自决定颜色，而需要通过透明物体设定的覆盖率来与透明物体本身共同决定颜色。</p>
+<p>将s视作透明物体的局部覆盖率，待计算像素点的颜色将由透明物体本身和其后面的物体的颜色综合决定。从光学的角度来看，我们可以想象，透明物体只会反射一部分投射到自身上的光，剩下一部分光由透明物体后面的物体反射。也就是说对于光线在透明度不为1的物体上的着色，将把投射的光分为两部分，一部分对该物体着色，另一部分穿过该物体对其后面的物体着色。而局部覆盖率，我们从字面上进行理解，想象对于这个透明物体，其表面上只有s的部分是覆盖着它本身的材料，剩下的1-s部分是虚空，因此剩下1-s部分的光会直接到达透明物体后的物体，因此，透明度，也即局部覆盖率s，即可看作作用于透明物体的光占总光的比率。</p>
+<p><img src="https://i.loli.net/2021/05/19/nktGyjFzhm24wfD.png" alt="image-20210519104818560"></p>
+<p>即如上图所示。</p>
+<p>上图的两种情况在物理上自然是不相等的，但在计算机图形学对像素点进行着色的过程中，我们可以近似地将上面两种情况视为等价（因为像素点的最终着色都是权值相乘再叠加）。</p>
 <p>在这种思路下，透明颜色的混合便可以直观地理解为线性插值（其实用透明度的概念也很容易理解为线性插值…），这样一来，我们可以利用线性插值的定义来完成多重混合，即前一次的混合颜色color成为后一次的模板颜色ct，可以实现多个透明物体协同作用的效果。</p>
-<h4 id="透射"><a href="#透射" class="headerlink" title="透射"></a>透射</h4>
+<h4 id="透射"><a href="#透射" class="headerlink" title="透射"></a>透射</h4><p>在上面的部分中我们描述了透明物体的一种理想情况（局部覆盖率范围内的透明物体材质是完全不透明的），这种情况可以很好地表示类似完全透射物体（类似于无色玻璃）的效果，但假如我们想要我们的透明物体按颜色频率透射光线呢（类似于有色玻璃）？</p>
+<p>首先还是想象一个把光线分成作用于透明物体和作用于透明物体之后的物体两部分的模型。</p>
+<p>假设作用于透明物体上的光线为：</p>
+<p><img src="https://i.loli.net/2021/05/19/3mT7peDxOI1n5HW.png" alt="image-20210519102622159"></p>
+<p>作用于透明物体之后的光线为：</p>
+<p><img src="https://i.loli.net/2021/05/19/18EyNCKnmopaZBR.png" alt="image-20210519102648740"></p>
+<p>在上面的例子中，这两者的和即为投射到透明物体上的总光线量，即：</p>
+<p><img src="https://i.loli.net/2021/05/19/ks7K412FfoJiVAP.png" alt="image-20210519102735675"></p>
+<p>其中作用于透明物体上的光占s，作用于透明物体之后的光占1-s，在将s理解为局部覆盖率的情况下，我们其实是略去了透射的概念的，即作用于透明物体那部分的光只参与透明物体表面材质的光照运算，也即把s部分的材质视作完全不透明材质而把剩下1-s部分的材质完全视作透明物体之后物体的材质。</p>
+<p>但此时我们想要那s部分材质也按颜色频率（即颜色分量）透射光线，我们设能透过材质的颜色分量为rt：</p>
+<p><img src="https://i.loli.net/2021/05/19/4zgDElTZiSIKqXj.png" alt="image-20210519105853315"></p>
+<p>即真正作用于之后物体的光线实际上由两部分叠加而来，一部分是1-s区域里的虚空部分之前投射来的光线，另一部分是由投射到透明物体的s区域光线再经由rt颜色分量筛选后透射至其后物体的光线（注意这里投射与透射的区别）</p>
+<p>接下来把我们上面所得的结论应用于最终的混合模型中，由于cc与ct实际上都是按照全部光线投射到不透明材质上的情况来计算的，即：</p>
+<p><img src="https://i.loli.net/2021/05/19/KEVHIrCWnyqoac2.png" alt="image-20210519110215439"></p>
+<p>在根据局部覆盖率分开光线的情况下即变成：</p>
+<p><img src="https://i.loli.net/2021/05/19/CqMfOPxQ8ED4ju5.png" alt="image-20210519110618230"></p>
+<p>（上面局部覆盖率带来的式子还没太理解的同学可以带着这两个式子回顾一下上面）</p>
+<p>而透射情况里，我们s区域内的那部分材质又透射了rt的颜色分量，即</p>
+<p><img src="https://i.loli.net/2021/05/19/4zgDElTZiSIKqXj.png" alt="image-20210519105853315"></p>
+<p>故在透射情况下，有：</p>
+<p><img src="https://i.loli.net/2021/05/19/KuANVj6gaiRSmXQ.png" alt="image-20210519111209516"></p>
+<p>最终颜色color即可求得</p>
+<p><img src="https://i.loli.net/2021/05/19/oql197KjTX8Y6VF.png" alt="image-20210519111321434"></p>
+<h3 id="以BRDF函数为基础的光照模型"><a href="#以BRDF函数为基础的光照模型" class="headerlink" title="以BRDF函数为基础的光照模型"></a>以BRDF函数为基础的光照模型</h3><p>提起光照模型，有一些计算机图形学基础的同学便会马上想起“Phong and Blinn-Phong”，这二者固然是好用易懂的光照模型，但问题是，广为人知的以ambient，diffuse，specular三元分立的光照模型一直有着一个不那么光彩的名字——“经验模型”</p>
+<p>何为经验模型？简单来说就是不是经由推导得来的，在改变效果时需要反复调整参数且难以预知参数与效果对应关系的模型。</p>
+<p>这样的模型虽然在短期使用来说没有问题，但怎么想都不是长久之计。</p>
+<p>因此，大多数时候，我们采用以BRDF函数为基础的光照模型，形如：</p>
+<p><img src="https://i.loli.net/2021/05/19/1MT8uRvkbixqaLA.png" alt="image-20210519142925707"></p>
+<p>其中，P为平面上一点，li为入射光线，lo为出射光线。</p>
+<p>乍一看这个函数肯定会有些摸不到头脑，那么让我们来看下面的示意图：</p>
+<p><img src="https://i.loli.net/2021/05/19/uqlFTwhedQJb8HO.png" alt="image-20210519142353395"></p>
+<p>每一个需要被着色的点，我们都应该拿去和场景中所有光源（至少是所有会照射到该点的光源）进行光照计算，以最终得出一个返回给观察者（摄像机）的颜色，如上图所示</p>
+<p>因此，在光照计算中，我们必须要有的三个量为：要计算光照计算的点、光源和观察者（摄像机）</p>
+<p>现在再来看BRDF函数，对于一个存在三个未知量的方程（或等式），只要我们能将其中两个未知量变成已知量，就一定可以求得第三个未知量。而在绝大多数着色情形中，我们是知道要被着色的点和能够投射到这个点上的光源射线（我们先抽象地假设光线携带着光的各种信息，就像物理上的光线携带着光的频率、波长等信息那样），那么通过这个式子，自然可以求得最终返回给观察者的光线。</p>
+<p>又由于BRDF函数其实就是入射光与出射光的一个关系式，我们可以把它想象做一个黑箱：</p>
+<p><img src="https://i.loli.net/2021/05/19/2ITXSCy3PBMQZq9.png" alt="image-20210519164602551"></p>
+<p>而这个黑箱里具体做的事情，我们便可称之为基于BRFD的光照模型。</p>
+<p>在进一步解释BRDF函数之前，我们先来介绍 一些关于光辐射的一些参量：</p>
+<h4 id="光的辐照度与辐射率"><a href="#光的辐照度与辐射率" class="headerlink" title="光的辐照度与辐射率"></a>光的辐照度与辐射率</h4><p>在物理上，光的能量来自于辐射，辐射功率即表示单位时间内发射、传输、接收的辐射能，我们设辐射能为phi，故辐射功率为dphi：</p>
+<p><img src="https://i.loli.net/2021/05/19/kgE5BVnP7aL4UdA.png" alt="image-20210519155627405"></p>
+<p>当光投射在平面上时，我们即有一个接收光辐射的面，便设定单位面积发射、传输、接收单位时间辐射（辐射功率）为辐照度，设为E：</p>
+<p><img src="https://i.loli.net/2021/05/19/xMNc7o2aTmWyvn1.png" alt="image-20210519155714623"></p>
+<p>其中，dA为被照射面的单位面积</p>
+<p>再收缩一下范围，我们设单位面积在单位方向上发射、传输、接收单位时间辐射能为辐射率，设为l，即：</p>
+<p><img src="https://i.loli.net/2021/05/19/QU8cnvZrF9OXLCh.png" alt="image-20210519160218498"></p>
+<p>其中omiga为立体角，类似于二维空间中把角所对应的弧长定义为弧度，三维空间中也可以用角对应的面积来定义立体角：</p>
+<p><img src="https://i.loli.net/2021/05/19/suZ72846nMbDAXc.png" alt="image-20210519160613269"></p>
+<p>在二维平面中，一个圆中角所对应的弧长是根据半径长度变化而变化的，为统一标准，我们设定弧度为在一单位圆中，角所对应的弧长。对于一般的圆来讲，弧长d与圆心角theta的关系即为：</p>
+<p><img src="https://i.loli.net/2021/05/19/1vMaqNGFR6PeflY.png" alt="image-20210519161306687"></p>
+<p>下面拓展至三维空间，立体角即为单位球中角所对应的面积：</p>
+<p><img src="https://i.loli.net/2021/05/19/zmaqfLlubT4WMPd.png" alt="image-20210519161024769"></p>
+<p>因此在一般的球体中，球面的部分面积S与球心角omiga的关系即为：</p>
+<p><img src="https://i.loli.net/2021/05/19/eP2TkAZSvCjfV98.png" alt="image-20210519161250683"></p>
+<p>就像对于弧度来说，由于一整个单位圆的弧长为2pi，所以弧度的范围为0<del>2pi一样，由于一整个单位球的表面积为4pi*r方，所以单位角的面积为0</del>4pi</p>
+<p>有了以上的概念，我们回归到着色计算，由于光线从着色点到观察者（摄像机）的过程正是单位面积单位方向的辐射过程，因此最后由着色计算得出的颜色，我们一般可以把其看作着色点到摄像机方向的辐射率：</p>
+<p><img src="https://i.loli.net/2021/05/19/H5STKqavtxP1VG4.png" alt="image-20210519162039915"></p>
+<p>而入射部分是由单位面积接收来自所有光源（至少是能够作用到着色点的光源）的光线的过程，正好类似于辐照度的定义：</p>
+<p><img src="https://i.loli.net/2021/05/19/Y8SOdkDVFwZKtEU.png" alt="image-20210519162404517"></p>
+<p>回忆之前的示意图，即可更直观地看出出射光与辐射率、入射光与辐照度的对应：</p>
+<p><img src="https://i.loli.net/2021/05/19/uqlFTwhedQJb8HO.png" alt="image-20210519142353395"></p>
+<p>因此，在着色计算中的BRDF函数，我们一般定义为出射辐射率与入射辐照度的比值，即（由于辐射率的l与光线的l冲突，我们接下来将光线命名为w）：</p>
+<p><img src="https://i.loli.net/2021/05/19/NWM6ritaHesFudf.png" alt="image-20210519164904439"></p>
+<p>也即：</p>
+<p><img src="https://i.loli.net/2021/05/19/outdODCR3H41QG2.png" alt="image-20210519164827221"></p>
+<p>类似于电阻的定义式与决定式，f函数虽然定义成出射辐射率与入射辐照度的比值，但决定BRDF具体样貌的其实是光照模型本身。</p>
+<p>因此我们再观察上式，其中入射辐照度已由光源信息给出，也就是说我们若想求得光照计算的结果（出射辐射率）只要得到由光照模型决定的f函数就可以了！</p>
+<h4 id="基于BRDF的光照计算"><a href="#基于BRDF的光照计算" class="headerlink" title="基于BRDF的光照计算"></a>基于BRDF的光照计算</h4><p>在上面我们阐述了BRDF的具体概念和在光照计算中的大致用途，那么如果我们真的已知一个BRDF函数，该如何具体地得到最终的光照计算结果——出射辐射率呢？</p>
+<p><img src="https://i.loli.net/2021/05/19/outdODCR3H41QG2.png" alt="image-20210519164827221"></p>
+<p>由上式所述，出射辐射率其实就算BRDF函数与入射辐照度的乘积，那么为得出光照计算结果，我们首先要做的就是拆解入射辐照度：</p>
+<p>【to be continue】</p>
+
     </div>
 
     
@@ -486,7 +585,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">投影变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E8%87%AA%E8%BA%AB%E5%9D%90%E6%A0%87%E7%B3%BB%E5%88%B0%E8%A7%86%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.1.</span> <span class="nav-text">从自身坐标系到视坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2%E6%9D%A5%E4%BA%86%EF%BC%81"><span class="nav-number">1.2.</span> <span class="nav-text">投影变换来了！</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">混合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E5%B0%84"><span class="nav-number">2.1.</span> <span class="nav-text">透射</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">投影变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E8%87%AA%E8%BA%AB%E5%9D%90%E6%A0%87%E7%B3%BB%E5%88%B0%E8%A7%86%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.1.</span> <span class="nav-text">从自身坐标系到视坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2%E6%9D%A5%E4%BA%86%EF%BC%81"><span class="nav-number">1.2.</span> <span class="nav-text">投影变换来了！</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">混合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E5%B0%84"><span class="nav-number">2.1.</span> <span class="nav-text">透射</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5BRDF%E5%87%BD%E6%95%B0%E4%B8%BA%E5%9F%BA%E7%A1%80%E7%9A%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">以BRDF函数为基础的光照模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%9A%84%E8%BE%90%E7%85%A7%E5%BA%A6%E4%B8%8E%E8%BE%90%E5%B0%84%E7%8E%87"><span class="nav-number">3.1.</span> <span class="nav-text">光的辐照度与辐射率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EBRDF%E7%9A%84%E5%85%89%E7%85%A7%E8%AE%A1%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">基于BRDF的光照计算</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
