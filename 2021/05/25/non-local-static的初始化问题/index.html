@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你能找到：  不同编译单元内non-local-static对象初始化可能会带来的问题及解决办法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="non-local-static的初始化问题">
+<meta property="og:url" content="http://yoursite.com/2021/05/25/non-local-static%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你能找到：  不同编译单元内non-local-static对象初始化可能会带来的问题及解决办法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/25/1tWaj9mfEAHpgYQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/25/NwobOCgTusHxG5z.png">
+<meta property="article:published_time" content="2021-05-25T15:13:29.000Z">
+<meta property="article:modified_time" content="2021-05-25T15:56:30.120Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/25/1tWaj9mfEAHpgYQ.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/25/non-local-static%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>non-local-static的初始化问题 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/25/non-local-static%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          non-local-static的初始化问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-05-25 23:13:29 / 修改时间：23:56:30" itemprop="dateCreated datePublished" datetime="2021-05-25T23:13:29+08:00">2021-05-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你能找到：</p>
+<ul>
+<li>不同编译单元内non-local-static对象初始化可能会带来的问题及解决办法</li>
+</ul>
+<a id="more"></a>
+
+<p>“不同编译单元内non-local-static对象”，翻译过来即是不同文件中初始化时机均为程序开始时的对象。一般来讲这种情况并不会带来问题，但一旦其中一个程序开始时进行初始化的对象的构造函数里用到了另一个也在程序开始进行初始化的对象，比如说，下面这个例子：</p>
+<p>我们想要写一个蜘蛛侠登场的程序，但我们都知道，蜘蛛侠的本体是Peter Parker，所以在让蜘蛛侠登场之前，我们要先设定好peter 的相关信息，所以一个PeterParker.h是必需的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PeterParker.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeterParker</span>&#123;</span> <span class="comment">// 由于PerterParker是个弱鸡人类，所以暂时只有一个是否活着的布尔属性_alive</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    PeterParker(<span class="keyword">bool</span> alive = <span class="literal">true</span>); <span class="comment">// 默认当然是活着</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Alive</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">bool</span> _alive;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">extern</span> PeterParker peter; <span class="comment">// 由于在头文件中，对变量（对象也是变量）的声明要带上extern</span></span><br><span class="line">                          <span class="comment">// 否则就会调用PerterParker类的默认构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>由于世上只有一个Peter Parker，我们规定只许PeterParker.cpp可以定义PeterParker对象，当然与此同时，PeterParker.cpp也得承担实现类内函数的任务：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PeterParker.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;PeterParker.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">PeterParker::PeterParker(<span class="keyword">bool</span> alive) : _alive(alive)&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">PeterParker::Alive</span><span class="params">()</span></span>&#123; <span class="keyword">return</span> _alive; &#125;</span><br><span class="line"><span class="function">PeterParker <span class="title">peter</span><span class="params">(<span class="literal">true</span>)</span></span>; <span class="comment">// 至此，一个活着的peter产生了！</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面这些前期准备后，我们终于可以打造我们的蜘蛛侠类了，为了实现名为“模块化”的理想，我们决定在另一个文件中定义并使用SpiderMan类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SpiderMan.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;PeterParker.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpiderMan</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SpiderMan()&#123; <span class="comment">// 在构造时进行判断蜘蛛侠的本体是否活着，如果peter死了，自然就不会再有蜘蛛侠了</span></span><br><span class="line">        <span class="keyword">if</span>(!peter.Alive())&#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Peter is dead!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Debut</span><span class="params">()</span></span>&#123; <span class="comment">// 设定帅气的登场函数！</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Spider Man Is Back!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">SpiderMan spiderMan; <span class="comment">// 由于蜘蛛侠也有一个，所以把蜘蛛侠定义为全局变量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    spiderMan.Debut(); <span class="comment">// 登场吧！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一切看起来似乎都正常无比，但请时刻保持清醒，如果一切真的是那么正常的话我就不会写这么个博客了。</p>
+<p>在编译运行后，我们会看到：</p>
+<p><img src="https://i.loli.net/2021/05/25/1tWaj9mfEAHpgYQ.png" alt="image-20210525233600806"></p>
+<p>所以peter死了</p>
+<p>欸欸欸，但是我们在PeterParker类里明明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">PeterParker <span class="title">peter</span><span class="params">(<span class="literal">true</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这便是上面所说的在两个不同文件中初始化时机都为程序开始的对象存在依赖关系的结果了。</p>
+<p>解决的办法也很直接，既然问题出在他们的初始化时机都在程序开始上，那么我们就把他们的初始化时机改掉就好了，具体做法为，将之前直接定义在global内的全局对象变成返回一个引用的函数，而这个函数所做的事情正是定义一个相应的static对象（使其独一无二，就像全局变量那样，不过初始化时机变成了调用函数时）并返回：</p>
+<p>首先将之前在PeterParker.cpp中鲁莽定义的peter变成一个函数（函数声明别忘了写在PeterParker.h中，否则SpiderMan.cpp中找不到这个函数！）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">PeterParker&amp; <span class="title">GetPeterParker</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> PeterParker peterParker;</span><br><span class="line">    <span class="keyword">return</span> peterParker;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样SpiderMan的构造函数不再是直接取用peter这个对象，而是通过GetPeterParker这个入口得到仍然独一无二的peter：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SpiderMan()&#123;</span><br><span class="line">        <span class="keyword">if</span>(!GetPeterParker().Alive())&#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Peter is dead!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后把之前仍然出于鲁莽的全局spiderman也变成一个函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SpiderMan&amp; <span class="title">GetSpiderMan</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> SpiderMan theSuperHero;</span><br><span class="line">    <span class="keyword">return</span> theSuperHero;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来运行结果终于变成了我们想要的帅气登场：</p>
+<p><img src="https://i.loli.net/2021/05/25/NwobOCgTusHxG5z.png" alt="image-20210525235453812"></p>
+<p>最后附上更改后的全部代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PeterParker.h</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeterParker</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Alive</span><span class="params">()</span></span>;</span><br><span class="line">    PeterParker(<span class="keyword">bool</span> alive = <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">bool</span> _alive;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">PeterParker&amp; <span class="title">GetPeterParker</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PeterParker.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;PeterParker.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">PeterParker::PeterParker(<span class="keyword">bool</span> alive) : _alive(alive)&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">PeterParker::Alive</span><span class="params">()</span></span>&#123; <span class="keyword">return</span> _alive; &#125;</span><br><span class="line"><span class="function">PeterParker&amp; <span class="title">GetPeterParker</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> PeterParker peterParker;</span><br><span class="line">    <span class="keyword">return</span> peterParker;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SpiderMan.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;PeterParker.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpiderMan</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    SpiderMan()&#123;</span><br><span class="line">        <span class="keyword">if</span>(!GetPeterParker().Alive())&#123;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Peter is dead!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Debut</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Spider Man Is Back!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">SpiderMan&amp; <span class="title">GetSpiderMan</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> SpiderMan theSuperHero;</span><br><span class="line">    <span class="keyword">return</span> theSuperHero;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    GetSpiderMan().Debut();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/18/c-%E4%B8%AD%E7%9A%84const%E9%87%8D%E8%BD%BD/" rel="prev" title="c++中的const重载">
+      <i class="fa fa-chevron-left"></i> c++中的const重载
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
