@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你可以找到：  （c++语言软件实现）光线投射绘制器与光栅化绘制器 gamma矫正 生成视线（从视点出发到屏幕的射线是怎么对世界坐标系造成影响的）算法 光线-三角形求交的方程推导法（与之前光线与平面求交再判断重心的办法不大相同） 透视矫正插值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学之绘制器">
+<meta property="og:url" content="http://yoursite.com/2021/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你可以找到：  （c++语言软件实现）光线投射绘制器与光栅化绘制器 gamma矫正 生成视线（从视点出发到屏幕的射线是怎么对世界坐标系造成影响的）算法 光线-三角形求交的方程推导法（与之前光线与平面求交再判断重心的办法不大相同） 透视矫正插值">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/05/28/q4MTtZAWispzkoR.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/28/VQWYKCBGUuS6PZx.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/28/cu8NsEwFAhSxtCo.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/X5vxRNHEtzakQof.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/ZJvzkXdPmQbsUr5.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/IGkLiwhm72JlZM5.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/YEomhMvCk2xnHuK.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/OWQmYb4u8DCtliM.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/5HCmiuN72EBUq4M.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/eCoRYAUtLVP1k4N.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/e9RrojUQah3tmfO.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/t1IMk8GbA7lJ3V5.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/fNFm4ek23ZtvASW.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/Xn7EAPoBsjYFa4W.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/31rLtFJZA5TVOu6.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/CdNwKW6Pia1rYgm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/18ZW9N6xj5hnkue.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/IANTFxS2iemRsYy.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/vy9S83ClGzRIbEs.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/mPptcEuXh4NAeiS.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/6I3ESBtzrfbpj1k.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/GPDe1x4Vw3zqZ87.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/CdNwKW6Pia1rYgm.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/6tnidUgFTrMKA8l.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/rbTXf25wpxQD8Yl.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/XUmLeCiQFPrYtMR.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/EU9W4PgaLHnsRI8.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/29/li6KpqL5RNgFWEr.png">
+<meta property="article:published_time" content="2021-05-28T10:11:01.000Z">
+<meta property="article:modified_time" content="2021-05-29T07:12:59.044Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="计算机图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/28/q4MTtZAWispzkoR.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机图形学之绘制器 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机图形学之绘制器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-28 18:11:01" itemprop="dateCreated datePublished" datetime="2021-05-28T18:11:01+08:00">2021-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-29 15:12:59" itemprop="dateModified" datetime="2021-05-29T15:12:59+08:00">2021-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">计算机图形学相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你可以找到：</p>
+<ul>
+<li>（c++语言软件实现）光线投射绘制器与光栅化绘制器</li>
+<li>gamma矫正</li>
+<li>生成视线（从视点出发到屏幕的射线是怎么对世界坐标系造成影响的）算法</li>
+<li>光线-三角形求交的方程推导法（与之前光线与平面求交再判断重心的办法不大相同）</li>
+<li>透视矫正插值</li>
+</ul>
+<a id="more"></a>
+
+
+
+<h3 id="绘制器！"><a href="#绘制器！" class="headerlink" title="绘制器！"></a>绘制器！</h3><p>经过了前面三篇文章的铺垫，终于可以进入计算机图形学的一个阶段性目标——手写软件绘制器。</p>
+<p>在正式动手之前，我们要先制定一个“绘制器协议”，规定好我们的绘制器应该承担怎样的任务。</p>
+<p>首先是坐标空间的规定，我们假定在进行绘制之前，我们已经拥有了正确的视坐标系（摄像机坐标系），即我们所要绘制的是一个以摄像机为原点，沿着z轴负方向所观察到的场景：</p>
+<p><img src="https://i.loli.net/2021/05/28/q4MTtZAWispzkoR.png" alt="image-20210528183711067"></p>
+<p>即粉色视域体范围内的场景。</p>
+<p>因此场景内的物体信息与摄像机，即可看作我们绘制器的输入。</p>
+<p>由于绘制的最终目的是将一幅二维画面呈现给用户（显示器），所有绘制器的输出应是一幅大小与屏幕像素数相符的二维矩阵，每个位置的值即为该像素应该显示的颜色。即如果我们把绘制器想象成一个黑箱的话，整个流程应是这样：</p>
+<p><img src="https://i.loli.net/2021/05/28/VQWYKCBGUuS6PZx.png" alt="image-20210528184051650"></p>
+<p>接下来我们就从这两个输入和一个输出入手，探讨他们在程序中的关系与结构。</p>
+<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><p><img src="https://i.loli.net/2021/05/28/cu8NsEwFAhSxtCo.png" alt="image-20210528185057033"></p>
+<p>整个场景的层级关系如图所示，这个结构很大程度上是借鉴了opengl关于场景的数据结构，接下来让我们自顶向下地一一看下来：</p>
+<p>首先是场景类的声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Scene</span> &#123;</span>    <span class="comment">// 场景由物体和灯光组成，由于在绘制中，我们只在乎物体表面，</span></span><br><span class="line">    <span class="comment">//所以物体也可以看作是三角面的集合</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Triangle&gt; triangles;    <span class="comment">// 物体集合</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Light&gt; lights; <span class="comment">// 灯光集合</span></span><br><span class="line">        Scene();</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>一个场景在我们的人眼里或许是五光十色纷乱繁杂的，但在绘制器眼里，它只在乎两个东西——物体与光源。</p>
+<p>其中物体的颜色受所有能辐射到它表面的影响，光源也能影响所有它能辐射到的物体，按像素地把这两者相互作用的结果展示出来正是绘制器的工作。所以第二层即为物体（三角面）与光源，我们首先来看看层次不那么深的光源：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Light</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        Point3 _position;    <span class="comment">// 光源位置</span></span><br><span class="line">        Color4 _power;    <span class="comment">// 光源功率</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Light(<span class="keyword">const</span> Point3&amp; pos, <span class="keyword">const</span> Color4&amp; power);</span><br><span class="line">        <span class="function">Point3 <span class="title">position</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">Color4 <span class="title">power</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对绘制而言光源中重要的信息也只有两个，一个是光源的位置，它决定着光源能否对场景中的某个物体（表面）产生影响，因距离导致的影响衰减又是如何；另一个是光源的功率，即该光源单位时间发射的辐射能，这在上一篇文章，基于BRDF的光照模型部分有更详细的说明。</p>
+<p>下面回到物体（三角面）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Triangle</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        Vertex _verticeInTriangle[<span class="number">3</span>];    <span class="comment">// 一个三角形里有三个顶点</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Triangle(<span class="keyword">const</span> Vertex&amp; vertex01, <span class="keyword">const</span> Vertex&amp; vertex02, <span class="keyword">const</span> Vertex&amp; vertex03);</span><br><span class="line">        <span class="function">Vertex <span class="title">vertexInTriangle</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> index)</span> <span class="keyword">const</span></span>;    <span class="comment">// 写成[]重载会好些，但我懒得改了</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;BSDF&gt; bsdf;        <span class="comment">// 材质，可以用BSDF函数表示</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>一个三角形里有三个顶点自然是不必多说，可能引起困惑的是之前图中提到的“材质”这里变成了BSDF类型的一个智能指针，要想解释这个就要看看我们对BSDF类的声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BSDF</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        BSDF();</span><br><span class="line">        <span class="keyword">virtual</span> ~BSDF();    <span class="comment">// 从虚析构函数就可以看出，这是个要当爹的类（加入基类预备队了）</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> Color4 <span class="title">EvaluateFiniteScatteringDensity</span><span class="params">(<span class="keyword">const</span> Vector3&amp; w_i,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">const</span> Vector3&amp; w_o, <span class="keyword">const</span> Vector3&amp; norm)</span> </span>= <span class="number">0</span>;    <span class="comment">// 纯虚函数，也是之前文章提到过的BRDF</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对BSDF的实现，我采用了 纯虚基类 + 派生类实现具体BRDF 的方式，这样我们可以把所有材质抽象为基类，即BSDF类，再在三角形面初始化后向其中以智能指针对象赋值构造的方式设定该三角面的具体材质，至于为什么材质可以由BRDF函数表示，在上一篇文章基于BRDF的光照模型中有更详细的解释。</p>
+<p>之后是顶点类的声明，在顶点类中，我模仿opengl的顶点属性方式用类成员的形式把许多在本次绘制器实验中其实用不到的属性（比如材质坐标与顶点颜色）都加了进来，这样其实会造成较大的空间膨胀（毕竟顶点一定是一个场景里出现次数最多的对象），采用动态绑定而不是将属性作为类内成员肯定会对绘制器的性能有所提升（但目前我能想到的动态绑定只有在类内放一个指针指向一个指针数组再由指针数组中的指针去指向属性实体这种繁琐的套娃方式）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        Point3 _position;    <span class="comment">// 顶点位置坐标</span></span><br><span class="line">        Vector3 _norm;    <span class="comment">// 顶点法向量坐标</span></span><br><span class="line">        MathVector2 _textureCoord;    <span class="comment">// 顶点材质坐标（实际未使用）</span></span><br><span class="line">        Color4 _color;    <span class="comment">// 顶点颜色（实际未使用）</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Vertex(<span class="keyword">const</span> Point3&amp; pos, <span class="keyword">const</span> Vector3 &amp; n, <span class="keyword">const</span> MathVector2&amp; texCoord);</span><br><span class="line">        Vertex(<span class="keyword">const</span> Point3&amp; pos, <span class="keyword">const</span> Vector3 &amp; n);</span><br><span class="line">        Vertex(<span class="keyword">const</span> Point3&amp; pos);</span><br><span class="line">        <span class="function">Point3 <span class="title">position</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">Vector3  <span class="title">norm</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">MathVector2 <span class="title">textureCoord</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function">Color4 <span class="title">color</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">SetColor</span><span class="params">(<span class="keyword">const</span> Color4&amp; color)</span></span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p> 由于在仿射变换与投影变换中都需要用到更高一维度（即w坐标），而在计算中，有着向量的w坐标值为0，点的w坐标值为1这样的约定，因此我在构建点与向量时进行了区别构建，其中Vector相关类直接public继承与数学向量相同的类，而Point相关类单独处理。这样虽然在变换层面上对点与向量进行了分离抽象，但在点与向量混合计算中其实也带了一些麻烦。</p>
+<h4 id="摄像机"><a href="#摄像机" class="headerlink" title="摄像机"></a>摄像机</h4><p>场景之后，我们来看看摄像机：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Camera</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Vector3 direction;    <span class="comment">// 摄像机正前方方向向量</span></span><br><span class="line">        Point3 <span class="built_in">position</span>;    <span class="comment">// 摄像机位置坐标</span></span><br><span class="line">        <span class="keyword">float</span> zNear;    <span class="comment">// 近平面距离（相对于摄像机本身）</span></span><br><span class="line">        <span class="keyword">float</span> zFar;        <span class="comment">// 远平面距离（相对于摄像机本身）</span></span><br><span class="line">        <span class="keyword">float</span> fieldOfViewX;        <span class="comment">// 水平方向视域角</span></span><br><span class="line">        Camera(<span class="keyword">float</span> near = <span class="number">1.0f</span>, <span class="keyword">float</span> far = <span class="number">100.0f</span>, <span class="keyword">float</span> fov = <span class="number">45.0f</span>,</span><br><span class="line">            <span class="keyword">const</span> Point3&amp; pos = Point3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), <span class="keyword">const</span> Vector3&amp; dir = Vector3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>));</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>有了前一篇文章投影变换的基础，我们便知道摄像机的一个重要功能即是用来实现投影变换的（上一篇文章中主要为将视坐标系视锥体变换为标准长方视锥体，但本次实验主要是将视坐标系视锥体中的场景直接投影成屏幕尺度的二维图像），因此其类中成员也多和投影变换的算法有关，近平面、远平面和时域角都是再熟悉不过的老朋友了。不过投影变换的另一个重要成员，宽高比却不是摄像机类中的成员，这是由于对于视域体来说，摄像机本身其实只提供了z方向上的范围（即近平面远平面之间的部分），而x y方向上的范围还需要显示器来决定，因此我把宽高比直接作为了颜色缓冲类的成员。</p>
+<p>输入的部分到此就先告一段落，接下来我们来看看关于输出的，颜色缓冲部分的实现。</p>
+<h4 id="颜色缓冲"><a href="#颜色缓冲" class="headerlink" title="颜色缓冲"></a>颜色缓冲</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;    <span class="comment">// 缓冲矩阵的模板</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">BufferMat</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> _width;</span><br><span class="line">        <span class="keyword">int</span> _height;    <span class="comment">// 和最终图像相关的缓冲，其大小一定与屏幕像素尺度相关</span></span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; _data;    <span class="comment">// 根据缓冲用途存储不同数据类型</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        BufferMat(<span class="keyword">const</span> <span class="keyword">int</span> w, <span class="keyword">const</span> <span class="keyword">int</span> h);</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Set</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> x, <span class="keyword">const</span> <span class="keyword">int</span> y, <span class="keyword">const</span> T&amp; setData)</span></span>;</span><br><span class="line">        <span class="function">T <span class="title">Get</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> x, <span class="keyword">const</span> <span class="keyword">int</span> y)</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">width</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">height</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>利用了缓冲模板的深度缓冲类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DepthBuffer</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        BufferMat&lt;<span class="keyword">float</span>&gt; _buffer;    <span class="comment">// 采用has a的形式利用抽象模板</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        DepthBuffer(<span class="keyword">int</span> w, <span class="keyword">int</span> h);</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Set</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> x, <span class="keyword">const</span> <span class="keyword">int</span> y, <span class="keyword">const</span> <span class="keyword">float</span> setData)</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">float</span> <span class="title">Get</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> x, <span class="keyword">const</span> <span class="keyword">int</span> y)</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">width</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">height</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>一开始的我也是打算用模板的方式来抽象缓冲的。但由于我们是以直接输出颜色缓冲的方式输出图像，所以颜色缓冲的结构必须与其他接口相对应，这就使得颜色缓冲里真正的存储类型与我们get和set到的自定义Color4类型实际上是有出入的，这使得颜色缓冲比较特殊，所以我决定将颜色缓冲实现到缓冲矩阵模板之外：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ColorBuffer</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> _width;</span><br><span class="line">        <span class="keyword">int</span> _height;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; data;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ColorBuffer(<span class="keyword">int</span> w = <span class="number">800</span>, <span class="keyword">int</span> h = <span class="number">600</span>);</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Set</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, Color4 setColor)</span></span>;</span><br><span class="line">        <span class="function">Color4 <span class="title">Get</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line">         <span class="function"><span class="keyword">int</span> <span class="title">width</span><span class="params">()</span></span>;</span><br><span class="line">         <span class="function"><span class="keyword">int</span> <span class="title">height</span><span class="params">()</span></span>;</span><br><span class="line">         <span class="function"><span class="keyword">void</span> <span class="title">Save</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* fileName)</span></span>;    <span class="comment">// 将颜色缓冲转化成PPM格式图片并保存到本地</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>其中Save函数是最终绘制结果可视化的接口，将绘制（即着色计算）后的颜色结果显示到我们人眼的过程中，其实还需要一步额外的工序，其名为——gamma矫正。</p>
+<h3 id="Gamma矫正"><a href="#Gamma矫正" class="headerlink" title="Gamma矫正"></a>Gamma矫正</h3><p>在人眼对像素的直接观察中，除了像素的颜色之外，像素的亮度也会极大程度地影响视觉感受。gamma矫正，也正是在亮度层面的一种矫正。</p>
+<p>在物理上，我们一般认为是光子数决定的亮度，即辐射到某一片段的光子数越多，相应的该片段的亮度也就越高。</p>
+<p>也即从物理的角度出发，二倍的光子数便会导致二倍的亮度，即光子数与亮度呈线性关系。假设有两个片段m和n，则有：</p>
+<p><img src="https://i.loli.net/2021/05/29/X5vxRNHEtzakQof.png" alt="image-20210529103009597"></p>
+<p>其中photon为片段上的光子数，Pl为片段的物理亮度。</p>
+<p>之前文章中基于BRDF的光照模型中提到过，我们在着色过程中的最后结果，其实就是表面出射的辐射率，单位时间单位面积以单位立体角发送传输或接收的辐射能，而辐射能，也可以看作是光子的个数。这样一来，着色的结果就与物理亮度对上了，也就是说着色结果中也直接存储着亮度信息。皆大欢喜是不是？但这时候人眼的特性来横刀插了一手。</p>
+<p>我们在生活中都有这样的经历，会感觉早上和傍晚的阳光会比正午更富有变化，其中一个原因便是，人眼对暗部是更敏感的。即假设亮度值范围为[0, 1]，0.1的亮度值升到0.2和0.7的亮度值升到0.8（上述均为物理亮度值）虽然差值都是0.1，但对人眼的感受来说前者明显比后者的变化要大。我们将人眼感受到的亮度设定为人眼亮度，便有：</p>
+<p><img src="https://i.loli.net/2021/05/29/ZJvzkXdPmQbsUr5.png" alt="image-20210529105245788"></p>
+<p>根据如上论述不难得出物理亮度值与人眼亮度值的大概映射关系：</p>
+<p><img src="https://i.loli.net/2021/05/29/IGkLiwhm72JlZM5.png" alt="image-20210529105508365"></p>
+<p>其中横轴（蓝色）为物理亮度值，纵轴（红色）为人眼亮度值。</p>
+<p>因此有这么一种想法——我们能否按照这种映射关系来存储亮度值，使得暗部的亮度值精度比亮部要高，然后在输出时再通过映射转换为物理亮度值？</p>
+<p>即我们假设存储在待输出数据中的亮度值是按上图纵轴的尺度来分布的，为了恢复成自然的物理亮度值，我们在输出过程中将存储的纵轴尺度映射为横轴尺度。</p>
+<p><img src="https://i.loli.net/2021/05/29/YEomhMvCk2xnHuK.png" alt="image-20210529105947142"></p>
+<p>我们假设亮度值范围为[0, 1] ，根据反复测验（当然不是我做的测验）得出了物理亮度值与人眼亮度值的大致关系：</p>
+<p><img src="https://i.loli.net/2021/05/29/OWQmYb4u8DCtliM.png" alt="image-20210529110217154"></p>
+<p>即</p>
+<p><img src="https://i.loli.net/2021/05/29/5HCmiuN72EBUq4M.png" alt="image-20210529110246805"></p>
+<p>也就是说，按照上面的想法，我们可以在计算机中按人眼亮度（PE）的尺度来存储亮度数据，最后在输出时直接作用上2.2次幂就可以映射到物理亮度值了。所以大部分显示器的成像过程，都会热心肠地帮我们把待输出的数据作用上2.2次幂才作为最终显示给用户的图像。</p>
+<p>换句话说，将所有亮度值变成它的2.2次幂的过程是发生在显示器里的，因为显示器会假定我们传输给显示器的待输出亮度值都是以人眼亮度值为标尺的。</p>
+<p>但是，之前也有说过，<strong>我们在基于BRDF的光照模型中着色的时候，真正参与计算的那些都是 物 理 亮 度 值 ！</strong></p>
+<p>这样一来，显示器的热心肠不但不能帮到我们，还会显得十分自作主张：</p>
+<p><img src="https://i.loli.net/2021/05/29/eCoRYAUtLVP1k4N.png" alt="image-20210529110838658"></p>
+<p>由于我们发送给显示器的就已经是物理亮度值尺度的数据（即蓝色横轴，此处我们假设红色纵轴为实际显示出来的亮度值），我们只期望它原原本本地把我们输入的数据显示出来，就像上图中的粉色线条那样，一一映射。但由于显示器的自作主张，把所有发送给它的数据都变成了其自身的2.2次幂，使得我们最终显示的图像亮度值，其实与我们想要显示的亮度值不再相同，而是呈上图绿色曲线的映射关系！</p>
+<p>这便是gamma矫正出现的原因了：为了让最终输出的亮度值变回我们想要显示器输出的亮度值（即原物理亮度值）。根据上图，我们很容易想到，只要在显示器自作主张之前将数据做一次反向变换不就可以了：</p>
+<p><img src="https://i.loli.net/2021/05/29/e9RrojUQah3tmfO.png" alt="image-20210529111401633"></p>
+<p>即我们先手动地将原数据（蓝色轴尺度）按照紫色线条变换为其自身的0.45次幂（0.45即1/2.2的约值），然后交给显示器，显示器再自作主张地把我们发来的数据都作用于2.2次幂，这样一来最后实际输出的其实就是粉色曲线的映射——也就是我们想要显示器最终输出的亮度值。</p>
+<p>因此gamma矫正的公式为：</p>
+<p><img src="https://i.loli.net/2021/05/29/t1IMk8GbA7lJ3V5.png" alt="image-20210529112008715"></p>
+<p>由于在sRGB色彩空间中，颜色值的幅度就可以表示亮度，所以我们实际上进行gamma变换的对象就是着色计算的结果颜色值。</p>
+<p>gamma矫正还可以用这种方式来理解：</p>
+<p>显示器假定我们传输给他的数据是人眼亮度值尺度，但我们着色计算后的数据其实是物理亮度值尺度，那么我们只要遵循显示器的假定，把计算出的物理亮度值尺度转换为人眼亮度值尺度再发给它就好了。</p>
+<p>对gamma变换有了以上的理解后我们便可以轻松地阅读下面gamma矫正和保存颜色缓冲为PPM格式文件的代码了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gamma矫正</span></span><br><span class="line"><span class="function">Color4 <span class="title">GammaEncode</span><span class="params">(<span class="keyword">const</span> Color4&amp; originColor)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> Color4(<span class="built_in">std</span>::<span class="built_in">pow</span>(<span class="built_in">std</span>::fmin(<span class="built_in">std</span>::fmax(originColor.r, <span class="number">0.0f</span>), <span class="number">1.0f</span>), <span class="number">1.0f</span> / <span class="number">2.2f</span>),</span><br><span class="line">             <span class="built_in">std</span>::<span class="built_in">pow</span>(<span class="built_in">std</span>::fmin(<span class="built_in">std</span>::fmax(originColor.g, <span class="number">0.0f</span>), <span class="number">1.0f</span>), <span class="number">1.0f</span> / <span class="number">2.2f</span>),</span><br><span class="line">             <span class="built_in">std</span>::<span class="built_in">pow</span>(<span class="built_in">std</span>::fmin(<span class="built_in">std</span>::fmax(originColor.b, <span class="number">0.0f</span>), <span class="number">1.0f</span>), <span class="number">1.0f</span> / <span class="number">2.2f</span>),</span><br><span class="line">             originColor.a); <span class="comment">// 注意rgba中的a分量不需要经过gamma矫正</span></span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存颜色缓冲</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ColorBuffer::Save</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* fileName)</span> </span>&#123;</span><br><span class="line">         <span class="built_in">std</span>::ofstream file;</span><br><span class="line">         file.<span class="built_in">open</span>(fileName, <span class="built_in">std</span>::ios::out);</span><br><span class="line">         <span class="keyword">if</span> (!file) &#123;</span><br><span class="line">             <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Save Error : File Open Error!&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">         &#125;</span><br><span class="line">        <span class="comment">// PPM格式的要求，在开头表明宽高尺度与颜色值范围</span></span><br><span class="line">         file &lt;&lt; <span class="string">&quot;P3&quot;</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; _width &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; _height &lt;&lt; <span class="string">&quot; 255\n&quot;</span>;</span><br><span class="line">         <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; _height; row++) &#123;</span><br><span class="line">             <span class="comment">// 同样是格式要求，每一行像素前要加 “# y = 行数”</span></span><br><span class="line">             file &lt;&lt; <span class="string">&quot;\n# y =&quot;</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; row &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">             <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; _width; col++) &#123;</span><br><span class="line">                 <span class="keyword">const</span> Color4&amp; color = (GammaEncode(Get(col, row)));</span><br><span class="line">                 file &lt;&lt; <span class="keyword">int</span>(color.r * <span class="number">255.0f</span>) &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="keyword">int</span>(color.g * <span class="number">255.0f</span>) &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="keyword">int</span>(color.b * <span class="number">255.0f</span>) &lt;&lt; <span class="string">&quot;\n&quot;</span>;        <span class="comment">// 我们在文件首设定的颜色范围为[0~255]，故此处要做变换</span></span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         file.<span class="built_in">close</span>();</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存部分基本都是在按着PPM的格式要求走，唯一需要注意的就是要把我们存储在程序中的[0, 1]范围浮点型颜色值转换为[0, 255]范围的整型颜色值。</p>
+<p>接下来让我们回到绘制器。</p>
+<h3 id="光线投射绘制器"><a href="#光线投射绘制器" class="headerlink" title="光线投射绘制器"></a>光线投射绘制器</h3><p>光线投射绘制器类的声明如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RayCastDrawer</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="keyword">const</span> Scene&amp; scene;    <span class="comment">// 输入1：场景</span></span><br><span class="line">        <span class="keyword">const</span> Camera&amp; camera; <span class="comment">// 输入2：摄像机</span></span><br><span class="line">        RayCastDrawer(<span class="keyword">const</span> Scene&amp; scene, <span class="keyword">const</span> Camera&amp; camera, ColorBuffer&amp; colorBuffer);    <span class="comment">// 所需的输入输出通过构造函数添加进绘制器</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Draw</span><span class="params">()</span></span>;    <span class="comment">// 用户只需调用这一个方法就可以完成绘制</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        ColorBuffer&amp; colorBuffer;    <span class="comment">// 输出：颜色缓冲</span></span><br><span class="line">        <span class="comment">// 得到视点到屏幕任一像素的射线</span></span><br><span class="line">        <span class="function">Ray <span class="title">GetRayFromScreen</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span></span>;</span><br><span class="line">        <span class="comment">// 得到射线与场景中三角面相交的信息</span></span><br><span class="line">        <span class="function"><span class="keyword">float</span> <span class="title">GetRayCastTrianglePoint</span><span class="params">(<span class="keyword">const</span> Ray&amp; ray, <span class="keyword">const</span> Triangle&amp; triangle, <span class="keyword">float</span> weights[])</span></span>;</span><br><span class="line">        <span class="comment">// 判断某个场景片段是否被某个光源影响到</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">IsLightVisibleToPoint</span><span class="params">(<span class="keyword">const</span> Point3&amp; <span class="built_in">point</span>, <span class="keyword">const</span> Vector3&amp; w_i, <span class="keyword">const</span> <span class="keyword">float</span> distanceToLight)</span></span>;</span><br><span class="line">        <span class="comment">// 着色</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Shade</span><span class="params">(<span class="keyword">const</span> Triangle&amp; triangle, <span class="keyword">const</span> Point3&amp; intersect, <span class="keyword">const</span> Vector3&amp; norm, <span class="keyword">const</span> Vector3&amp; w_o,</span></span></span><br><span class="line"><span class="function"><span class="params">            Color4&amp; result)</span></span>;</span><br><span class="line">        <span class="comment">// 一个绘制函数筐，上面的具体功能函数都能往里装</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">RenderRayCastTrianglePoint</span><span class="params">(<span class="keyword">const</span> Ray&amp; ray ,<span class="keyword">const</span> Triangle&amp; trianlge, </span></span></span><br><span class="line"><span class="function"><span class="params">            Point3&amp; intersection, Color4&amp; resultColor, <span class="keyword">float</span>&amp; distance)</span></span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>老规矩，我们还是从用户绘制函数的角度来自顶向下地介绍光线投射绘制器的实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户调用的绘制函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RayCastDrawer::Draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 遍历屏幕的每一个像素（还记得吗？屏幕的宽高信息存储在颜色缓冲中）</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; colorBuffer.<span class="built_in">height</span>(); row++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; colorBuffer.<span class="built_in">width</span>(); col++) &#123;</span><br><span class="line">                <span class="comment">// 我们用像素的几何中心点来代表像素</span></span><br><span class="line">                Point2 currentPoint = Point2(col + <span class="number">0.5f</span>, row + <span class="number">0.5f</span>);</span><br><span class="line">                <span class="comment">// 这样才能得到点与点构成的射线</span></span><br><span class="line">                Ray currentRay = GetRayFromScreen(currentPoint.x, currentPoint.y);</span><br><span class="line">                <span class="comment">// 提前定义一个装视点到场景三角面距离的容器，用于判断遮挡关系</span></span><br><span class="line">                <span class="keyword">float</span> distance = INFINITY_FLOAT;</span><br><span class="line">                <span class="comment">// 遍历当前视点到像素射线所穿过的场景三角面</span></span><br><span class="line">                <span class="keyword">for</span> (Triangle currentTriangle : scene.triangles) &#123;</span><br><span class="line">                    <span class="comment">// 提前定义交点容器与着色结果容器</span></span><br><span class="line">                    Point3 intersection;</span><br><span class="line">                    Color4 resultColor;</span><br><span class="line">                    <span class="comment">// 如果该射线的路径中有进行过着色计算就把计算结果装进颜色缓冲</span></span><br><span class="line">                    <span class="keyword">if</span> (RenderRayCastTrianglePoint(currentRay, currentTriangle, intersection, resultColor, distance)) &#123;</span><br><span class="line">                        colorBuffer.Set(col, row, resultColor);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>光线投射绘制器的工作过程可以简述如下：</p>
+<p>对于屏幕的每个像素，我们都由视点（摄像机）向其中心发出一条射线，对其接触到的场景中的物体三角面进行判断并寻找到该射线路径上离视点最近的三角面像素（即不被任何其他物体遮挡的像素），接下来进行光源判断，对每个能对该像素产生影响的光源进行作用于该像素上的着色计算，并把结果存储到颜色缓冲中。按照上述的顺序结构，我们首先来看视点到像素中心点的射线获取：</p>
+<h4 id="生成视线"><a href="#生成视线" class="headerlink" title="生成视线"></a>生成视线</h4><p>由于投影变换原理，我们知道最终屏幕呈现的二维图像，其实就是摄像机截头体沿z轴负方向的投影结果。因此屏幕平面可被我们看作摄像机截头体中与屏幕尺度相同的一个xy平面：</p>
+<p><img src="https://i.loli.net/2021/05/29/fNFm4ek23ZtvASW.png" alt="image-20210529140550312"></p>
+<p>即最终成像平面为z坐标值为z(screen)（一定为负值）的某个与摄像机截头体径向平行的xy平面。而我们的目标，是对应投影成像的反过程，在视锥体距视点最近的xy平面（即近平面）上找到投影至屏幕相应点的投影起点，并通过其与视坐标系原点相减得到投影方向，从而获得可以看作从视点到场景的投影射线。</p>
+<p>换种说法，我们要做的是从视锥体远处一平面映射回视锥体起点的，投影成像的逆过程。</p>
+<p>因此我们首先要对成像平面归一化至z=-1处的视锥体xy平面，假设我们已知摄像机在水平方向的时域角fovX，有：</p>
+<p><img src="https://i.loli.net/2021/05/29/Xn7EAPoBsjYFa4W.png" alt="image-20210529141631948"></p>
+<p>在这里我们不对z坐标值取模以获得标量距离，而是直接用z坐标值表示“带符号距离”，因此得到的值其实为z=-1上xy平面的带符号宽度（即宽度的负数）</p>
+<p>可由颜色缓冲中存储的屏幕宽高信息得到屏幕的高宽比：</p>
+<p><img src="https://i.loli.net/2021/05/29/31rLtFJZA5TVOu6.png" alt="image-20210529141928677"></p>
+<p>因此z=-1上xy平面的带符号高度即为：</p>
+<p><img src="https://i.loli.net/2021/05/29/CdNwKW6Pia1rYgm.png" alt="image-20210529142059424"></p>
+<p>接下来便是把z=z(screen)处的xy平面按比例对应至z=-1处xy平面的过程：</p>
+<p><img src="https://i.loli.net/2021/05/29/18ZW9N6xj5hnkue.png" alt="image-20210529142719895"></p>
+<p>变换上式得到z=-1处xy平面上的x坐标值为：</p>
+<p><img src="https://i.loli.net/2021/05/29/IANTFxS2iemRsYy.png" alt="image-20210529142854370"></p>
+<p>其中等式右边的x即为屏幕像素的几何中心x坐标，z=z(screen)处的xy平面宽度即为屏幕的宽度（水平方向像素数），由于我们刚求得的z=-1处xy平面的宽度为带符号宽度，所以：</p>
+<p><img src="https://i.loli.net/2021/05/29/vy9S83ClGzRIbEs.png" alt="image-20210529143130770"></p>
+<p>但这还没完，由于屏幕的x坐标范围为[0,width]，中心值为width/2，但我们视锥体内xy平面的x坐标值应以x=0为中心点。易得有：</p>
+<p><img src="https://i.loli.net/2021/05/29/mPptcEuXh4NAeiS.png" alt="image-20210529143452923"></p>
+<p>在保证其尺度不变的情况下改变中值点，我们只需在上式基础上减去0.5，将范围变换为[-0.5, 0.5]</p>
+<p>故最终式为：</p>
+<p><img src="https://i.loli.net/2021/05/29/6I3ESBtzrfbpj1k.png" alt="image-20210529144332790"></p>
+<p>同理可求得z=-1处xy平面的y值为：</p>
+<p><img src="https://i.loli.net/2021/05/29/GPDe1x4Vw3zqZ87.png" alt="image-20210529144403327"></p>
+<p>将</p>
+<p><img src="https://i.loli.net/2021/05/29/CdNwKW6Pia1rYgm.png" alt="image-20210529142059424"></p>
+<p>代入，可得：</p>
+<p><img src="https://i.loli.net/2021/05/29/6tnidUgFTrMKA8l.png" alt="image-20210529145158693"></p>
+<p>由于屏幕坐标系的y轴正方向为从上到下，而视坐标系的y轴正方向为从下到上，因此最终的-y(z=-1)还需再加上一个负号：</p>
+<p><img src="https://i.loli.net/2021/05/29/rbTXf25wpxQD8Yl.png" alt="image-20210529145224368"></p>
+<p>至此，我们得到z=-1处xy平面上任一点的坐标值（其实是坐标值的负值）：</p>
+<p><img src="https://i.loli.net/2021/05/29/XUmLeCiQFPrYtMR.png" alt="image-20210529144830527"></p>
+<p><img src="https://i.loli.net/2021/05/29/EU9W4PgaLHnsRI8.png" alt="image-20210529145304009"></p>
+<p>所有坐标值均取反的原因是我们最后需要的其实不是z=-1处xy平面的坐标值，而是近平面处xy平面的坐标值，由于在将z平面存储进摄像机类的过程中，我们是以近平面的z坐标值（也是个负值）来表示近平面的，故现在可以直接由这个值来乘上z=-1处的xy平面坐标值，即投影到近平面上点的坐标值为：</p>
+<p><img src="https://i.loli.net/2021/05/29/li6KpqL5RNgFWEr.png" alt="image-20210529145626673"></p>
+<p>其中znear为近平面的z坐标值。</p>
+<p>该算法的实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取从视点到像素中心点的射线</span></span><br><span class="line"><span class="function">Ray <span class="title">RayCastDrawer::GetRayFromScreen</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 高宽比可由存储在颜色缓冲中的屏幕宽高相除得到，需注意转型成浮点型</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">float</span> aspect = <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(colorBuffer.<span class="built_in">height</span>()) / <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(colorBuffer.<span class="built_in">width</span>());</span><br><span class="line">        <span class="comment">// 得到z=-1处xy平面的宽度（的负值）</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">float</span> s = <span class="number">-1.0f</span> * <span class="built_in">tan</span>(camera.fieldOfViewX * <span class="built_in">acos</span>(<span class="number">-1.0f</span>) / <span class="number">180.0f</span>) * <span class="number">2.0f</span>;</span><br><span class="line">        <span class="comment">// 利用相似性找到屏幕像素中心点在近平面上的对应点</span></span><br><span class="line">        <span class="function">Point3 <span class="title">FacePoint</span><span class="params">((x / <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(colorBuffer.<span class="built_in">width</span>()) - <span class="number">0.5f</span>) * s,</span></span></span><br><span class="line"><span class="function"><span class="params">            -(y / <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(colorBuffer.<span class="built_in">height</span>()) - <span class="number">0.5f</span>) * s * aspect, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line">        Point3 nearFacePoint = FacePoint * camera.zNear;</span><br><span class="line">        <span class="comment">// 得到射线方向以返回射线</span></span><br><span class="line">        Vector3 rayDir = nearFacePoint - Point3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">        <span class="keyword">return</span> Ray(nearFacePoint, rayDir.Normalize());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="视线作用于场景"><a href="#视线作用于场景" class="headerlink" title="视线作用于场景"></a>视线作用于场景</h4><p>得到视点到像素中心点的射线后（实际上我们用近平面上的点作为射线出发点），我们便可以遍历场景中的所有三角面来计算该视线所穿过某个场景三角面的像素了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 得到视线后的大箩筐函数</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">RayCastDrawer::RenderRayCastTrianglePoint</span><span class="params">(<span class="keyword">const</span> Ray&amp; ray, <span class="keyword">const</span> Triangle&amp; triangle,</span></span></span><br><span class="line"><span class="function"><span class="params">        Point3&amp; intersection, Color4&amp; resultColor, <span class="keyword">float</span>&amp; distance)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 定义一个用于存储交点重心坐标的容器</span></span><br><span class="line">        <span class="keyword">float</span> weights[<span class="number">3</span>];</span><br><span class="line">        <span class="comment">// 定义一个容器以存储当前交点距近平面的径向距离</span></span><br><span class="line">        <span class="keyword">float</span> tempDistance = GetRayCastTrianglePoint(ray, triangle, weights);</span><br><span class="line">        <span class="comment">// 如果该交点与近平面距离大于当前的最小距离或者视线和当前三角面压根就没有交点，则忽略这个三角面</span></span><br><span class="line">        <span class="keyword">if</span> (tempDistance &gt;= distance) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 否则说明视线与当前三角面有交点且交点到近平面径向距离是当前最近的，所以替换最近距离</span></span><br><span class="line">        distance = tempDistance;</span><br><span class="line">        <span class="comment">// 通过视线起点+距离的方式得到交点</span></span><br><span class="line">        intersection = ray.originPoint() + ray.direction() * tempDistance;</span><br><span class="line">        <span class="comment">// 通过重心加权的方式算得交点的法向量</span></span><br><span class="line">        <span class="keyword">const</span> Vector3&amp; norm = (</span><br><span class="line">            triangle.vertexInTriangle(<span class="number">0</span>).norm() * weights[<span class="number">0</span>] +</span><br><span class="line">            triangle.vertexInTriangle(<span class="number">1</span>).norm() * weights[<span class="number">1</span>] +</span><br><span class="line">            triangle.vertexInTriangle(<span class="number">2</span>).norm() * weights[<span class="number">2</span>]).Normalize();</span><br><span class="line">        <span class="comment">// 定义该像素点的出射光线（用于BRDF函数的那个出射光线）</span></span><br><span class="line">        <span class="keyword">const</span> Vector3&amp; vector2Eye = Vector3(-ray.direction().x, -ray.direction().y, -ray.direction().z);</span><br><span class="line">        <span class="comment">// 开始着色</span></span><br><span class="line">        Shade(triangle, intersection, norm, vector2Eye, resultColor);</span><br><span class="line">        <span class="comment">// 表示在这个三角面上进行了着色计算，需要更新颜色缓冲</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数其实就是对每个三角形进行了一次求交判定遮挡加着色的标准流程，真正重要的还是该函数所调用的两个函数——求交与着色。</p>
+<p>我们首先来看求交。</p>
+<h4 id="空间中射线与三角形再求交"><a href="#空间中射线与三角形再求交" class="headerlink" title="空间中射线与三角形再求交"></a>空间中射线与三角形再求交</h4><p>【to be continue】</p>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"># 计算机图形学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/25/non-local-static%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%97%AE%E9%A2%98/" rel="prev" title="non-local-static的初始化问题">
+      <i class="fa fa-chevron-left"></i> non-local-static的初始化问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%E5%99%A8%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">绘制器！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">摄像机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%9C%E8%89%B2%E7%BC%93%E5%86%B2"><span class="nav-number">1.3.</span> <span class="nav-text">颜色缓冲</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gamma%E7%9F%AB%E6%AD%A3"><span class="nav-number">2.</span> <span class="nav-text">Gamma矫正</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%BA%BF%E6%8A%95%E5%B0%84%E7%BB%98%E5%88%B6%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">光线投射绘制器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%A7%86%E7%BA%BF"><span class="nav-number">3.1.</span> <span class="nav-text">生成视线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%86%E7%BA%BF%E4%BD%9C%E7%94%A8%E4%BA%8E%E5%9C%BA%E6%99%AF"><span class="nav-number">3.2.</span> <span class="nav-text">视线作用于场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E4%B8%AD%E5%B0%84%E7%BA%BF%E4%B8%8E%E4%B8%89%E8%A7%92%E5%BD%A2%E5%86%8D%E6%B1%82%E4%BA%A4"><span class="nav-number">3.3.</span> <span class="nav-text">空间中射线与三角形再求交</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
