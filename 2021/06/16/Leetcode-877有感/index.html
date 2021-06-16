@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这里你可以找到：  双人轮流游戏的常规动态规划解法 leetcode877题特有的规律解法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode.877有感">
+<meta property="og:url" content="http://yoursite.com/2021/06/16/Leetcode-877%E6%9C%89%E6%84%9F/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这里你可以找到：  双人轮流游戏的常规动态规划解法 leetcode877题特有的规律解法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/ysGtz85iCUAPR9f.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/ADOeN5HabT1yW6g.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/X7wtVGbQKfjMYZh.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/S8koRtNzmgdTPYu.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/QTkt1g4hvXAujJc.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/JKnTHlzqL9kIXUc.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/DWFXZmscGfRVE8A.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/BgJyeT7zcESiL61.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/5ASMQoHswedry3C.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/mwCQJWGktjylMKx.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/A5NBznR19M8HgbD.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/O9u8adLlBYRVFbj.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/16/vN2JFM4BtmgnVWQ.png">
+<meta property="article:published_time" content="2021-06-16T00:56:21.000Z">
+<meta property="article:modified_time" content="2021-06-16T03:26:40.181Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/06/16/ysGtz85iCUAPR9f.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/06/16/Leetcode-877%E6%9C%89%E6%84%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Leetcode.877有感 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/16/Leetcode-877%E6%9C%89%E6%84%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode.877有感
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-16 08:56:21 / 修改时间：11:26:40" itemprop="dateCreated datePublished" datetime="2021-06-16T08:56:21+08:00">2021-06-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">c++相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这里你可以找到：</p>
+<ul>
+<li>双人轮流游戏的常规动态规划解法</li>
+<li>leetcode877题特有的规律解法</li>
+</ul>
+<a id="more"></a>
+
+<p>877题目如下：</p>
+<p><img src="https://i.loli.net/2021/06/16/ysGtz85iCUAPR9f.png" alt="image-20210616095748771"></p>
+<p>这种双人轮流进行，假设每一轮次都是最佳选择的情况下判断胜负是一种较为常见的类型题。</p>
+<p>我们可以很轻易建立如下的状态模型树：</p>
+<p><img src="https://i.loli.net/2021/06/16/ADOeN5HabT1yW6g.png" alt="image-20210616101324318"></p>
+<p>从先手开始，每一轮次能够做出的选择有限，是一个很经典的递归回溯模型。但很可惜，在绝大部分直观的递归回溯题目里，利用递归回溯的办法都会导致超时。超时的原因，在于递归的过程中进行了大量重复的计算：因为假如我们想要进行先手方的必胜判定，就需要先手方在其轮次内必有一种选择（即最佳选择）使得后手方的所有选择都是徒劳无功（任意后手方选择都不会赢），为了更详细地阐述这点，我们先简化每一轮次的选择只有两个，即把上图的树模型简化为二叉树模型：</p>
+<p><img src="https://i.loli.net/2021/06/16/X7wtVGbQKfjMYZh.png" alt="image-20210616102218625"></p>
+<p>先手方想要必胜，就一定要在第一轮次的A和B选择中有一个使得后手方在第二轮次无论如何选择，先手方在第三轮次都仍有至少一个可以获胜的办法。</p>
+<p>我们假设可以使先手方获得胜利的方案通路为蓝色，不能使先手方获得胜利的方案通路为黑色：</p>
+<p><img src="https://i.loli.net/2021/06/16/S8koRtNzmgdTPYu.png" alt="image-20210616102657690"></p>
+<p>上图所示即为一种先手方必胜的情况，即只要先手方选择了A，无论后手方在第二轮次选A还是选B，先手方在第三轮次都有可以获胜的办法。</p>
+<p>上图中先手方可获胜的方案为 AAB 或 ABA</p>
+<p><img src="https://i.loli.net/2021/06/16/QTkt1g4hvXAujJc.png" alt="image-20210616102852843"></p>
+<p>而在上图这种情况，虽然先手方获胜的总方案数同样是两种（ABB与BAB），但这种方式下先手方却是必输的。因为无论先手方在第一轮次选择了A还是B，第二轮次里后手方总有办法将局势变成先手方不可能获胜的样子（在先手方选A时后手方选A，在先手方选B时后手方选B）</p>
+<p>至此，我们可以发现与常规的方案选择题目相比，双人按轮次对战题目的区别在于每到对方轮次时，方案会进入一种尽可能最坏情况的分支。</p>
+<p>因此要想使得先手方必胜，在先手方轮次需有：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择A能够必胜 || 选择B能够必胜</span><br></pre></td></tr></table></figure>
+
+<p>在后手方轮次需有：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择A先手方能够必胜 &amp;&amp; 选择B先手方能够必胜</span><br></pre></td></tr></table></figure>
+
+<p>所以递归函数的结构应为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> 先手方能否必胜(当前轮次方所做的选择)&#123;</span><br><span class="line">    <span class="keyword">if</span>((<span class="built_in">turn</span> &amp; <span class="number">1</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>( 先手方能否必胜(A) || 先手方能否必胜(B))&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(先手方能否必胜(A) &amp;&amp; 先手方能否必胜(B))&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结合上面的二叉树模型可以看出，这种方法下的时间复杂度为O(2^n)，即当n为30的时候便要进行十亿量级的计算，这自然是不可容忍的。但由于这种双人轮次的方案选择是有记忆性的，我们无法自底向上地从小容量的胜负推导至大容量的胜负，这是否就说明了这种题目无法利用动态规划来进行优化呢？答案当然是否定的，毕竟最上面明晃晃写着“动态规划解法”。那我们该如何在状态转移中处理胜负状态和上一层级的依赖关系呢？答案是，让我们试着去忘记胜负这码事。</p>
+<p>回想我们是如何判定一方的胜负的？重点是方案选择的排列组合吗？方案的排列组合只不过是容器，真正决定胜负方的在于方案排列组合内含的标志值变化。</p>
+<p>所谓标志值，可以是积分的高低，可以是达到了某个限定条件，在这道877题中，标志值即为石头的数量。在本题中，我们一开始即有一个石头堆的集合，而这个石头堆随着对战的进行是只会减少不会增加的，即状态是逐步压缩的。那么，我们便能够获得这个石头堆集合的各种子集，从最小的状态，即只有一堆石头开始，判定各个状态下先手方可以赢过后手方的最大程度，即先手方可能获得石头数量和后手方可能获得石头数量的最大差值。由于题目限制我们面对一个石头堆集合时只有两种选择方案——拿最前或者拿最后，而无论哪一次选择都会使石头堆的状态进行压缩，那么我们只要保证小状态的计算在大状态之前，就可以在大状态的计算中利用小状态的结果了。总结一下，我们只需要求得所有小状态先手方能够赢过后手方的标志值最大值，便可以逐步利用小状态计算辅助算得大状态下先手方能够赢过后手方的标志值最大值，最后即可判断完全状态下先手方能够赢过后手方的标志值最大值（如无法赢过，所得即为负数），动态规划的感觉来了！</p>
+<p>上面的叙述肯定还是会有些云里雾里，下面用一个自创的例子进行详细说明：</p>
+<p><img src="https://i.loli.net/2021/06/16/JKnTHlzqL9kIXUc.png" alt="image-20210616110051236"></p>
+<p>我们一开始有这样一个石头堆集合，首先从最小的状态，即整局只有一个石堆的情形开始分析。</p>
+<p>由于只存在一个石堆，所以先手方自然会将这个石堆的所有石头都拿走，而后手方没有拿石头的机会，所以在单石堆的情形下先手赢过后手的最大程度即为那个单石堆内石头的数目。</p>
+<p>接下来考虑存在两个石堆的情况，</p>
+<p><img src="https://i.loli.net/2021/06/16/DWFXZmscGfRVE8A.png" alt="image-20210616110601080"></p>
+<p>先手方只能拿最前和最后的石堆，而每当先手方做出选择，石堆都会变成刚刚计算过的单石堆情形，而后手方也变成了单石堆情形下的临时先手方，我们便可以从动态表中获取单石堆情形下这个临时先手方能够赢下的最大值（即最佳决定），然后用原本先手方在双石堆下的选择去对冲后手方在单石堆情形下赢得的数量，所得到的最大差值即为先手方在双石堆情形下能够赢得的最大值，即：</p>
+<p>max（12-（单石堆3的结果）， 3-（单石堆12的结果））</p>
+<p>接下来是三石堆的情形：</p>
+<p><img src="https://i.loli.net/2021/06/16/BgJyeT7zcESiL61.png" alt="image-20210616111024742"></p>
+<p>先手方仍然只有两种选择，而每种选择都会产生一种对应的且我们已经算得结果的双石堆情况，我们只需用先手方选择的获利值减去后手方（即产生的双石堆情况中的临时先手方）能够赢得的最大值，再在这个差值中取最大即可：</p>
+<p>max（12-（双石堆3，5的情况）， 5-（双石堆12，3的情况））</p>
+<p>后面以此类推即可，在分析中一维的石头堆看起来比较直观，但实际上我们需要一个len*len的二维dp表（len为石头堆集合中石头堆的数目）</p>
+<p><img src="https://i.loli.net/2021/06/16/5ASMQoHswedry3C.png" alt="image-20210616111546586"></p>
+<p>其中i行j列代表i~j的石头堆子集情形下先手方所能赢得的最大值，由于相同的石头堆集合调换前后顺序无意义，故只需填充dp表的上半三角即可（即标为x的部分不用填）</p>
+<p>最后dp [0] [5]的值即为整体情况下先手方能够赢得的最大值。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过每一个子集的“先手能赢最大”的状态（即最好表现）来求得完整集合时的胜负关系</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">stoneGame</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; piles)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = piles.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dpRow</span><span class="params">(length, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; <span class="title">dpMat</span><span class="params">(length, dpRow)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = length<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; length; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i == j)&#123;</span><br><span class="line">                    dpMat[i][j] = piles[i];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    dpMat[i][j] = <span class="built_in">max</span>(piles[i] - dpMat[i+<span class="number">1</span>][j], </span><br><span class="line">                    piles[j] - dpMat[i][j<span class="number">-1</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(dpMat[<span class="number">0</span>][length<span class="number">-1</span>] &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>由于本题目的特殊限制（石头总量为单数，即不存在平局；石头堆数目为双数，即每人拿取的次数一致；以及每次只能从最前或最后来拿），我们可以发现这样一个规律：</p>
+<p><img src="https://i.loli.net/2021/06/16/mwCQJWGktjylMKx.png" alt="image-20210616112012159"></p>
+<p>我们假设上图的六个⚪为六个石头堆，根据位置的奇偶关系我们将其分为红蓝两组。由于先手方只能拿首位或末尾的石头堆，上图很容易观察到先手方可以选择拿取红色还是蓝色，然而一旦到了第二轮次，即后手方的第一次选择：</p>
+<p><img src="https://i.loli.net/2021/06/16/A5NBznR19M8HgbD.png" alt="image-20210616112151887"></p>
+<p><img src="https://i.loli.net/2021/06/16/O9u8adLlBYRVFbj.png" alt="image-20210616112159120"></p>
+<p>他就只剩下这两种情况，分别是先手方拿了蓝色和先手方拿了红色后的情形。可以发现，一旦先手方拿了红色，那么后手方就只能选择蓝色，而先手方拿了蓝色后手方就只能选择红色。</p>
+<p>我们再往下看一步，假设第二张图的后手方拿了第一位的蓝色：</p>
+<p><img src="https://i.loli.net/2021/06/16/vN2JFM4BtmgnVWQ.png" alt="image-20210616112322452"></p>
+<p>先手方又获得了完全的红蓝选择权！</p>
+<p>通过一些简单尝试我们可以发现，无论后手方如何挣扎，先手方总是能获得完全的红蓝选择权而后手方只能永远只能在一个轮次选择一种颜色。</p>
+<p>由于石头总量为单数，我们易知红队和蓝队一定有一队的总石头数是较多的，再联系之前先手方可以有完全的红蓝选择权的事情，也就是说：</p>
+<p><strong>只要先手方永远选择石头数较多的那队，就一定会赢！</strong></p>
+<p>因此无论石头堆集合是怎样的，先手方一定会赢。</p>
+<p>代码为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B9%8B%E7%BB%98%E5%88%B6%E5%99%A8/" rel="prev" title="计算机图形学之绘制器">
+      <i class="fa fa-chevron-left"></i> 计算机图形学之绘制器
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
