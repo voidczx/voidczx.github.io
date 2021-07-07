@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+<meta name="baidu-site-verification" content="OALb3NnSZU" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cute_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cute_16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这类你能找到：  无线传感器网络相关技术的概念与理论知识 IEEE802.15.4与ZigBee协议的相关理论知识 ZigBee协议中的网络拓扑与涉及到的其他协议 关于CC2530单片机和ZStack协议栈的简单介绍 由于是个人期末复习所总结，带有很大一部分应试成分，干货缺乏警告！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WSN的期末总结">
+<meta property="og:url" content="http://yoursite.com/2021/07/07/WSN%E7%9A%84%E6%9C%9F%E6%9C%AB%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="阿轩blog">
+<meta property="og:description" content="在这类你能找到：  无线传感器网络相关技术的概念与理论知识 IEEE802.15.4与ZigBee协议的相关理论知识 ZigBee协议中的网络拓扑与涉及到的其他协议 关于CC2530单片机和ZStack协议栈的简单介绍 由于是个人期末复习所总结，带有很大一部分应试成分，干货缺乏警告！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/07/01/yO3ThFIXAY4MfbH.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/01/nYoN3WFhkKmRO1x.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/03/lhtCo96eKfPz8Wg.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/RGl7iVnSc9AdJ34.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/4oEzBDC6Z32XTqg.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/MNLv3GlaYUp5AF9.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/QKq5BUSMkVX3vz2.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/hwQnErIjxKgp8Zi.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/Nrvz3EbdBCeT6Iu.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/uJ3VeRdbYSFzlLB.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/teGJRB1vjlLfw4N.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/hWJlrwdpM9487sG.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/jhJtxVcCnw18SMg.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/437EftU26Q58zrF.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/uIa9k2W1erYP6ZL.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/UhxKAVkzcMat9mr.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/FvN2eQMyGxVkfRh.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/Ag7TtOCVDuJPEcU.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/yD9IflKvjQ16esT.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/07/oPzYD3WsUrKVAvS.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/dzPQUcjlyE2GBL4.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/IRkf5ZauN6H4Kd8.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/06/QnxcdCDlVrSFtHe.png">
+<meta property="article:published_time" content="2021-07-07T07:31:14.000Z">
+<meta property="article:modified_time" content="2021-07-07T07:38:00.981Z">
+<meta property="article:author" content="Czx">
+<meta property="article:tag" content="WSN">
+<meta property="article:tag" content="ZigBee">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/01/yO3ThFIXAY4MfbH.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/07/07/WSN%E7%9A%84%E6%9C%9F%E6%9C%AB%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WSN的期末总结 | 阿轩blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">阿轩blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/07/WSN%E7%9A%84%E6%9C%9F%E6%9C%AB%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Czx">
+      <meta itemprop="description" content="阿轩在网路中的第一套房产">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿轩blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WSN的期末总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-07 15:31:14 / 修改时间：15:38:00" itemprop="dateCreated datePublished" datetime="2021-07-07T15:31:14+08:00">2021-07-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/WSN%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">WSN相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这类你能找到：</p>
+<ul>
+<li>无线传感器网络相关技术的概念与理论知识</li>
+<li>IEEE802.15.4与ZigBee协议的相关理论知识</li>
+<li>ZigBee协议中的网络拓扑与涉及到的其他协议</li>
+<li>关于CC2530单片机和ZStack协议栈的简单介绍</li>
+<li><strong>由于是个人期末复习所总结，带有很大一部分应试成分，干货缺乏警告！</strong></li>
+</ul>
+<a id="more"></a>
+
+<h3 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h3><hr>
+<p><strong>1、什么是无线传感器网络</strong></p>
+<p>无线传感器网络是由部署在检测区域的大量廉价、微型的传感器节点组成通过无线通信方式形成的多跳的自组织网络。其中的节点能够协作地采集、处理、传输网络覆盖区域内感知对象的监测信息并报告给用户。</p>
+<p>无线传感器网络和传统的无线自组网都<strong>没有基站设备支持</strong>，所有节点分布式运行，所有节点能够向相邻节点发送和接收数据，具有维护和发现其他节点路由的功能，是自组织自管理的多跳网络。</p>
+<p><strong>2、传感器节点的组成及其功能是什么</strong></p>
+<p><img src="https://i.loli.net/2021/07/01/yO3ThFIXAY4MfbH.png" alt="image-20210701183206650"></p>
+<p>传感器模块：</p>
+<p>负责检测区域内的信息采集以及格式转换，将原始模拟信号转换为数字以供后续模块使用。</p>
+<p>（采集与转换）</p>
+<p>处理器模块：</p>
+<p>分为处理器和存储器两部分，分别用于节点控制和数据存储的处理。</p>
+<p>（控制与存储）</p>
+<p>无线通信模块：</p>
+<p>专门负责节点间的相互通信，交换控制信息，收发采集信息。</p>
+<p>（交换与收发）</p>
+<p>电源模块：</p>
+<p>负责传感器节点的能量供应，一般采用微型电池供电。</p>
+<p><img src="https://i.loli.net/2021/07/01/nYoN3WFhkKmRO1x.png" alt="image-20210701184414075"></p>
+<p>传感器节点在检测区域通过自组织构成网络，在对监测对象的信息进行采集后经由多条传输至汇聚节点，随后由汇聚节点通过互联网传输至数据中心进行统一管理。数据中心也可以反过来向传感器网络进行管理，发布采集任务或收集采集数据。</p>
+<p>传感器网络中有这么几项关键技术：</p>
+<p>时间同步技术、定位技术、分布式数据管理技术与信息融合、安全技术、嵌入式操作系统技术</p>
+<p><strong>3、几种典型短距离无线通信网络技术的特点是什么</strong></p>
+<p>① 红外数据传输</p>
+<p>速率高保密性强，且无需申请频段授权。但红外传输穿透能力差，且要求发送者与接收者存在视距关系</p>
+<p>② 超宽带UWB</p>
+<p>高速低功耗,但占用极宽的带宽(类似冲激信号的频谱是一条水平线,UWB采用极短的脉冲信号来传递信息,因此占用频带极宽),会带来频带干扰问题</p>
+<p>③ wifi</p>
+<p>传输速率高可靠性高,且组网灵活</p>
+<hr>
+<h3 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h3><hr>
+<p><strong>1、简述IEEE 802.15.4定义的LR-WPAN网络的主要特点。</strong></p>
+<p>在不同的载波频率下支持20kbps， 40kbps， 250kbps三种传输速率；</p>
+<p>有16位地址和64位地址两种格式；</p>
+<p>支持点对点拓扑和星型拓扑结构；</p>
+<p>支持CSMA/CA 协议</p>
+<p>802.15.4中定义了两种器件，一种是全功能器件FFD Full Functional Device，一种是简化功能器件RFD Reduced Functional Device。其中FFD可以与其他FFD和RFD之间通信，但RFD本身无法和其他RFD通信，只能与FFD通信或经由FFD向外收发数据。</p>
+<p><img src="https://i.loli.net/2021/07/03/lhtCo96eKfPz8Wg.png" alt="image-20210703110509042"></p>
+<p>与RFD相连的FFD称作该RFD的协调器，在802.15.4网络中，有一个FFD作为网络的协调器 PAN Coordinator, 其除了承担自身作为FFD的任务外，还需完成成员身份认证、链路状态管理以及分组转发等任务。</p>
+<p>星型拓扑网络中的几个特点：</p>
+<p>①、每个FFD再连入网络中时，都需广播一个查询当前网络中网络协调器的请求，如当前网络中没有网络协调器存在，该FFD则成为该网络的网络协调器，否则该FFD作为一个普通成员加入网络。</p>
+<p>②、每个网络协调器都将确定一个标识号，网络中的其他成员通过该标识号规定自己的从属关系。</p>
+<p>③、两个设备如想要互相通信，则需要先把数据发送个所在网络的网络协调器，再由网络协调器进行转发。</p>
+<p>④、不同星型拓扑网络间的设备可通过网关的方式进行通信。</p>
+<p>点对点网络中任意两个彼此可发现（即互相在对方的通信范围内）的设备可直接进行通信，但仍需一个网络协调器进行设备注册和访问控制等网络管理的功能。</p>
+<p><strong>2、CSMA/CD 与 CSMA/CA 分别是什么， IEEE802.15.4 MAC协议采用的哪一种？ 为什么？</strong></p>
+<p>CSMA，Carrier Sence Multiple Access，即载波监听的多路复用。其中CD为Collision Detect，即碰撞检测，CA为Collision Avoidence，即碰撞避免。IEEE 802.15.4中的MAC协议采用的为CSMA/CA，即碰撞避免方法，因为碰撞检测中，每个节点以在自身发送过程中监听信道是否有其他信号来判断是否碰撞，这在有线信道中是可行的。但在无线信道中，存在着隐藏和衰减这两种问题。且CSMA/CD需要全双工地工作（在发送的同时监测信道信号），硬件代价过高。</p>
+<p><strong>3、简述IEEE802.15.4标准 物理层与MAC层的主要功能</strong></p>
+<p>IEEE802.15.4标准中的物理层提供数据服务与管理服务。数据服务即在无线物理信道中收发数据。管理服务分为：</p>
+<p>①、激活和休眠射频收发器</p>
+<p>②、信道能量检测（ED）Energy Detect</p>
+<p>③、链路质量指示（LQI）Link Quality Idication</p>
+<p>④、空闲信道评估（CCA）Clear Channel Assessment</p>
+<p>MAC的主要功能有：</p>
+<p>①、协调器产生并发送信标帧，普通设备根据信标帧的指示和协调器同步</p>
+<p>②、支持时隙保障机制（GTS） Guaranteed Time Slot</p>
+<p>③、支持不同设备间MAC层的数据可靠传输</p>
+<p>④、支持CSMA/DA</p>
+<p>⑤、支持无线信道通信安全</p>
+<p>⑥、支持个域网络的关联（即向协调器进行认证与身份注册）和取消关联操作</p>
+<hr>
+<h3 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h3><p>ZigBee是一种建立在IEEE802.15.4基础上的技术规范，是一种新兴的短距离、低速率的双向无线网络通信技术，</p>
+<p>主要用于距离短、功耗低而且传输速率不高的各类电子设备进行数据传输，尤其适合典型的有周期性数据、间歇性数据和低反应时间数据传输的应用。</p>
+<p>ZigBee协议包括：①、应用层；②、网络层/安全层；③、MAC层；④、PHY层；四层结构</p>
+<p><strong>1、ZigBee技术的主要特点是什么？</strong></p>
+<p>ZigBee技术可支持2.4GHz（全球通用标准）、868Mhz（欧洲标准）、915Mhz（美国标准）三个频段上工作，并在每个频段上具有20kbps（一个信道），40kbps（十个信道）和250kbps（十六个信道）的最高数据传输速率。</p>
+<p>室内的传输距离为10米，室外传输距离能达到200米，但标准传输速率为<strong>75米</strong>，实际传输中，传输距离根据发射功率而定，可变化调整。</p>
+<p>另外，ZigBee技术还具有以下七个特点：</p>
+<p>①、功耗低：工作周期较短，且具有休眠模式</p>
+<p>②、成本低：协议栈设计简练，且ZigBee协议免专利费</p>
+<p>③、可靠性高：采用了碰撞避免的信道复用机制和完全确认的数据传输机制，避免了数据收发时的竞争和冲突，提高了数据传输的可靠性。</p>
+<p>④、容量大：一个星型ZigBee网络最多可容纳1个主设备和254个从设备，一个区域里最多可有100个ZigBee网络</p>
+<p>⑤、时延小：搜索设备时延30ms[ps：是因为搜索设备是活动设备接入再返回接入状态信息的一个来回吗？存疑！]，休眠唤醒时延15ms，活动设备信道接入15ms</p>
+<p>⑥、安全性好：利用了对称加密算法AES-128，虽然安全性上不及非对称加密，但复杂度低，加解密速度快</p>
+<p>⑦、有效覆盖范围小：有效覆盖范围为10~75米（毕竟标准传输距离也只有75米），防止不同ZigBee协议应用间的互相干扰。</p>
+<p><strong>2、ZigBee网络有哪几种节点类型，主要区别是什么？</strong></p>
+<p>ZigBee联盟将IEEE802.15.4中的PAN协调器、协调器和一般设备分别成为网络协调器ZigBee Coordinator、网络路由器ZigBee Router和网络终端设备ZigBee End Device。</p>
+<p>因此ZigBee网络中有三种节点类型，即协调器、路由器与终端。</p>
+<p>协调器：一个ZigBee网络中有且只有一个协调器，协调器的身份类似于网络的最高管理者，因此ZigBee的功能主要也可分为两部分，面向网络本身（网络状况）和面向网络成员。因此，协调器需承担<strong>启动网络、配置网络成员地址、维护网络、维护节点的绑定关系表</strong>等任务。</p>
+<p>路由器：虽然路由器没有协调器那样高的地位，但仍是一个FFD（Full Functional Device），<strong>主要承担拓展网络及路由消息的任务，且只在树状网络和网状网络中存在。</strong></p>
+<p>终端设备：在ZigBee网络中，终端设备可选用RFD（Reduced Functional Device），这也说明了终端设备之间是不可互相通信的，终端设备间的信息交流必须经由其上层的FFD设备，因此，终端设备的最主要区别在于：<strong>与实际的监控对象相连，只与自己的父节点通信。</strong></p>
+<p><strong>3、简述ZigBee的三种网络拓扑结构</strong></p>
+<p>主要有三种：星状网、树状网、网状网（是人话？）</p>
+<p>①、星状网：</p>
+<p>简单说来，即是以一个协调器为中心，周围辐射一堆终端节点的拓扑结构：</p>
+<p><img src="https://i.loli.net/2021/07/06/RGl7iVnSc9AdJ34.png" alt="image-20210706161440927"></p>
+<p>②、树状网：</p>
+<p>官方说法是一个中央协调器和许多与以路由器为中心设备的星状网连接而成的网络结构。</p>
+<p>实际上就是以协调器为根节点，叶节点可以是终端设备的一对多的树状网络拓扑。</p>
+<p>但由于网络状态信息和网络成员信息只存储在协调器中，很多网络与成员相关的控制信息需要从协调器自根向叶的层层传递，因此树状网在扩大了网络覆盖范围的同时也必定会增加传输时延。</p>
+<p><img src="https://i.loli.net/2021/07/06/4oEzBDC6Z32XTqg.png" alt="image-20210706162020662"></p>
+<p>③、网状网</p>
+<p>有了树状拓扑，自然而然就会发展来多对多的图状拓扑了。</p>
+<p>网状网就是这么一种多对多的图状拓扑。</p>
+<p>有一个由多个FFD构成的闭环图，称之为主干网络。</p>
+<p>但仍需推荐出一个FFD作为网络协调器统领大权。</p>
+<p>由于一个到达一个节点的路径不再只有一条，这使得：</p>
+<p>①、路由的选择需要路由器中的路由表配合，一个节点通信范围内有多个可通信节点会带来一种”困惑“</p>
+<p>②、可靠性提高了，即使一条路径上的某个节点出现故障（只要不是网络协调器故障了），数据仍然可以自动地（根据路由选择协议）选择其他无故障的路径进行传输。</p>
+<p>③、冗余度也提高了，因为在完全无故障的理想情况，多对多的拓扑本身就是一种”冗余网络“。</p>
+<p>因此网状网能够降低消息延时（相比于树状网，由边缘到中心协调器的距离将会相对变短），增加可靠性，但也会增加存储成本（路由表的开销）</p>
+<p><img src="https://i.loli.net/2021/07/06/MNLv3GlaYUp5AF9.png" alt="image-20210706163001075"></p>
+<p>网络的组建是由一个FFD发起的：</p>
+<p><img src="https://i.loli.net/2021/07/06/QKq5BUSMkVX3vz2.png" alt="image-20210706163116009"></p>
+<p>一个节点想要加入一个网络也应向该网络的协调器发起关联请求并得到认可回应。寻找到网络协调器是靠的信标帧。假如一个FFD加入了一个网络，其他该FFD附近的节点便可通过这个FFD节点加入网络（FFD能够拓展网络的原因）。</p>
+<p>ZigBee网络分为信标和非信标两种工作模式。信标模式下通过协调器定期广播的信标帧达到整个网络的同步休眠与同步工作，实现最大限度的功耗节省。非信标模式下ZC与ZR必须长期处于工作状态，并且父节点需要为自己下面的ZE子节点缓存数据，因为ZE大部分时间都处于休眠状态，只周期性地醒来与父节点握手确认自身在网络的存在并进行数据交换（是不是像极了那些整天吃喝嫖赌却什么事都得找他们签字的狗比领导）。正如前面所说，这种从休眠状态唤醒的时延只需要15ms。在非信标模式下，网络可以扩展的很大，因为不需要协调器统一进行同步操作，节点只需要与它邻近的节点进行通信。</p>
+<p>ZigBee协议的MAC层与PHY层功能已在第二章叙述。下面向上来看网络层，ZigBee网络层负责网络形成与路由选择。与TCP/IP协议簇中的网络层类似，ZigBee协议中的网络层也分为数据平面和控制平面两部分（虽然ZigBee中叫作数据实体Network Layer Data Entity与管理实体Network Layer Manage Entity），并向上层与下层提供服务接入点Service Access Point</p>
+<p><img src="https://i.loli.net/2021/07/06/hwQnErIjxKgp8Zi.png" alt="image-20210706184629243"></p>
+<p>ZigBee协议的应用层又可以分为三层，自下而上分别是应用支持子层Aplication Support Sublayer，设备对象ZigBee Device Object，应用框架Aplication Frame</p>
+<p><img src="https://i.loli.net/2021/07/06/Nrvz3EbdBCeT6Iu.png" alt="image-20210706184944956"></p>
+<p>ZigBee协议术语中还有设备和端点的区分，其中设备指一个具有唯一IEEE地址和网络短地址的节点，端点是一个八位的字段，可以支持不同的应用，类似于网络五层协议应用层的端口。</p>
+<p>整个协议栈的关系图如下所示：</p>
+<img src="https://i.loli.net/2021/07/06/uJ3VeRdbYSFzlLB.png" alt="image-20210706185258520" style="zoom:150%;" />
+
+
+
+<p>ZigBee路由协议：</p>
+<p>首先来平面路由协议，即所有节点承担相同工作的路由协议（从这个描述来看多多少少就有些不靠谱，事实也正是如此）。最简单粗暴的莫过于当一个节点收到一个消息，就把它传给相邻的节点。这样就可以保证所有的消息稳定传输给网络里的每一个节点（为了消息不会在网络中循环可能还需要加些约束）。这种究极粗暴的办法也叫做洪泛路由协议Flooding，但这种方法的缺点也是显而易见的，即网络中传递的信息量过大，即信息内爆。因此，我们需要做出改进，最直观的改进方式有两种，减少传递的信息量或者减少传递的对象，这也分别对应了另外两种平面路由协议，即基于信息协商的传感网协议 Sensor Protocols for Information via Negotiation，该协议中节点只广播采集信息的描述信息，当收到相应的请求才会向目标发送完整的信息；另一种是闲聊协议Gossiping，该协议不再广播消息，而是随机选择一个节点发送，但显然这样会大大降低消息传递的稳定性。</p>
+<p>层次路由协议，即把节点分成不同种类，每个种类的节点做不同的事情。这种类型的协议复杂度自然就比平面路由协议要高，典型的有主动型的<strong>Low Energy Adaptive Clustering Hierachy</strong>与响应型的<strong>Threshold-sensitive Energy-Efective Sensor Network</strong></p>
+<p><img src="https://i.loli.net/2021/07/06/teGJRB1vjlLfw4N.png" alt="image-20210706193427948"></p>
+<p><img src="https://i.loli.net/2021/07/06/hWJlrwdpM9487sG.png" alt="image-20210706193530473"></p>
+<p>基于查询的路由协议，比如Directed Diffusion 通过兴趣扩散、梯度建立与路径强化的方式达成采集到兴趣信息的源节点与汇聚节点的路由建立。</p>
+<p>基于地理位置的路由协议，比如Geographical and Energy Aware Routing通过在节点中存储已知的地理位置和剩余能量信息使得兴趣信息的传输不必采用洪泛形式。</p>
+<p>基于QoS的路由协议，比如Sequencial Assignment Routing。</p>
+<p><img src="https://i.loli.net/2021/07/06/jhJtxVcCnw18SMg.png" alt="image-20210706194112282"></p>
+<hr>
+<h3 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h3><p>第一章我们简单列出传感器网络中的几个关键技术（定位技术、时间同步技术、分布式数据管理技术和信息融合、安全技术、嵌入式系统技术），在这里章里我们将对其中的几个技术做出进一步阐述。</p>
+<p>定位技术有如下三种分类方式：</p>
+<p>①、基于距离的定位和距离无关的定位</p>
+<p>基于距离的定位需要测得相邻节点之间的绝对距离或方位，并利用已知的实际距离来计算未知节点的位置。</p>
+<p>②、递增式的定位和并发式的定位</p>
+<p>递增式的定位是指从信标节点开始，逐层向外定位整个网络，但会带来误差的累积。</p>
+<p>并发式的定位是所有节点同时进行位置计算（有些难以想象）</p>
+<p>③、有信标节点的定位和无信标节点的定位</p>
+<p>有信标节点的定位即以信标节点作为参考点建系，各节点定位后能产生整体的绝对坐标系统。</p>
+<p>无信标节点的定位即只关心节点间的相对位置，建立整个网络的相对坐标系统。</p>
+<p>定位技术中的一些术语概念：</p>
+<p><img src="https://i.loli.net/2021/07/07/437EftU26Q58zrF.png" alt="image-20210707101316779"></p>
+<p>我们熟知的GPS定位与北斗定位方式中分为空间段、地面段和用户段。</p>
+<p>基于距离的定位方法有 TOA/TDOA定位与RSSI定位，前者通过信号的传输时间进行定位，后者通过信号传输的衰减进行定位。并根据已知的节点距离通过三边测量法或极大似然估计法实现未知节点的定位。</p>
+<p>距离无关的算法有质心算法、DV-HOP、APIT等</p>
+<p>由于物理干扰等因素，无线传感器网络中的节点时钟可能会出现不同步的问题，这对无线传感器网络中的很多功能（比如信标工作模式下的同步休眠和同步工作）来说是致命的。因此，我们需要保证网络中节点的时钟同步。</p>
+<p>Reference Broadcast Synchronization 通过同组节点对于收到发送节点信息的时间进行交换实现彼此之间的同步：</p>
+<p><img src="https://i.loli.net/2021/07/07/uIa9k2W1erYP6ZL.png" alt="image-20210707103336103"></p>
+<p>Timing-Sync Protocol For Sensor Networks 这种协议需要一个能够与外界通信以获取外界时间的根节点，且实现在层次结构网络中，分为层次发现和同步两个阶段，层级发现阶段中相邻层次的节点进行两次次握手，通过两次握手获得的四个时间点信息算出二者的时延差，然后在同步阶段根据之前得出的时延差进行时间同步。</p>
+<p><img src="https://i.loli.net/2021/07/07/UhxKAVkzcMat9mr.png" alt="image-20210707104208022"></p>
+<p>Lightweight Tree-Based Synchronization 适合于对同步要求不高，且需要同步的并非所有节点的网络。分为三个部分：重同步时间监测用来确定节点进行时间同步的时刻，远程时钟估计用来决定网络中另一个节点的本地时钟，时钟修正用来更正节点的本地时间。</p>
+<p><img src="https://i.loli.net/2021/07/07/FvN2eQMyGxVkfRh.png" alt="image-20210707112125069"></p>
+<p>数据融合通过将冗余信息整合的方式降低了数据冗余程度，节省了能量，降低了网络拥塞程度，提高了数据的传输效率。且能通过多份数据的整合获得更为准确的信息。</p>
+<hr>
+<h3 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h3><p>传感器指能把特定的被测量信息（物理量）转化成可用信号的器件或装置。</p>
+<p>传感器一般由敏感元件、转换元件和基本转换电路组成。</p>
+<p>①、敏感元件：能感受或响应被测量物理量的部分。</p>
+<p>②、转换元件：能将感受或响应的被测物理量转换成适于传输或测量的信号（一般指电信号）的部分。</p>
+<p>③、基本转换电路：能对转换元件转换来的微弱电信号进行放大、以及运算调制。该部分工作时必须有辅助电源。</p>
+<p><img src="https://i.loli.net/2021/07/07/Ag7TtOCVDuJPEcU.png" alt="image-20210707113524695"></p>
+<p>关于传感器的一些特性概念：</p>
+<p>传感器特性：只传感器输出与输入的关系</p>
+<p>静态特性：指输入是一个常量或随时间变化很慢时的传感器特性。</p>
+<p>动态特性：指输入随时间变化比较快时的传感器特性。</p>
+<p>线性度：</p>
+<p><img src="https://i.loli.net/2021/07/07/yD9IflKvjQ16esT.png" alt="image-20210707114924856"></p>
+<p>灵敏度：指输出增量与输入增量的比值。</p>
+<p>迟滞：传感器在输入量增大和输入量减小时的输出曲线不一致的情况叫做迟滞。</p>
+<p>迟滞差值：正负迟滞情况下的差值</p>
+<p>迟滞误差：</p>
+<p><img src="https://i.loli.net/2021/07/07/oPzYD3WsUrKVAvS.png" alt="image-20210707115148379"></p>
+<p>传感器节点的基本硬件模块组成分为换能器模块、数据处理模块、无线通信模块、电源模块和其他外围模块。</p>
+<p>无线通信模块由无线射频电路和天线组成，传输介质包括无线电、红外、激光和超声波等，是节点中最主要的耗能模块。</p>
+<p>无线传感器节点的无线通信采用的是免证使用频段，天线的性能可从天线增益、天线效率、电压驻波比进行衡量，分别代表了通信距离的远近、发射能量和自身损耗能量的比值、以及传输线和天线之间阻抗失配的程度。</p>
+<p>电池供电是目前最常见的无线传感器节点供电手段。</p>
+<p>外围模块主要包括看门狗电路、低电量检测电路等。</p>
+<hr>
+<h3 id="第六章"><a href="#第六章" class="headerlink" title="第六章"></a>第六章</h3><p><strong>1、简述CC2530单片机GPIO的特性</strong></p>
+<p>GPIO，即General Purpose Input/Output，为单片机通用输入输出接口的统称。</p>
+<p>I/O分为弱驱动、强驱动、低压与高压I/O</p>
+<p><img src="https://i.loli.net/2021/07/06/dzPQUcjlyE2GBL4.png" alt="image-20210706201019806"></p>
+<p>I/O有三种工作状态，分别为输入、输出和高阻态。</p>
+<p><img src="https://i.loli.net/2021/07/06/IRkf5ZauN6H4Kd8.png" alt="image-20210706201055071"></p>
+<p><strong>2、CC2530单片机有几个定时器？简述各自功能</strong></p>
+<p>有三类，共四个寄存器，其中八位寄存器有一个，十六位和MAC寄存器各有一个。</p>
+<p>十六位定时器支持典型定时计数功能，比如输入捕获、输出比较与Pulse Width Modulation，有五个独立的采样/输出比较通道，每个通道对应一个I/O引脚。</p>
+<p>MAC定时器用于CSMA/DA实现中的定时功能（Distributed Inter-Frame Space 与 Short Inter-Frame Space）以及802.15.4中MAC层的通用计时功能。</p>
+<p>八位定时器每个有两个独立的比较通道，每个通道对应一个I/O引脚。</p>
+<p><strong>3、CC2530的电源管理模式有哪几种</strong></p>
+<p>五种，主动模式，空闲模式，PM1 PM2 PM3：</p>
+<p><img src="https://i.loli.net/2021/07/06/QnxcdCDlVrSFtHe.png" alt="image-20210706202032044"></p>
+<p>其中PM1 PM2可由睡眠定时器到期恢复至主动模式。</p>
+<p>主动模式高频晶振与RC振荡器至少一个运行，低频晶振与RC振荡器至少一个运行，空闲模式停止CPU内核，PM1停止32MHz晶振与16MHz RC振荡器，PM2关闭稳压器的数字内核，PM3停止32kHz晶振与32kHz RC振荡器。</p>
+<p><strong>4、CC2530有几个串口，有哪两种工作模式？</strong></p>
+<p>两个串口，异步工作模式与同步工作模式。</p>
+<p><strong>5、DMA在实际工作中有什么优势？</strong></p>
+<p>DMA能够跳过CPU直接实现存储器与外围设备以及存储器与存储器间的数据交换，可以将CPU从大量的数据交换，慢速的数据访问和分散的数据收集中释放出来，使得存储器间大量数据交换加快的同时增加了CPU的利用率。</p>
+<hr>
+<h3 id="第七章"><a href="#第七章" class="headerlink" title="第七章"></a>第七章</h3><p><strong>1、简述OSAL工作原理</strong></p>
+<p>Operator System Abstract Layer，即操作系统抽象层。</p>
+<p>ZStack协议栈中的操作系统抽象层是一个基于事件驱动的轮询式操作系统。OSAL首先建立一个事件表，保存各个任务的对应事件。另外建立一个函数表，保存各个任务事件处理函数的地址，并把两个表以 事件-响应函数 的形式建立对应关系。在工作中即通过指针遍历事件表中的每一项，检查该事件是否发生，倘若发生的话即在函数表中查找对应的处理函数进行处理，如无事件发生或该事件处理结束则继续查询事件表中的下一个事件，如此循环。</p>
+<p><strong>2、简述ZStack协议栈数据发送和数据接收过程</strong></p>
+<p>数据发送只需调用封装好的发送函数。</p>
+<p>数据接收本身即是一个被事件表记载的事件，发生时会在轮询过程中被检测到，随即在函数表中调用接收数据的响应函数，从消息队列中取出一条消息，接下来利用判断语句对该消息的类型进行判断以针对性地进行下一步处理。</p>
+<p><strong>3、简述ZStack协议栈串口机制</strong></p>
+<p>用户只需对串口结构体的部分成员进行配置（例如波特率与回调函数），之后打开串口便可正常使用串口功能。</p>
+<p>当串口接收到数据时会调用回调函数，用户可在回到函数里通过串口Read函数读取接收到的信息，串口发送信息也是调用串口Write函数即可。</p>
+<p>缺省配置情况下，串口的读写函数其实都是把数据和DMA缓冲区做交换。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    
+     <div>
+       <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------到底啦     欢迎下次光临-------------</div>
+    
+</div>
+     </div>
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WSN/" rel="tag"># WSN</a>
+              <a href="/tags/ZigBee/" rel="tag"># ZigBee</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/16/Leetcode-877%E6%9C%89%E6%84%9F/" rel="prev" title="Leetcode.877有感">
+      <i class="fa fa-chevron-left"></i> Leetcode.877有感
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTM4My8yNzg2NA=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="nav-number">1.</span> <span class="nav-text">第一章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="nav-number">2.</span> <span class="nav-text">第二章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">第三章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0"><span class="nav-number">4.</span> <span class="nav-text">第四章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0"><span class="nav-number">5.</span> <span class="nav-text">第五章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">第六章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0"><span class="nav-number">7.</span> <span class="nav-text">第七章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Czx"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Czx</p>
+  <div class="site-description" itemprop="description">阿轩在网路中的第一套房产</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/chengzixuan2020@gmail.com" title="E-Mail → chengzixuan2020@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020-08 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Czx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
