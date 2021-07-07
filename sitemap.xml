@@ -361,14 +361,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/openGL/</loc>
-    <lastmod>2021-07-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/c/</loc>
+    <loc>http://yoursite.com/tags/FTP/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -376,13 +369,6 @@
   
   <url>
     <loc>http://yoursite.com/tags/git/</loc>
-    <lastmod>2021-07-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/FTP/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -403,14 +389,21 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Kruskal/</loc>
+    <loc>http://yoursite.com/tags/openGL/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/tensorflow/</loc>
+    <loc>http://yoursite.com/tags/c/</loc>
+    <lastmod>2021-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/Kruskal/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -425,6 +418,13 @@
   
   <url>
     <loc>http://yoursite.com/tags/UGUI/</loc>
+    <lastmod>2021-07-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/tensorflow/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -517,7 +517,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/c-%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -531,14 +531,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/DSP%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/DSP%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/c-%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -552,14 +552,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/python%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/unity%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/unity%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/python%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -573,14 +573,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/blog%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/glsl%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/glsl%E7%9B%B8%E5%85%B3/</loc>
+    <loc>http://yoursite.com/categories/blog%E7%9B%B8%E5%85%B3/</loc>
     <lastmod>2021-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
